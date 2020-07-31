@@ -5,11 +5,7 @@
     }
   },
   "extends": [
-    "standard-with-typescript",
-    "plugin:react/recommended"
-  ],
-  "plugins": [
-    "react"
+    "standard-with-typescript"
   ],
   "parserOptions": {
     "project": "./tsconfig.json"
