@@ -1,0 +1,116 @@
+@import "@/presentation/styles/colors.scss";
+
+* {
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: $primary;
+}
+
+input[type="email"],
+input[type="password"] {
+  border-radius: 4px;
+  line-height: 40px;
+  padding: 0px 40px 0px 8px;
+  border: none;
+
+  &:focus {
+    outline-color: $white;
+  }
+}
+
+button {
+  background-color: $black;
+  border: none;
+  border-radius: 8px;
+  color: $white;
+  font-size: 16px;
+  line-height: 60px;
+
+  &:hover {
+    background-color: 0.9;
+    color: $primaryLight;
+    transition: all 0.5s;
+  }
+}
+
+.login {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  height: 100vh;
+
+  .header {
+    align-items: center;
+    display: flex;
+    height: 30vh;
+    justify-content: center;
+
+    h2 {
+      font-size: 32px;
+    }
+  }
+
+  .form {
+    align-self: center;
+    display: flex;
+    flex-direction: column;
+    width: 400px;
+
+    h2 {
+      color: $black;
+      font-size: 20px;
+      text-align: center;
+    }
+
+    .inputWrap {
+      display: flex;
+      margin-top: 16px;
+      position: relative;
+      align-items: center;
+
+      input {
+        flex: 1;
+      }
+
+      .status {
+        cursor: help;
+        font-size: 12px;
+        position: absolute;
+        right: 8px;
+      }
+    }
+
+    .submit {
+      margin-top: 64px;
+    }
+
+    .link {
+      color: $black;
+      cursor: pointer;
+      margin-top: 40px;
+      text-align: center;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
+    .errorWrap {
+      align-items: center;
+      display: flex;
+      flex-direction: column;
+
+      .error {
+        color: $black;
+        margin-top: 32px;
+        font-size: 16px;
+      }
+    }
+  }
+}
