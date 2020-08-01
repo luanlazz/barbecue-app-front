@@ -82,17 +82,5 @@ button {
         text-decoration: underline;
       }
     }
-
-    .errorWrap {
-      align-items: center;
-      display: flex;
-      flex-direction: column;
-
-      .error {
-        color: $black;
-        margin-top: 32px;
-        font-size: 16px;
-      }
-    }
   }
 }
