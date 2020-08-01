@@ -1,6 +1,6 @@
 import React from 'react'
 import Styles from './login-styles.scss'
-import Spinner from '@/presentation/components/spinner/spinner'
+import { Spinner, Input } from '@/presentation/components'
 
 const Login: React.FC = () => {
   return (
@@ -12,15 +12,8 @@ const Login: React.FC = () => {
       <form className={Styles.form}>
         <h2>Login</h2>
 
-        <div className={Styles.inputWrap}>
-          <input type='email' name='email' placeholder='e-mail' />
-          <span className={Styles.status}>🔴</span>
-        </div>
-
-        <div className={Styles.inputWrap}>
-          <input type='password' name='password' placeholder='senha' />
-          <span className={Styles.status}>🔴</span>
-        </div>
+        <Input type='email' name='email' placeholder='email' />
+        <Input type='password' name='password' placeholder='senha' />
 
         <button className={Styles.submit} type='submit'>
           <Spinner />
