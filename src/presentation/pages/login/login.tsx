@@ -26,6 +26,14 @@ const Login: React.FC<Props> = ({ validation }: Props) => {
     })
   }, [state.email, state.password])
 
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
+    event.preventDefault()
+    setState({
+      ...state,
+      isLoading: true
+    })
+  }
+
   return (
     <div className={Styles.login}>
       <header className={Styles.header}>
@@ -33,15 +41,14 @@ const Login: React.FC<Props> = ({ validation }: Props) => {
       </header>
 
       <Context.Provider value={{ state, setState }}>
-        <form className={Styles.form}>
+        <form className={Styles.form} onSubmit={handleSubmit}>
           <h2>Login</h2>
 
           <Input type='email' name='email' placeholder='email' />
           <Input type='password' name='password' placeholder='senha' />
 
           <button data-testid='btn-submit' disabled={!!state.emailError || !!state.passwordError} className={Styles.submit} type='submit'>
-            {state.isLoading && <Spinner />}
-            Entrar
+            {state.isLoading ? <Spinner /> : 'Entrar'}
           </button>
 
           <span className={Styles.link}>Criar conta</span>
