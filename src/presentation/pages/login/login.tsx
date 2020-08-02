@@ -1,30 +1,43 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Styles from './login-styles.scss'
 import { Spinner, Input, FormStatus } from '@/presentation/components'
+import Context from '@/presentation/contexts/form/form-context'
+
+type StateProps = {
+  isLoading: boolean
+  errorMessage: string
+}
 
 const Login: React.FC = () => {
+  const [state] = useState<StateProps>({
+    isLoading: false,
+    errorMessage: ''
+  })
+
   return (
     <div className={Styles.login}>
       <header className={Styles.header}>
         <h2>Agenda de Churras</h2>
       </header>
 
-      <form className={Styles.form}>
-        <h2>Login</h2>
+      <Context.Provider value={state}>
+        <form className={Styles.form}>
+          <h2>Login</h2>
 
-        <Input type='email' name='email' placeholder='email' />
-        <Input type='password' name='password' placeholder='senha' />
+          <Input type='email' name='email' placeholder='email' />
+          <Input type='password' name='password' placeholder='senha' />
 
-        <button className={Styles.submit} type='submit'>
-          <Spinner />
-          Entrar
-        </button>
+          <button data-testid='btn-submit' className={Styles.submit} type='submit'>
+            {state.isLoading && <Spinner />}
+            Entrar
+          </button>
 
-        <span className={Styles.link}>Criar conta</span>
+          <span className={Styles.link}>Criar conta</span>
 
-        <FormStatus />
+          <FormStatus />
 
-      </form>
+        </form>
+      </Context.Provider>
     </div>
   )
 }

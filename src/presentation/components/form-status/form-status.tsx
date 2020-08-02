@@ -1,10 +1,13 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import Styles from './form-status-styles.scss'
+import Context from '@/presentation/contexts/form/form-context'
 
 const FormStatus: React.FC = () => {
+  const { errorMessage } = useContext(Context)
+
   return (
-    <div className={Styles.errorWrap}>
-      <span className={Styles.error}>Erro</span>
+    <div data-testid='error-wrap' className={Styles.errorWrap}>
+      {errorMessage && <span className={Styles.error}>{errorMessage}</span>}
     </div>
   )
 }
