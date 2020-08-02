@@ -30,10 +30,12 @@ const Login: React.FC<Props> = ({ validation, authentication }: Props) => {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault()
+
     setState({
       ...state,
       isLoading: true
     })
+
     await authentication.auth({
       email: state.email,
       password: state.password
@@ -53,7 +55,7 @@ const Login: React.FC<Props> = ({ validation, authentication }: Props) => {
           <Input type='email' name='email' placeholder='email' />
           <Input type='password' name='password' placeholder='senha' />
 
-          <button data-testid='btn-submit' disabled={!!state.emailError || !!state.passwordError} className={Styles.submit} type='submit'>
+          <button data-testid='btn-submit' disabled={!!state.emailError || !!state.passwordError || !!state.isLoading} className={Styles.submit} type='submit'>
             {state.isLoading ? <Spinner /> : 'Entrar'}
           </button>
 
