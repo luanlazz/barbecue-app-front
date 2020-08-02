@@ -31,6 +31,17 @@
 
     .submit {
       margin-top: 64px;
+
+      &:disabled {
+        background-color: $disabled;
+        color: rgba(138, 135, 135, 0.849);
+      }
+
+      &:active hover {
+        background-color: 0.9;
+        color: $primaryLight;
+        transition: all 0.5s;
+      }
     }
 
     .link {
