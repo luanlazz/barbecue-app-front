@@ -6,12 +6,16 @@ import Context from '@/presentation/contexts/form/form-context'
 type StateProps = {
   isLoading: boolean
   errorMessage: string
+  emailError: string
+  passwordError: string
 }
 
 const Login: React.FC = () => {
   const [state] = useState<StateProps>({
     isLoading: false,
-    errorMessage: ''
+    errorMessage: '',
+    emailError: 'Campo obrigatório',
+    passwordError: 'Campo obrigatório'
   })
 
   return (
