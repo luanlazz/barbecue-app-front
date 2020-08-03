@@ -16,15 +16,15 @@ const Input: React.FC<Props> = (props: Props) => {
     return error || 'Tudo ok!'
   }
 
-  const enableInput = (event: React.FocusEvent<HTMLInputElement>): void => {
-    event.target.readOnly = false
-  }
-
   const handleChange = (event: React.FocusEvent<HTMLInputElement>): void => {
     setState({
       ...state,
       [event.target.name]: event.target.value
     })
+  }
+
+  const enableInput = (event: React.FocusEvent<HTMLInputElement>): void => {
+    event.target.readOnly = false
   }
 
   return (
