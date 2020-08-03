@@ -11,15 +11,13 @@ describe('MinLengthValidation', () => {
     const field = faker.database.column()
     const minLength = 5
     const sut = makeSut(field, minLength)
-    const error = sut.validate('')
+    const error = sut.validate(faker.random.alphaNumeric(4))
     expect(error).toEqual(new MinLengthError(field, minLength))
   })
 
   test('Should return falsy on success', () => {
-    const field = faker.database.column()
-    const minLength = 5
-    const sut = makeSut(field, minLength)
-    const error = sut.validate('12345')
+    const sut = makeSut(faker.database.column(), 5)
+    const error = sut.validate(faker.random.alphaNumeric(5))
     expect(error).toBeFalsy()
   })
 })
