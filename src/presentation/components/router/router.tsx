@@ -1,15 +1,17 @@
-import React, { lazy, Suspense } from 'react'
+import React, { Suspense } from 'react'
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import { Spinner } from '@/presentation/components'
 
-const Login = lazy(async () => import('@/presentation/pages/login/login'))
+type Props = {
+  makeLogin: React.FC
+}
 
-const Router: React.FC = () => {
+const Router: React.FC<Props> = ({ makeLogin }: Props) => {
   return (
     <BrowserRouter>
       <Suspense fallback={<Spinner />}>
         <Switch>
-          <Route path='/login' exact component={Login} />
+          <Route path='/login' exact component={makeLogin} />
         </Switch>
       </Suspense>
     </BrowserRouter>
