@@ -3,6 +3,7 @@ import { HttpGetClientSpy } from '@/data/test'
 import { HttpStatusCode } from '@/data/protocols/http'
 import { BarbecueModel } from '@/domain/models'
 import { UnexpectedError } from '@/domain/errors'
+import { mockBarbecuesModel } from '@/domain/test'
 import faker from 'faker'
 
 type SutTypes = {
@@ -52,5 +53,16 @@ describe('RemoteLoadBarbecueList', () => {
     }
     const promise = sut.loadAll()
     await expect(promise).rejects.toThrow(new UnexpectedError())
+  })
+
+  test('Should return a barbecueList if HttpGetClient returns 200', async () => {
+    const { sut, httpGetClientSpy } = makeSut()
+    const httpResult = mockBarbecuesModel()
+    httpGetClientSpy.response = {
+      statusCode: HttpStatusCode.ok,
+      body: httpResult
+    }
+    const barbecues = await sut.loadAll()
+    expect(barbecues).toEqual(httpResult)
   })
 })
