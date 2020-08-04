@@ -1,5 +1,5 @@
 import { BarbecueModel } from '@/domain/models'
 
-export interface AddAccount {
+export interface LoadBarbecueList {
   loadAll (): Promise<BarbecueModel[]>
 }
