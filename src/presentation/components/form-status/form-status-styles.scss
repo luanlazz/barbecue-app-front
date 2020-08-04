@@ -5,9 +5,12 @@
   display: flex;
   flex-direction: column;
 
-  .error {
-    color: $black;
+  .spinner {
     margin-top: 32px;
-    font-size: 16px;
+  }
+
+  .error {
+    margin-top: 32px;
+    color: $primaryLight;
   }
 }

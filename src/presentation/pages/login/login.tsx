@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Link, useHistory } from 'react-router-dom'
 import Styles from './login-styles.scss'
-import { Spinner, Input, FormStatus } from '@/presentation/components'
+import { Input, FormStatus } from '@/presentation/components'
 import { Validation } from '@/presentation/protocols/validation'
 import { Authentication, SaveAccessToken } from '@/domain/usecases'
 import Context from '@/presentation/contexts/form/form-context'
@@ -73,7 +73,7 @@ const Login: React.FC<Props> = ({ validation, authentication, saveAccessToken }:
           <Input type='password' name='password' placeholder='senha' />
 
           <button data-testid='btn-submit' disabled={!!state.emailError || !!state.passwordError || !!state.isLoading} className={Styles.submit} type='submit'>
-            {state.isLoading ? <Spinner /> : 'Entrar'}
+            Entrar
           </button>
 
           <Link data-testid="signup" to="/signup" className={Styles.link}>Criar conta</Link>

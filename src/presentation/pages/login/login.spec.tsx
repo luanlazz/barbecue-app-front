@@ -74,16 +74,6 @@ const testSubmitButtonDisable = (sut: RenderResult, disable: boolean): void => {
   expect(buttonSubmit.disabled).toBe(disable)
 }
 
-const testSubmitButtonChildCount = (sut: RenderResult, count: number): void => {
-  const buttonSubmit = sut.getByTestId('btn-submit') as HTMLButtonElement
-  expect(buttonSubmit.childNodes.length).toBe(count)
-}
-
-const testSubmitButtonTextContent = (sut: RenderResult, text: string): void => {
-  const buttonSubmit = sut.getByTestId('btn-submit') as HTMLButtonElement
-  expect(buttonSubmit.textContent).toBe(text)
-}
-
 const testElementText = (sut: RenderResult, fieldName: string, text: string): void => {
   const element = sut.getByTestId(fieldName)
   expect(element.textContent).toBe(text)
@@ -94,7 +84,7 @@ const testElementExists = (sut: RenderResult, fieldName: string): void => {
   expect(element).toBeTruthy()
 }
 
-describe('', () => {
+describe('Login Component', () => {
   afterEach(cleanup)
 
   test('Should start with initial state', () => {
@@ -102,8 +92,6 @@ describe('', () => {
     const { sut } = makeSut({ validationError })
     testErrorWrapChildCount(sut, 0)
     testSubmitButtonDisable(sut, true)
-    testSubmitButtonTextContent(sut, 'Entrar')
-    testSubmitButtonChildCount(sut, 1)
     testStatusForField(sut, 'email-status', validationError, '🟡')
     testStatusForField(sut, 'password-status', validationError, '🟡')
   })
@@ -144,7 +132,6 @@ describe('', () => {
   test('Should show spinner on submit', async () => {
     const { sut } = makeSut()
     await await simulateValidSubmit(sut)
-    testSubmitButtonChildCount(sut, 1)
     testElementExists(sut, 'spinner')
   })
 
@@ -177,8 +164,6 @@ describe('', () => {
     await simulateValidSubmit(sut)
     testElementText(sut, 'main-error', error.message)
     testErrorWrapChildCount(sut, 1)
-    testSubmitButtonTextContent(sut, 'Entrar')
-    testSubmitButtonChildCount(sut, 1)
   })
 
   test('Should call SaveAccessToken on success', async () => {
@@ -196,8 +181,6 @@ describe('', () => {
     await simulateValidSubmit(sut)
     testElementText(sut, 'main-error', error.message)
     testErrorWrapChildCount(sut, 1)
-    testSubmitButtonTextContent(sut, 'Entrar')
-    testSubmitButtonChildCount(sut, 1)
   })
 
   test('Should go to signup page', () => {
