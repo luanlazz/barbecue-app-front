@@ -55,6 +55,15 @@ describe('RemoteLoadBarbecueList', () => {
     await expect(promise).rejects.toThrow(new UnexpectedError())
   })
 
+  test('Should return empty list if HttpGetClient returns 204', async () => {
+    const { sut, httpGetClientSpy } = makeSut()
+    httpGetClientSpy.response = {
+      statusCode: HttpStatusCode.noContent
+    }
+    const barbecues = await sut.loadAll()
+    expect(barbecues).toEqual([])
+  })
+
   test('Should return a barbecueList if HttpGetClient returns 200', async () => {
     const { sut, httpGetClientSpy } = makeSut()
     const httpResult = mockBarbecuesModel()
