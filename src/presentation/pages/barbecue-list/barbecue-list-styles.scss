@@ -1,0 +1,73 @@
+@import "@/presentation/styles/colors.scss";
+
+.barbecueListWrap {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 100vh;
+  
+  .contentWrap {
+    background-color: $white;
+    align-self: center;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    width: 100%;
+    padding: 24px;
+
+    ul {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: space-between;
+
+      li {
+        height: 130px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        flex-basis: 48%;
+        margin: 16px;
+
+        .barbecueContent {
+          background-color: #FFF;
+          border: none;
+          box-shadow: 6px 10px 27px -10px rgba(0,0,0,0.48);
+          display: flex;
+          flex-direction: column;
+          flex-wrap: wrap;      
+          overflow: hidden;
+          padding: 8px;
+          width: 200px;          
+          position: relative; 
+          
+          .date {
+            color: #000;
+            font-size: 25px;
+            font-weight: 800;
+            width: 100%;
+          }
+        
+          .description {
+            font-size: 18px;
+            font-weight: bold;
+          }
+        
+          .totals {
+            display: inline-flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            
+            span {
+              font-size: 16px;
+              text-align: center;
+              padding: 4px;
+              vertical-align: super;
+            }
+          }
+        }
+      }
+    }
+
+  }
+}
