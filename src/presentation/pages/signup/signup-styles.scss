@@ -6,17 +6,6 @@
   justify-content: flex-start;
   height: 100vh;
 
-  .header {
-    align-items: center;
-    display: flex;
-    height: 30vh;
-    justify-content: center;
-
-    h2 {
-      font-size: 32px;
-    }
-  }
-
   .form {
     align-self: center;
     display: flex;
@@ -38,6 +27,14 @@
       &:hover {
         text-decoration: underline;
       }
+    }
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .loginWrap {
+    .form {
+      width: 300px;      
     }
   }
 }
