@@ -1,6 +1,6 @@
 import React, { Suspense } from 'react'
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
-import { setCurrentAccountAdapter } from '@/main/adapters/current-account-adapter'
+import { setCurrentAccountAdapter, getCurrentAccountAdapter } from '@/main/adapters/current-account-adapter'
 import { makeLogin } from '@/main/factories/pages/login/login-factory'
 import { makeSignUp } from '@/main/factories/pages/signup/signup-factory'
 import { Spinner } from '@/presentation/components'
@@ -11,7 +11,8 @@ const Router: React.FC = () => {
   return (
     <ApiContext.Provider
       value={{
-        setCurrentAccount: setCurrentAccountAdapter
+        setCurrentAccount: setCurrentAccountAdapter,
+        getCurrentAccount: getCurrentAccountAdapter
       }}
     >
       <BrowserRouter>
