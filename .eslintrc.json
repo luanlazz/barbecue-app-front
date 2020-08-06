@@ -21,6 +21,7 @@
     "@typescript-eslint/camelcase": "off",
     "@typescript-eslint/return-await": "off",
     "@typescript-eslint/method-signature-style": "off",
+    "@typescript-eslint/no-floating-promises": "off",
     "react/jsx-uses-react": "error",
     "react/jsx-uses-vars": "error"
   }
