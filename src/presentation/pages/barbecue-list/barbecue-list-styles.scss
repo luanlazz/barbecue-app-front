@@ -21,89 +21,7 @@
       flex-direction: row;
       flex-wrap: wrap;
       justify-content: space-between;
-
-      li {
-        height: 130px;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        flex-basis: 30%;
-        margin-bottom: 16px;
-        box-shadow: 6px 10px 27px -10px rgba(0,0,0,0.48);
-
-        &:empty {
-          position: relative;
-          overflow: hidden;
-          background-repeat: no-repeat;
-          background-image: 
-            linear-gradient(to right, #CCC, #CCC),
-            linear-gradient(to right, #CCC, #CCC),
-            linear-gradient(to right, #CCC, #CCC),
-            linear-gradient(to right, #CCC, #CCC);
-          background-position: 
-            8px 8px,
-            8px 42px,
-            8px 90px,
-            140px 90px;
-          background-size: 
-            66px 30px,
-            200px 22px,
-            50px 27px,
-            75px 27px;
-
-          &::after{
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            transform: translateX(-100%);
-            background-image: 
-              linear-gradient(to right, transparent, rgba($white, 0.3), transparent);
-            animation: shimmer 1.2s infinite;
-          }
-        }
-
-        .barbecueContent {
-          background-color: #FFF;
-          border: none;          
-          display: flex;
-          flex-direction: column;
-          flex-grow: 1;
-          justify-content: space-between;
-          overflow: hidden;
-          padding: 8px;        
-          position: relative; 
-          
-          .date {
-            color: #000;
-            font-size: 25px;
-            font-weight: 800;
-            width: 100%;
-          }
-        
-          .description {
-            font-size: 18px;
-            font-weight: bold;
-          }
-        
-          .totals {
-            display: inline-flex;
-            justify-content: space-between;
-            margin-top: 30px;
-            
-            span {
-              font-size: 16px;
-              text-align: center;
-              padding: 4px;
-              vertical-align: super;
-            }
-          }
-        }
-      }
     }
-
   }
 }
 
@@ -112,17 +30,7 @@
     .contentWrap {
       ul {
         flex-direction: column;
-
-        li {
-            flex-basis: 100%;
-        }
       }
     }
-  }
-}
-
-@keyframes shimmer {
-  100% {
-    transform: translateX(100%);
   }
 }
