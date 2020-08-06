@@ -1,24 +1,43 @@
 import React from 'react'
 import Styles from './barbecue-item-styles.scss'
 import { IconMoney, IconPeople } from '@/images/index'
+import { BarbecueModel } from '@/domain/models'
 
-const BarbecueItem: React.FC = () => {
+type Prop = {
+  barbecue: BarbecueModel
+}
+
+const BarbecueItem: React.FC<Prop> = ({ barbecue }: Prop) => {
   return (
     <li className={Styles.barbecueItemWrap}>
       <div className={Styles.barbecueContent}>
         <time>
-          <span className={Styles.date}>01/12</span>
+          <span data-testid='date' className={Styles.date}>
+            {Intl.DateTimeFormat('pt-BR', {
+              day: 'numeric',
+              month: 'numeric'
+            }).format(barbecue.date)}
+          </span>
         </time>
-        <span className={Styles.description}>Niver do Gui</span>
+        <span data-testid='description' className={Styles.description}>
+          {barbecue.description}
+        </span>
 
         <div className={Styles.totals}>
           <div className={Styles.people}>
             <IconPeople />
-            <span className={Styles.num}>15</span>
+            <span data-testid='numParticipants' className={Styles.numParticipants}>
+              {barbecue.numParticipants}
+            </span>
           </div>
           <div className={Styles.money}>
             <IconMoney />
-            <span className={Styles.valueTotal}>R$ 280</span>
+            <span data-testid='valueTotal' className={Styles.valueTotal}>
+              {new Intl.NumberFormat([], {
+                style: 'currency',
+                currency: 'BRL'
+              }).format(barbecue.valueTotal).toString()}
+            </span>
           </div>
         </div>
       </div>
