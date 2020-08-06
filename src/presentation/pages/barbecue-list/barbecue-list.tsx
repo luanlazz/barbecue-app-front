@@ -11,12 +11,20 @@ type Props = {
 
 const BarbecueList: React.FC<Props> = ({ loadBarbecueList }: Props) => {
   const [state, setState] = useState({
-    barbecues: [] as BarbecueModel[]
+    barbecues: [] as BarbecueModel[],
+    error: ''
   })
 
   useEffect(() => {
     loadBarbecueList.loadAll()
-      .then(barbecues => setState({ barbecues }))
+      .then(barbecues => setState({
+        ...state,
+        barbecues
+      }))
+      .catch(error => setState({
+        ...state,
+        error: error.message
+      }))
   }, [])
 
   return (
@@ -25,14 +33,20 @@ const BarbecueList: React.FC<Props> = ({ loadBarbecueList }: Props) => {
       <Header />
 
       <div className={Styles.contentWrap}>
-        <ul data-testid='barbecue-list'>
-          {state.barbecues.length
-            ? state.barbecues.map(barbecue => (
-              <BarbecueItem key={barbecue.id} barbecue={barbecue} />
-            ))
-            : <BarbecueItemEmpty />
-          }
-        </ul>
+        {state.error
+          ? <div>
+            <span data-testid='error'>{state.error}</span>
+            <button>Recarregar</button>
+          </div>
+          : <ul data-testid='barbecue-list'>
+            {state.barbecues.length
+              ? state.barbecues.map(barbecue => (
+                <BarbecueItem key={barbecue.id} barbecue={barbecue} />
+              ))
+              : <BarbecueItemEmpty />
+            }
+          </ul>
+        }
       </div>
 
     </div>
