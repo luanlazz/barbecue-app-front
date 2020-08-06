@@ -1,3 +1,11 @@
 .errorWrap {
-  
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  padding: 40px;
+
+  span {
+    font-size: 20px;
+    text-align: center;
+  }
 }
