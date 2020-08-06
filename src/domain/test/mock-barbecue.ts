@@ -14,8 +14,7 @@ export const mockBarbecueModel = (): BarbecueModel => ({
   valueCollected: faker.random.number()
 })
 
-export const mockBarbecuesModel = (): BarbecueModel[] => ([{
-  ...mockBarbecueModel()
-}, {
-  ...mockBarbecueModel()
-}])
+export const mockBarbecuesModel = (): BarbecueModel[] => ([
+  mockBarbecueModel(),
+  mockBarbecueModel()
+])
