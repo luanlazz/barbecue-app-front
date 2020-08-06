@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Styles from './barbecue-list-styles.scss'
 import { Header } from '@/presentation/components'
-import { BarbecueItemEmpty, BarbecueItem } from '@/presentation/pages/barbecue-list/components'
+import { BarbecueListItems, BarbecueContext, Error } from '@/presentation/pages/barbecue-list/components'
 import { LoadBarbecueList } from '@/domain/usecases'
 import { BarbecueModel } from '@/domain/models'
 
@@ -32,22 +32,14 @@ const BarbecueList: React.FC<Props> = ({ loadBarbecueList }: Props) => {
 
       <Header />
 
-      <div className={Styles.contentWrap}>
-        {state.error
-          ? <div>
-            <span data-testid='error'>{state.error}</span>
-            <button>Recarregar</button>
-          </div>
-          : <ul data-testid='barbecue-list'>
-            {state.barbecues.length
-              ? state.barbecues.map(barbecue => (
-                <BarbecueItem key={barbecue.id} barbecue={barbecue} />
-              ))
-              : <BarbecueItemEmpty />
-            }
-          </ul>
-        }
-      </div>
+      <BarbecueContext.Provider value={{ state, setState }}>
+        <div className={Styles.contentWrap}>
+          {state.error
+            ? <Error />
+            : <BarbecueListItems />
+          }
+        </div>
+      </BarbecueContext.Provider>
 
     </div>
   )

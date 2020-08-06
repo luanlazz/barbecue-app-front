@@ -1,2 +1,5 @@
 export { default as BarbecueItem } from './barbecue-item/barbecue-item'
 export { default as BarbecueItemEmpty } from './barbecue-item-empty/barbecue-item-empty'
+export { default as BarbecueListItems } from './barbecue-list/barbecue-list-items'
+export { default as BarbecueContext } from './context/context'
+export { default as Error } from './error/error'

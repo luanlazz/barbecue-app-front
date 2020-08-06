@@ -15,22 +15,5 @@
     max-width: 800px;
     width: 100%;
     padding: 24px;
-
-    ul {
-      display: flex;
-      flex-direction: row;
-      flex-wrap: wrap;
-      justify-content: space-between;
-    }
-  }
-}
-
-@media only screen and (max-width: 600px) {
-  .barbecueListWrap {  
-    .contentWrap {
-      ul {
-        flex-direction: column;
-      }
-    }
   }
 }
