@@ -1,8 +1,8 @@
 import { RemoteLoadBarbecueList } from './remote-load-barbecue-list'
-import { HttpGetClientSpy } from '@/data/test'
+import { HttpGetClientSpy, mockRemoteBarbecuesModel } from '@/data/test'
 import { HttpStatusCode } from '@/data/protocols/http'
 import { UnexpectedError } from '@/domain/errors'
-import { mockBarbecuesModel } from '@/domain/test'
+
 import faker from 'faker'
 
 type SutTypes = {
@@ -65,12 +65,34 @@ describe('RemoteLoadBarbecueList', () => {
 
   test('Should return a barbecueList if HttpGetClient returns 200', async () => {
     const { sut, httpGetClientSpy } = makeSut()
-    const httpResult = mockBarbecuesModel()
+    const httpResult = mockRemoteBarbecuesModel()
     httpGetClientSpy.response = {
       statusCode: HttpStatusCode.ok,
       body: httpResult
     }
     const barbecues = await sut.loadAll()
-    expect(barbecues).toEqual(httpResult)
+    expect(barbecues).toEqual([{
+      id: httpResult[0].id,
+      accountId: httpResult[0].accountId,
+      date: new Date(httpResult[0].date),
+      description: httpResult[0].description,
+      observation: httpResult[0].observation,
+      valueSuggestDrink: httpResult[0].valueSuggestDrink,
+      valueSuggestFood: httpResult[0].valueSuggestFood,
+      valueTotal: httpResult[0].valueTotal,
+      numParticipants: httpResult[0].numParticipants,
+      valueCollected: httpResult[0].valueCollected
+    },{
+      id: httpResult[1].id,
+      accountId: httpResult[1].accountId,
+      date: new Date(httpResult[1].date),
+      description: httpResult[1].description,
+      observation: httpResult[1].observation,
+      valueSuggestDrink: httpResult[1].valueSuggestDrink,
+      valueSuggestFood: httpResult[1].valueSuggestFood,
+      valueTotal: httpResult[1].valueTotal,
+      numParticipants: httpResult[1].numParticipants,
+      valueCollected: httpResult[1].valueCollected
+    }])
   })
 })
