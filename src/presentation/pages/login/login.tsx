@@ -42,7 +42,8 @@ const Login: React.FC<Props> = ({ validation, authentication }: Props) => {
 
       setState({
         ...state,
-        isLoading: true
+        isLoading: true,
+        mainError: ''
       })
 
       const account = await authentication.auth({

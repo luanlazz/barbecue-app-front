@@ -8,9 +8,9 @@ const BarbecueListItems: React.FC = () => {
 
   return (
     <ul data-testid='barbecue-list' className={Styles.listWrap}>
-      {state.barbecues.length
-        ? state.barbecues.map((barbecue: LoadBarbecueList.Model) => <BarbecueItem key={barbecue.id} barbecue={barbecue} />)
-        : <BarbecueItemEmpty />
+      {state.isLoading
+        ? <BarbecueItemEmpty />
+        : state.barbecues.map((barbecue: LoadBarbecueList.Model) => <BarbecueItem key={barbecue.id} barbecue={barbecue} />)
       }
     </ul>
   )

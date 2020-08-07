@@ -11,17 +11,25 @@ type Props = {
 const BarbecueList: React.FC<Props> = ({ loadBarbecueList }: Props) => {
   const [state, setState] = useState({
     barbecues: [] as LoadBarbecueList.Model[],
+    isLoading: false,
     error: ''
   })
 
   useEffect(() => {
+    setState({
+      ...state,
+      isLoading: true
+    })
+
     loadBarbecueList.loadAll()
       .then(barbecues => setState({
         ...state,
+        isLoading: false,
         barbecues
       }))
       .catch(error => setState({
         ...state,
+        isLoading: false,
         error: error.message
       }))
   }, [])

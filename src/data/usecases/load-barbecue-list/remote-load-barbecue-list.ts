@@ -1,15 +1,18 @@
-import { HttpGetClient, HttpStatusCode } from '@/data/protocols/http'
+import { HttpClient, HttpStatusCode } from '@/data/protocols/http'
 import { UnexpectedError } from '@/domain/errors'
 import { LoadBarbecueList } from '@/domain/usecases/barbecue/load-barbecue-list'
 
 export class RemoteLoadBarbecueList implements LoadBarbecueList {
   constructor (
     private readonly url: string,
-    private readonly httpGetClient: HttpGetClient<RemoteLoadBarbecueList.Model[]>
+    private readonly httpClient: HttpClient<RemoteLoadBarbecueList.Model[]>
   ) {}
 
   async loadAll (): Promise<LoadBarbecueList.Model[]> {
-    const httpResponse = await this.httpGetClient.get({ url: this.url })
+    const httpResponse = await this.httpClient.request({
+      url: this.url,
+      method: 'get'
+    })
 
     const remoteBarbecues = httpResponse.body || []
 

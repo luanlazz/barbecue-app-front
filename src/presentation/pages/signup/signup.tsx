@@ -47,7 +47,8 @@ const SignUp: React.FC<Props> = ({ validation, addAccount }: Props) => {
 
       setState({
         ...state,
-        isLoading: true
+        isLoading: true,
+        mainError: ''
       })
 
       if (state.isLoading || state.isFormInvalid) return
@@ -79,10 +80,10 @@ const SignUp: React.FC<Props> = ({ validation, addAccount }: Props) => {
         <form data-testid='form' className={Styles.form} onSubmit={handleSubmit}>
           <h2>Cadastro</h2>
 
-          <Input type='text' name='name' placeholder='Digite seu nome' />
-          <Input type='email' name='email' placeholder='Digite seu e-mail' />
-          <Input type='password' name='password' placeholder='Digite sua senha' />
-          <Input type='password' name='passwordConfirmation' placeholder='Digite a senha novamente' />
+          <Input type='text' name='name' placeholder='nome' />
+          <Input type='email' name='email' placeholder='e-mail' />
+          <Input type='password' name='password' placeholder='senha' />
+          <Input type='password' name='passwordConfirmation' placeholder='senha novamente' />
 
           <SubmitButton text='Cadastrar' />
 

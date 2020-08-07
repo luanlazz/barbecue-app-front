@@ -1,14 +1,18 @@
-import { HttpPostClient } from '@/data/protocols/http'
+import { HttpClient } from '@/data/protocols/http'
 import { SaveBarbecue } from '@/domain/usecases/barbecue/save-barbecue'
 
 export class RemoteSaveBarbecue implements SaveBarbecue {
   constructor (
     private readonly url: string,
-    private readonly httpPostClient: HttpPostClient<RemoteSaveBarbecue.Model[]>
+    private readonly httpClient: HttpClient<RemoteSaveBarbecue.Model[]>
   ) {}
 
   async save (barbecue: SaveBarbecue.Params): Promise<SaveBarbecue.Model> {
-    await this.httpPostClient.post({ url: this.url, body: barbecue })
+    await this.httpClient.request({
+      url: this.url,
+      method: 'put',
+      body: barbecue
+    })
     return null
   }
 }

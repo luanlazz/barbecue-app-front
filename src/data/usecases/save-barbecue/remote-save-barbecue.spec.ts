@@ -1,27 +1,28 @@
 import { RemoteSaveBarbecue } from './remote-save-barbecue'
-import { HttpPostClientSpy } from '@/data/test'
+import { HttpClientSpy } from '@/data/test'
 import { mockBarbecueParams } from '@/domain/test/mock-barbecue'
 import faker from 'faker'
 
 type SutTypes = {
   sut: RemoteSaveBarbecue
-  httpPostClientSpy: HttpPostClientSpy<RemoteSaveBarbecue.Model[]>
+  httpClientSpy: HttpClientSpy<RemoteSaveBarbecue.Model[]>
 }
 
 const makeSut = (url: string = faker.internet.url()): SutTypes => {
-  const httpPostClientSpy = new HttpPostClientSpy<RemoteSaveBarbecue.Model[]>()
-  const sut = new RemoteSaveBarbecue(url, httpPostClientSpy)
+  const httpClientSpy = new HttpClientSpy<RemoteSaveBarbecue.Model[]>()
+  const sut = new RemoteSaveBarbecue(url, httpClientSpy)
   return {
     sut,
-    httpPostClientSpy
+    httpClientSpy
   }
 }
 
 describe('RemoteSaveBarbecue', () => {
-  test('Should call HttpPostClient with correct URL ', async () => {
+  test('Should call HttpClient with correct URL and method', async () => {
     const url = faker.internet.url()
-    const { sut, httpPostClientSpy } = makeSut(url)
+    const { sut, httpClientSpy } = makeSut(url)
     await sut.save(mockBarbecueParams())
-    expect(httpPostClientSpy.url).toBe(url)
+    expect(httpClientSpy.url).toBe(url)
+    expect(httpClientSpy.method).toBe('put')
   })
 })

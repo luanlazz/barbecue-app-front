@@ -1,42 +1,43 @@
 @import "@/presentation/styles/colors.scss";
 
 .spinner {
-  display: inline-block;
-  position: absolute;
+  display: inline-flex;
+  position: relative;
   width: 80px;
+  height: 80px;
 
   div {
     display: inline-block;
     position: absolute;
-    justify-content: center;
     left: 8px;
     width: 16px;
+    background: $black;
     animation: spinner 1.2s cubic-bezier(0, 0.5, 0.5, 1) infinite;
+  }
 
-    &:nth-child(1) {
-      left: -8px;
-      animation-delay: -0.24s;
-    }
+  div:nth-child(1) {
+    left: 8px;
+    animation-delay: -0.24s;
+  }
 
-    &:nth-child(2) {
-      left: 16px;
-      animation-delay: -0.12s;
-    }
+  div:nth-child(2) {
+    left: 32px;
+    animation-delay: -0.12s;
+  }
 
-    &:nth-child(3) {
-      left: 40px;
-      animation-delay: 0;
-    }
+  div:nth-child(3) {
+    left: 56px;
+    animation-delay: 0;
   }
 }
 
 @keyframes spinner {
   0% {
-    top: 4px;
-    height: 48px;
+    top: 8px;
+    height: 64px;
   }
   50%, 100% {
-    top: 20px;
-    height: 24px;
+    top: 24px;
+    height: 32px;
   }
 }
