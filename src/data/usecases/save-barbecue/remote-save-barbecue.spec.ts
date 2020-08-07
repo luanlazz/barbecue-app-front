@@ -1,17 +1,22 @@
 import { RemoteSaveBarbecue } from './remote-save-barbecue'
 import { HttpClientSpy } from '@/data/test'
+import { HttpStatusCode } from '@/data/protocols/http'
+import { mockRemoteBarbecueModel } from '@/data/test/mock-remote-barbecue'
 import { mockBarbecueParams } from '@/domain/test/mock-barbecue'
 import { UnexpectedError } from '@/domain/errors'
 import faker from 'faker'
-import { HttpStatusCode } from '@/data/protocols/http'
 
 type SutTypes = {
   sut: RemoteSaveBarbecue
-  httpClientSpy: HttpClientSpy<RemoteSaveBarbecue.Model[]>
+  httpClientSpy: HttpClientSpy<RemoteSaveBarbecue.Model>
 }
 
-const makeSut = (url: string = faker.internet.url()): SutTypes => {
-  const httpClientSpy = new HttpClientSpy<RemoteSaveBarbecue.Model[]>()
+const makeSut = (url: string = faker.internet.url(), response = mockRemoteBarbecueModel()): SutTypes => {
+  const httpClientSpy = new HttpClientSpy<RemoteSaveBarbecue.Model>()
+  httpClientSpy.response = {
+    statusCode: HttpStatusCode.ok,
+    body: response
+  }
   const sut = new RemoteSaveBarbecue(url, httpClientSpy)
   return {
     sut,
@@ -53,5 +58,23 @@ describe('RemoteSaveBarbecue', () => {
     }
     const promise = sut.save(mockBarbecueParams())
     await expect(promise).rejects.toThrow(new UnexpectedError())
+  })
+
+  test('Should return the barbecue on success', async () => {
+    const httpResult = mockRemoteBarbecueModel()
+    const { sut } = makeSut(null, httpResult)
+    const barbecue = await sut.save(mockBarbecueParams())
+    await expect(barbecue).toEqual({
+      id: httpResult.id,
+      accountId: httpResult.accountId,
+      date: new Date(httpResult.date),
+      description: httpResult.description,
+      observation: httpResult.observation,
+      valueSuggestDrink: httpResult.valueSuggestDrink,
+      valueSuggestFood: httpResult.valueSuggestFood,
+      valueTotal: httpResult.valueTotal,
+      numParticipants: httpResult.numParticipants,
+      valueCollected: httpResult.valueCollected
+    })
   })
 })
