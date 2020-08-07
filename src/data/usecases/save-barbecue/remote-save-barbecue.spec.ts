@@ -36,4 +36,13 @@ describe('RemoteSaveBarbecue', () => {
     const promise = sut.save(mockBarbecueParams())
     await expect(promise).rejects.toThrow(new UnexpectedError())
   })
+
+  test('Should throw UnexpectedError if HttpClient return 404', async () => {
+    const { sut, httpClientSpy } = makeSut()
+    httpClientSpy.response = {
+      statusCode: HttpStatusCode.notFound
+    }
+    const promise = sut.save(mockBarbecueParams())
+    await expect(promise).rejects.toThrow(new UnexpectedError())
+  })
 })
