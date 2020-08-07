@@ -5,7 +5,7 @@ import { UnexpectedError } from '@/domain/errors'
 export class RemoteSaveBarbecue implements SaveBarbecue {
   constructor (
     private readonly url: string,
-    private readonly httpClient: HttpClient<RemoteSaveBarbecue.Model[]>
+    private readonly httpClient: HttpClient<RemoteSaveBarbecue.Model>
   ) {}
 
   async save (barbecue: SaveBarbecue.Params): Promise<SaveBarbecue.Model> {
@@ -16,7 +16,10 @@ export class RemoteSaveBarbecue implements SaveBarbecue {
     })
 
     switch (httpResponse.statusCode) {
-      case HttpStatusCode.ok: return null
+      case HttpStatusCode.ok: return {
+        ...httpResponse.body,
+        date: new Date(httpResponse.body.date)
+      }
       default: throw new UnexpectedError()
     }
   }
