@@ -1,7 +1,9 @@
 import { RemoteSaveBarbecue } from './remote-save-barbecue'
 import { HttpClientSpy } from '@/data/test'
 import { mockBarbecueParams } from '@/domain/test/mock-barbecue'
+import { UnexpectedError } from '@/domain/errors'
 import faker from 'faker'
+import { HttpStatusCode } from '@/data/protocols/http'
 
 type SutTypes = {
   sut: RemoteSaveBarbecue
@@ -24,5 +26,14 @@ describe('RemoteSaveBarbecue', () => {
     await sut.save(mockBarbecueParams())
     expect(httpClientSpy.url).toBe(url)
     expect(httpClientSpy.method).toBe('put')
+  })
+
+  test('Should throw UnexpectedError if HttpClient return 403', async () => {
+    const { sut, httpClientSpy } = makeSut()
+    httpClientSpy.response = {
+      statusCode: HttpStatusCode.forbidden
+    }
+    const promise = sut.save(mockBarbecueParams())
+    await expect(promise).rejects.toThrow(new UnexpectedError())
   })
 })
