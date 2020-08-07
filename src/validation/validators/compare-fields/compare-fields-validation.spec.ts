@@ -9,7 +9,7 @@ const makeSut = (field: string, fieldToCompare: string): CompareFieldsValidation
 describe('CompareFieldsValidation', () => {
   test('Should return error if values are different', () => {
     const field = faker.database.column()
-    const fieldToCompare = faker.database.column()
+    const fieldToCompare = faker.random.word()
     const sut = makeSut(field, fieldToCompare)
     const error = sut.validate({
       [field]: faker.random.words(3),
