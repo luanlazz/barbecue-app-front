@@ -3,7 +3,6 @@ import Styles from './barbecue-list-styles.scss'
 import { Header } from '@/presentation/components'
 import { BarbecueListItems, BarbecueContext, Error } from '@/presentation/pages/barbecue-list/components'
 import { LoadBarbecueList } from '@/domain/usecases'
-import { BarbecueModel } from '@/domain/models'
 
 type Props = {
   loadBarbecueList: LoadBarbecueList
@@ -11,7 +10,7 @@ type Props = {
 
 const BarbecueList: React.FC<Props> = ({ loadBarbecueList }: Props) => {
   const [state, setState] = useState({
-    barbecues: [] as BarbecueModel[],
+    barbecues: [] as LoadBarbecueList.Model[],
     error: ''
   })
 

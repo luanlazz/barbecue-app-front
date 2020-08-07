@@ -1,18 +1,17 @@
 import { RemoteLoadBarbecueList } from './remote-load-barbecue-list'
 import { HttpGetClientSpy } from '@/data/test'
 import { HttpStatusCode } from '@/data/protocols/http'
-import { BarbecueModel } from '@/domain/models'
 import { UnexpectedError } from '@/domain/errors'
 import { mockBarbecuesModel } from '@/domain/test'
 import faker from 'faker'
 
 type SutTypes = {
   sut: RemoteLoadBarbecueList
-  httpGetClientSpy: HttpGetClientSpy<BarbecueModel[]>
+  httpGetClientSpy: HttpGetClientSpy<RemoteLoadBarbecueList.Model[]>
 }
 
 const makeSut = (url: string = faker.internet.url()): SutTypes => {
-  const httpGetClientSpy = new HttpGetClientSpy<BarbecueModel[]>()
+  const httpGetClientSpy = new HttpGetClientSpy<RemoteLoadBarbecueList.Model[]>()
   const sut = new RemoteLoadBarbecueList(url, httpGetClientSpy)
   return {
     sut,

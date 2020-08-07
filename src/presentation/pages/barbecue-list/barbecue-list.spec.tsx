@@ -1,20 +1,8 @@
 import React from 'react'
 import { render, screen, waitFor } from '@testing-library/react'
 import { BarbecueList } from '@/presentation/pages'
-import { LoadBarbecueList } from '@/domain/usecases/load-barbecue-list'
-import { BarbecueModel } from '@/domain/models'
-import { mockBarbecuesModel } from '@/domain/test'
 import { UnexpectedError } from '@/domain/errors'
-
-class LoadBarbecueListSpy implements LoadBarbecueList {
-  callsCount: number = 0
-  barbecues = mockBarbecuesModel()
-
-  async loadAll (): Promise<BarbecueModel[]> {
-    this.callsCount++
-    return this.barbecues
-  }
-}
+import { LoadBarbecueListSpy } from '@/presentation/test/mock-barbecue'
 
 type SutTypes = {
   loadBarbecueListSpy: LoadBarbecueListSpy

@@ -1,10 +1,10 @@
 import React from 'react'
 import Styles from './barbecue-item-styles.scss'
 import { IconMoney, IconPeople } from '@/images/index'
-import { BarbecueModel } from '@/domain/models'
+import { LoadBarbecueList } from '@/domain/usecases'
 
 type Prop = {
-  barbecue: BarbecueModel
+  barbecue: LoadBarbecueList.Model
 }
 
 const BarbecueItem: React.FC<Prop> = ({ barbecue }: Prop) => {

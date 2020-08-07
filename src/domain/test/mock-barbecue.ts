@@ -1,7 +1,7 @@
-import { BarbecueModel } from '@/domain/models'
+import { LoadBarbecueList } from '@/domain/usecases'
 import faker from 'faker'
 
-export const mockBarbecueModel = (): BarbecueModel => ({
+export const mockBarbecueModel = (): LoadBarbecueList.Model => ({
   id: faker.random.uuid(),
   accountId: faker.random.uuid(),
   date: faker.date.future(),
@@ -14,7 +14,20 @@ export const mockBarbecueModel = (): BarbecueModel => ({
   valueCollected: faker.random.number()
 })
 
-export const mockBarbecuesModel = (): BarbecueModel[] => ([
+export const mockBarbecuesModel = (): LoadBarbecueList.Model[] => ([
   mockBarbecueModel(),
   mockBarbecueModel()
 ])
+
+export type BarbecueModel = {
+  id: string
+  accountId: string
+  date: Date
+  description: string
+  observation: string
+  valueSuggestDrink?: number
+  valueSuggestFood?: number
+  valueTotal?: number
+  numParticipants?: number
+  valueCollected?: number
+}
