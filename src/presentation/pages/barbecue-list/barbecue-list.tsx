@@ -24,8 +24,6 @@ const BarbecueList: React.FC<Props> = ({ loadBarbecueList }: Props) => {
         ...state,
         error: error.message
       }))
-
-    console.log('state.barbecues', state.barbecues)
   }, [])
 
   return (
