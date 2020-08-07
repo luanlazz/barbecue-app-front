@@ -1,5 +1,6 @@
-import { HttpClient } from '@/data/protocols/http'
+import { HttpClient, HttpStatusCode } from '@/data/protocols/http'
 import { SaveBarbecue } from '@/domain/usecases/barbecue/save-barbecue'
+import { UnexpectedError } from '@/domain/errors'
 
 export class RemoteSaveBarbecue implements SaveBarbecue {
   constructor (
@@ -8,12 +9,16 @@ export class RemoteSaveBarbecue implements SaveBarbecue {
   ) {}
 
   async save (barbecue: SaveBarbecue.Params): Promise<SaveBarbecue.Model> {
-    await this.httpClient.request({
+    const httpResponse = await this.httpClient.request({
       url: this.url,
       method: 'put',
       body: barbecue
     })
-    return null
+
+    switch (httpResponse.statusCode) {
+      case HttpStatusCode.ok: return null
+      default: throw new UnexpectedError()
+    }
   }
 }
 
