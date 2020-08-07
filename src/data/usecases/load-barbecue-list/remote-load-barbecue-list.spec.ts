@@ -2,7 +2,6 @@ import { RemoteLoadBarbecueList } from './remote-load-barbecue-list'
 import { HttpGetClientSpy, mockRemoteBarbecuesModel } from '@/data/test'
 import { HttpStatusCode } from '@/data/protocols/http'
 import { UnexpectedError } from '@/domain/errors'
-
 import faker from 'faker'
 
 type SutTypes = {
