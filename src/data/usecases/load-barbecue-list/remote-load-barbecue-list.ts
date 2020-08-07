@@ -10,9 +10,13 @@ export class RemoteLoadBarbecueList implements LoadBarbecueList {
 
   async loadAll (): Promise<LoadBarbecueList.Model[]> {
     const httpResponse = await this.httpGetClient.get({ url: this.url })
+    const remoteBarbecues = httpResponse.body || []
 
     switch (httpResponse.statusCode) {
-      case HttpStatusCode.ok: return httpResponse.body
+      case HttpStatusCode.ok: return remoteBarbecues.map(barbecue => ({
+        ...barbecue,
+        date: new Date(barbecue.date)
+      }))
       case HttpStatusCode.noContent: return []
       default: throw new UnexpectedError()
     }
@@ -20,5 +24,16 @@ export class RemoteLoadBarbecueList implements LoadBarbecueList {
 }
 
 export namespace RemoteLoadBarbecueList {
-  export type Model = LoadBarbecueList.Model
+  export type Model = {
+    id: string
+    accountId: string
+    date: string
+    description: string
+    observation: string
+    valueSuggestDrink?: number
+    valueSuggestFood?: number
+    valueTotal?: number
+    numParticipants?: number
+    valueCollected?: number
+  }
 }
