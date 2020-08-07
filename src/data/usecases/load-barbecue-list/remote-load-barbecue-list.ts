@@ -10,6 +10,7 @@ export class RemoteLoadBarbecueList implements LoadBarbecueList {
 
   async loadAll (): Promise<LoadBarbecueList.Model[]> {
     const httpResponse = await this.httpGetClient.get({ url: this.url })
+
     const remoteBarbecues = httpResponse.body || []
 
     switch (httpResponse.statusCode) {

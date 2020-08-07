@@ -33,7 +33,7 @@ const BarbecueItem: React.FC<Prop> = ({ barbecue }: Prop) => {
           <div className={Styles.money}>
             <IconMoney />
             <span data-testid='valueTotal' className={Styles.valueTotal}>
-              {new Intl.NumberFormat([], {
+              {new Intl.NumberFormat('pt', {
                 style: 'currency',
                 currency: 'BRL'
               }).format(barbecue.valueTotal).toString()}

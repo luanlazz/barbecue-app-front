@@ -1,6 +1,7 @@
 @import "@/presentation/styles/colors.scss";
 
 .barbecueItemWrap {
+  animation: ease-in 1s infinite;
   height: 130px;
   display: flex;
   flex-direction: column;
@@ -50,5 +51,14 @@
 @media only screen and (max-width: 600px) {
   .barbecueItemWrap {  
     flex-basis: 100%;
+  }
+}
+
+@keyframes ease-in {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(100%);
   }
 }
