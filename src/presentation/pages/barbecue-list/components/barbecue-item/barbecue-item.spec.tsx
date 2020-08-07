@@ -13,7 +13,7 @@ describe('BarbecueItem Component', () => {
     }).format(barbecue.date))
     expect(screen.getByTestId('description')).toHaveTextContent(barbecue.description)
     expect(screen.getByTestId('numParticipants')).toHaveTextContent(barbecue.numParticipants.toString())
-    expect(screen.getByTestId('valueTotal').textContent).toBe(new Intl.NumberFormat([], {
+    expect(screen.getByTestId('valueTotal').textContent).toBe(new Intl.NumberFormat('pt', {
       style: 'currency',
       currency: 'BRL'
     }).format(barbecue.valueTotal).toString())
