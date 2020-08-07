@@ -33,6 +33,13 @@ describe('RemoteSaveBarbecue', () => {
     expect(httpClientSpy.method).toBe('put')
   })
 
+  test('Should call HttpClient with correct body', async () => {
+    const { sut, httpClientSpy } = makeSut()
+    const barbecueParams = mockBarbecueParams()
+    await sut.save(barbecueParams)
+    expect(httpClientSpy.body).toBe(barbecueParams)
+  })
+
   test('Should throw UnexpectedError if HttpClient return 403', async () => {
     const { sut, httpClientSpy } = makeSut()
     httpClientSpy.response = {
