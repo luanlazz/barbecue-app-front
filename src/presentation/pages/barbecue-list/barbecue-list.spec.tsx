@@ -29,6 +29,13 @@ const makeSut = (loadBarbecueListSpy = new LoadBarbecueListSpy(), params?: SutPa
   }
 }
 
+const openModal = async (): Promise<void> => {
+  const barbecueList = screen.getByTestId('barbecue-list')
+  await waitFor(() => barbecueList)
+  const newItem = screen.getByTestId('newItem')
+  fireEvent.click(newItem)
+}
+
 describe('BarbecueList Component', () => {
   test('Should present 3 empty items on start', async () => {
     makeSut()
@@ -62,7 +69,7 @@ describe('BarbecueList Component', () => {
     expect(screen.queryByTestId('error')).toHaveTextContent(error.message)
   })
 
-  test('Should show new item', async () => {
+  test('Should show new item after loading', async () => {
     makeSut()
     const barbecueList = screen.getByTestId('barbecue-list')
     await waitFor(() => barbecueList)
@@ -71,25 +78,24 @@ describe('BarbecueList Component', () => {
 
   test('Should open modal on click in new barbecue', async () => {
     makeSut()
-    const barbecueList = screen.getByTestId('barbecue-list')
-    await waitFor(() => barbecueList)
-    const newItem = screen.getByTestId('newItem')
-    fireEvent.click(newItem)
+    await openModal()
     expect(screen.queryByTestId('modal')).toBeInTheDocument()
   })
 
-  test.only('Should show description error if Validation fails', async () => {
+  test('Should show description error if Validation fails', async () => {
     const validationError = faker.random.words()
     const loadBarbecueListSpy = new LoadBarbecueListSpy()
     makeSut(loadBarbecueListSpy,{ validationError })
-    const barbecueList = screen.getByTestId('barbecue-list')
-    await waitFor(() => barbecueList)
-    const newItem = screen.getByTestId('newItem')
-    fireEvent.click(newItem)
-    expect(screen.queryByTestId('modal')).toBeInTheDocument()
-    expect(screen.queryByTestId('form')).toBeInTheDocument()
-    expect(screen.queryByTestId('date-input')).toBeInTheDocument()
+    await openModal()
     Helper.populateField('description')
     Helper.testStatusForField('description-status', validationError, '🟡')
+  })
+
+  test('Should enable submit button if form is valid', async () => {
+    makeSut()
+    await openModal()
+    Helper.populateField('date')
+    Helper.populateField('description')
+    expect(screen.getByTestId('submit')).toBeEnabled()
   })
 })
