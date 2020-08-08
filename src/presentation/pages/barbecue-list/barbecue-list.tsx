@@ -19,6 +19,7 @@ const BarbecueList: React.FC<Props> = ({ loadBarbecueList, saveBarbecue, validat
     isModalOpen: false,
     isFormInvalid: true,
     error: '',
+    mainError: '',
     date: new Date(),
     dateError: '',
     description: '',
@@ -60,20 +61,28 @@ const BarbecueList: React.FC<Props> = ({ loadBarbecueList, saveBarbecue, validat
   }
 
   const handleNewBarbecue = async (): Promise<void> => {
-    if (state.isLoading || state.isFormInvalid) return
+    try {
+      if (state.isLoading || state.isFormInvalid) return
 
-    setState({
-      ...state,
-      isLoading: true
-    })
+      setState({
+        ...state,
+        isLoading: true
+      })
 
-    await saveBarbecue.save({
-      date: state.date,
-      description: state.description,
-      observation: state.observation,
-      valueSuggestDrink: parseInt(state.suggestValueDrink),
-      valueSuggestFood: parseInt(state.suggestValueFood)
-    })
+      await saveBarbecue.save({
+        date: state.date,
+        description: state.description,
+        observation: state.observation,
+        valueSuggestDrink: parseInt(state.suggestValueDrink),
+        valueSuggestFood: parseInt(state.suggestValueFood)
+      })
+    } catch (error) {
+      setState({
+        ...state,
+        isLoading: false,
+        mainError: error.message
+      })
+    }
   }
 
   const handleModal = (): void => {
