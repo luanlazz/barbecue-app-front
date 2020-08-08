@@ -1,19 +1,146 @@
 @import "@/presentation/styles/colors.scss";
 
+input[type="email"],
+input[type="date"],
+input[type="text"] {
+  border-radius: 4px;
+  line-height: 40px;
+  padding: 0px 40px 0px 8px;
+  border: 1px solid $greyLight;
+  outline: none;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+input[type="number"],
+textarea {
+  border-radius: 4px;
+  line-height: 40px;
+  border: 1px solid $greyLight;
+
+  &:focus {
+    outline: none;
+  }
+}
+
 .barbecueListWrap {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  min-height: 100vh;
+  display: block;
+  height: 100vh;
   
   .contentWrap {
-    background-color: $white;
     align-self: center;
+    background-color: $white;
+    height: 100%;
+    margin: auto;
+    max-width: 600px;
+    padding: 24px;
+  }
+}
+
+.modal {
+  align-items: center;
+  background-color: rgba(0,0,0,0.4);
+  display: flex;
+  justify-content: center;
+  height: 100%;
+  left: 0;
+  overflow: auto;
+  position: fixed;
+  top: 0;
+  z-index: 2000;
+  width: 100%;
+
+  .inputWrap {
+    align-items: center;
+    animation: animate 300ms;
+    background-color: $white;
+    border: none;
+    border-radius: 8px;
+    box-shadow: 5px 5px 40px -3px rgba(0,0,0,0.79);
     display: flex;
     flex-direction: column;
-    flex-grow: 1;
-    max-width: 800px;
-    width: 100%;
-    padding: 24px;
+    margin: 15% auto;
+    padding: 20px;
+    
+    .title {
+      font-size: 30px;
+      margin-bottom: 10px;
+    }
+
+    .form {
+      display: inherit;
+      flex-direction: inherit;
+
+      input,
+      textarea {
+        margin: 8px;
+      }
+  
+      .date {
+        width: auto;
+      }
+  
+      .observation {
+        resize: none;
+        width: 100%;
+      }
+
+      .suggest {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        
+        input {
+          text-align: center;
+          width: 100px;
+        }
+      }
+
+      .buttonsWrap {
+        display: inline-flex;
+        justify-content: space-evenly;
+        border: none;
+        border-radius: 8px;
+        color: $white;
+        width: 100%;
+        padding-top: 20px;
+  
+        button {
+          padding: 0px 10px;
+          line-height: 35px;
+        }
+        
+        button[type=submit] {
+          background-color: $primaryLight;
+          color: $black;
+  
+          &:hover {
+            background-color: $primary;
+          }
+        }
+  
+        button[type=reset] {
+          background-color: transparent;
+          color: $greyLight;
+          border: 1px solid $greyLight;
+  
+          &:hover {
+            border: 1px solid red;
+            color: red;
+          }
+        }
+      }
+    }
+  }
+}
+
+@keyframes animate {
+  0% {
+    transform: scale(0.5);
+  }
+  100% {
+    transform: scale(1);
   }
 }

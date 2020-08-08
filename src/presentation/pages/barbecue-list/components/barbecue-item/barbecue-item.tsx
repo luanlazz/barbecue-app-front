@@ -11,17 +11,19 @@ const BarbecueItem: React.FC<Prop> = ({ barbecue }: Prop) => {
   return (
     <li className={Styles.barbecueItemWrap}>
       <div className={Styles.barbecueContent}>
-        <time>
-          <span data-testid='date' className={Styles.date}>
-            {Intl.DateTimeFormat('pt-BR', {
-              day: 'numeric',
-              month: 'numeric'
-            }).format(barbecue.date)}
+        <div className={Styles.details}>
+          <time>
+            <span data-testid='date' className={Styles.date}>
+              {Intl.DateTimeFormat('pt-BR', {
+                day: 'numeric',
+                month: 'numeric'
+              }).format(barbecue.date)}
+            </span>
+          </time>
+          <span data-testid='description' className={Styles.description}>
+            {barbecue.description}
           </span>
-        </time>
-        <span data-testid='description' className={Styles.description}>
-          {barbecue.description}
-        </span>
+        </div>
 
         <div className={Styles.totals}>
           <div className={Styles.people}>

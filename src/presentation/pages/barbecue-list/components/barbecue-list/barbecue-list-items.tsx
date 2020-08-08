@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import Styles from './barbecue-list-items-styles.scss'
 import { LoadBarbecueList } from '@/domain/usecases'
-import { BarbecueItemEmpty, BarbecueItem, BarbecueContext } from '@/presentation/pages/barbecue-list/components'
+import { BarbecueItemEmpty, BarbecueItem, BarbecueNewItem, BarbecueContext } from '@/presentation/pages/barbecue-list/components'
 
 const BarbecueListItems: React.FC = () => {
   const { state } = useContext(BarbecueContext)
@@ -12,6 +12,7 @@ const BarbecueListItems: React.FC = () => {
         ? <BarbecueItemEmpty />
         : state.barbecues.map((barbecue: LoadBarbecueList.Model) => <BarbecueItem key={barbecue.id} barbecue={barbecue} />)
       }
+      {!state.isLoading && <BarbecueNewItem /> }
     </ul>
   )
 }

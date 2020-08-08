@@ -1,0 +1,19 @@
+@import "@/presentation/styles/colors.scss";
+
+.link {
+  align-items: center;
+  border: none;
+  cursor: pointer;
+  color: $white;
+  display: flex;
+  justify-content: center;
+  margin-top: 64px;
+  text-decoration: none;
+  width: 30%;
+
+  &:hover {
+    background-color: 0.9;
+    border: 1px solid $white;
+    border-radius: 8px;
+  }
+}
