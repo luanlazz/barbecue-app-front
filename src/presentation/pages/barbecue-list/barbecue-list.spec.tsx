@@ -145,4 +145,12 @@ describe('BarbecueList Component', () => {
     await simulateValidSubmit()
     expect(saveBarbecueSpy.callsCount).toBe(1)
   })
+
+  test('Should not call SaveBarbecue if form is invalid', async () => {
+    const validationError = faker.random.words()
+    const { saveBarbecueSpy } = makeSut(undefined, { validationError })
+    await openModal()
+    await simulateValidSubmit()
+    expect(saveBarbecueSpy.callsCount).toBe(0)
+  })
 })
