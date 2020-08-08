@@ -12,10 +12,12 @@ export class LoadBarbecueListSpy implements LoadBarbecueList {
 }
 
 export class SaveBarbecueSpy implements SaveBarbecue {
+  callsCount: number = 0
   params: SaveBarbecue.Params
   result: SaveBarbecue.Model = mockBarbecueModel()
 
   async save (barbecue: SaveBarbecue.Params): Promise<SaveBarbecue.Model> {
+    this.callsCount++
     this.params = barbecue
     return this.result
   }
