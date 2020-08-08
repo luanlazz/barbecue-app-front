@@ -71,7 +71,7 @@ const BarbecueList: React.FC<Props> = ({ loadBarbecueList }: Props) => {
           }
         </div>
 
-        {state.isModalOpen && <div className={(Styles.modal)}>
+        {state.isModalOpen && <div data-testid='modal' className={(Styles.modal)}>
           <div className={Styles.inputWrap}>
             <span className={Styles.title}>
               Próximo churas

@@ -7,7 +7,7 @@ const BarbecueNewItem: React.FC = () => {
   const { newBarbecue } = useContext(BarbecueContext)
 
   return (
-    <li className={Styles.newItemWrap} onClick={newBarbecue}>
+    <li data-testid="newItem" className={Styles.newItemWrap} onClick={newBarbecue}>
       <div className={Styles.content}>
         <div className={Styles.circle}>
           <IconBbq />
