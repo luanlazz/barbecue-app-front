@@ -60,6 +60,8 @@ const BarbecueList: React.FC<Props> = ({ loadBarbecueList, saveBarbecue, validat
   }
 
   const handleNewBarbecue = async (): Promise<void> => {
+    if (state.isLoading || state.isFormInvalid) return
+
     setState({
       ...state,
       isLoading: true

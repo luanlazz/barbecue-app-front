@@ -45,7 +45,6 @@ const simulateValidSubmit = async (
   suggestValueFood: number = faker.random.number(),
   suggestValueDrink: number = faker.random.number()
 ): Promise<void> => {
-  await openModal()
   Helper.populateField('description', description)
   Helper.populateField('observation', observation)
   Helper.populateField('suggestValueFood', suggestValueFood.toString())
@@ -120,20 +119,30 @@ describe('BarbecueList Component', () => {
 
   test('Should show spinner on submit', async () => {
     makeSut()
+    await openModal()
     await simulateValidSubmit()
     expect(screen.queryByTestId('spinner')).toBeInTheDocument()
   })
 
-  test.only('Should call SaveBarbecue with correct values', async () => {
+  test('Should call SaveBarbecue with correct values', async () => {
     const { saveBarbecueSpy } = makeSut()
     const description = faker.random.words()
     const observation = faker.random.words()
     const valueSuggestFood = faker.random.number()
     const valueSuggestDrink = faker.random.number()
+    await openModal()
     await simulateValidSubmit(description, observation, valueSuggestFood, valueSuggestDrink)
     expect(saveBarbecueSpy.params.description).toEqual(description)
     expect(saveBarbecueSpy.params.observation).toEqual(observation)
     expect(saveBarbecueSpy.params.valueSuggestFood).toEqual(valueSuggestFood)
     expect(saveBarbecueSpy.params.valueSuggestDrink).toEqual(valueSuggestDrink)
+  })
+
+  test('Should call SaveBarbecue only once', async () => {
+    const { saveBarbecueSpy } = makeSut()
+    await openModal()
+    await simulateValidSubmit()
+    await simulateValidSubmit()
+    expect(saveBarbecueSpy.callsCount).toBe(1)
   })
 })
