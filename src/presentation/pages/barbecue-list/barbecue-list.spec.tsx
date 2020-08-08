@@ -1,7 +1,7 @@
 import React from 'react'
 import { render, screen, waitFor, fireEvent } from '@testing-library/react'
 import { BarbecueList } from '@/presentation/pages'
-import { UnexpectedError } from '@/domain/errors'
+import { UnexpectedError, InvalidCredentialsError } from '@/domain/errors'
 import { LoadBarbecueListSpy, SaveBarbecueSpy } from '@/presentation/test/mock-barbecue'
 import { ValidationStub, Helper } from '@/presentation/test'
 import faker from 'faker'
@@ -152,5 +152,15 @@ describe('BarbecueList Component', () => {
     await openModal()
     await simulateValidSubmit()
     expect(saveBarbecueSpy.callsCount).toBe(0)
+  })
+
+  test('Should present error if SaveBarbecue fails', async () => {
+    const { saveBarbecueSpy } = makeSut()
+    const error = new InvalidCredentialsError()
+    jest.spyOn(saveBarbecueSpy, 'save').mockRejectedValueOnce(error)
+    await openModal()
+    await simulateValidSubmit()
+    expect(screen.getByTestId('main-error')).toHaveTextContent(error.message)
+    expect(screen.getByTestId('error-wrap').children).toHaveLength(1)
   })
 })
