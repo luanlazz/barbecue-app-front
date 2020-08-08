@@ -2,31 +2,32 @@ import React, { useEffect, useState } from 'react'
 import Styles from './barbecue-list-styles.scss'
 import { Header, Input, FormStatus } from '@/presentation/components'
 import { BarbecueListItems, BarbecueContext, Error } from '@/presentation/pages/barbecue-list/components'
-import { LoadBarbecueList } from '@/domain/usecases'
+import { LoadBarbecueList, SaveBarbecue } from '@/domain/usecases'
 import { FormContext } from '@/presentation/contexts'
 import { Validation } from '@/presentation/protocols/validation'
 
 type Props = {
   loadBarbecueList: LoadBarbecueList
+  saveBarbecue: SaveBarbecue
   validation: Validation
 }
 
-const BarbecueList: React.FC<Props> = ({ loadBarbecueList, validation }: Props) => {
+const BarbecueList: React.FC<Props> = ({ loadBarbecueList, saveBarbecue, validation }: Props) => {
   const [state, setState] = useState({
     barbecues: [] as LoadBarbecueList.Model[],
     isLoading: false,
     isModalOpen: false,
     isFormInvalid: true,
     error: '',
-    date: '',
+    date: new Date(),
     dateError: '',
     description: '',
     descriptionError: '',
     observation: '',
     observationError: '',
-    suggestValueDrink: '',
+    suggestValueDrink: '0',
     suggestValueDrinkError: '',
-    suggestValueFood: '',
+    suggestValueFood: '0',
     suggestValueFoodError: ''
   })
 
@@ -52,21 +53,36 @@ const BarbecueList: React.FC<Props> = ({ loadBarbecueList, validation }: Props) 
   useEffect(() => { validate('description') }, [state.description])
 
   const validate = (field: string): void => {
-    const { date, description } = state
-    const formData = { date, description }
+    const { date, description, suggestValueDrink, suggestValueFood } = state
+    const formData = { date, description, suggestValueDrink, suggestValueFood }
     setState(old => ({ ...old, [`${field}Error`]: validation.validate(field, formData) }))
-    setState(old => ({ ...old, isFormInvalid: !!old.dateError }))
+    setState(old => ({ ...old, isFormInvalid: !!old.dateError || !!old.descriptionError || !!old.suggestValueDrinkError || !!old.suggestValueFoodError }))
   }
 
-  const handleNewBarbecue = (): void => {
+  const handleNewBarbecue = async (): Promise<void> => {
     setState({
       ...state,
       isLoading: true
+    })
+
+    await saveBarbecue.save({
+      date: state.date,
+      description: state.description,
+      observation: state.observation,
+      valueSuggestDrink: parseInt(state.suggestValueDrink),
+      valueSuggestFood: parseInt(state.suggestValueFood)
     })
   }
 
   const handleModal = (): void => {
     setState({ ...state, isModalOpen: !state.isModalOpen })
+  }
+
+  const handleChangeTextArea = (event: React.ChangeEvent<HTMLTextAreaElement>): void => {
+    setState({
+      ...state,
+      [event.target.name]: event.target.value
+    })
   }
 
   return (
@@ -91,13 +107,20 @@ const BarbecueList: React.FC<Props> = ({ loadBarbecueList, validation }: Props) 
             <FormContext.Provider value={{ state, setState }}>
               <form data-testid='form' className={Styles.form} onSubmit={handleNewBarbecue}>
 
-                <Input type="date" name='date' className={Styles.date} placeholder="data" />
+                <Input type="date" data-testid='date-input' name='date' className={Styles.date} placeholder="data" />
                 <Input type="text" name='description' className={Styles.description} placeholder="descrição" />
-                <textarea name='observation' rows={2} className={Styles.observation} placeholder="observação" />
+                <textarea
+                  data-testid='observation-input'
+                  name='observation'
+                  rows={2}
+                  className={Styles.observation}
+                  placeholder="observação"
+                  onChange={handleChangeTextArea}
+                />
                 <span>Valores sugeridos</span>
                 <div className={Styles.suggest}>
-                  <input type="number" name='suggestValueFood' placeholder="comida" />
-                  <input type="number" name='suggestValueDrink' placeholder="bebida" />
+                  <Input type="number" name='suggestValueFood' placeholder="comida" />
+                  <Input type="number" name='suggestValueDrink' placeholder="bebida" />
                 </div>
 
                 <div className={Styles.buttonsWrap}>
