@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Styles from './barbecue-list-styles.scss'
-import { Header, Input } from '@/presentation/components'
+import { Header, Input, FormStatus } from '@/presentation/components'
 import { BarbecueListItems, BarbecueContext, Error } from '@/presentation/pages/barbecue-list/components'
 import { LoadBarbecueList } from '@/domain/usecases'
 import { FormContext } from '@/presentation/contexts'
@@ -58,16 +58,15 @@ const BarbecueList: React.FC<Props> = ({ loadBarbecueList, validation }: Props) 
     setState(old => ({ ...old, isFormInvalid: !!old.dateError }))
   }
 
-  const newBarbecue = (): void => {
-    openModal()
+  const handleNewBarbecue = (): void => {
+    setState({
+      ...state,
+      isLoading: true
+    })
   }
 
-  const openModal = (): void => {
-    setState({ ...state, isModalOpen: true })
-  }
-
-  const closeModal = (): void => {
-    setState({ ...state, isModalOpen: false })
+  const handleModal = (): void => {
+    setState({ ...state, isModalOpen: !state.isModalOpen })
   }
 
   return (
@@ -75,7 +74,7 @@ const BarbecueList: React.FC<Props> = ({ loadBarbecueList, validation }: Props) 
 
       <Header />
 
-      <BarbecueContext.Provider value={{ state, setState, newBarbecue }}>
+      <BarbecueContext.Provider value={{ state, setState, handleModal }}>
         <div className={Styles.contentWrap}>
           {state.error
             ? <Error />
@@ -90,7 +89,8 @@ const BarbecueList: React.FC<Props> = ({ loadBarbecueList, validation }: Props) 
             </span>
 
             <FormContext.Provider value={{ state, setState }}>
-              <form data-testid='form' className={Styles.form}>
+              <form data-testid='form' className={Styles.form} onSubmit={handleNewBarbecue}>
+
                 <Input type="date" name='date' className={Styles.date} placeholder="data" />
                 <Input type="text" name='description' className={Styles.description} placeholder="descrição" />
                 <textarea name='observation' rows={2} className={Styles.observation} placeholder="observação" />
@@ -99,10 +99,14 @@ const BarbecueList: React.FC<Props> = ({ loadBarbecueList, validation }: Props) 
                   <input type="number" name='suggestValueFood' placeholder="comida" />
                   <input type="number" name='suggestValueDrink' placeholder="bebida" />
                 </div>
+
                 <div className={Styles.buttonsWrap}>
-                  <button type='reset' onClick={closeModal}>Cancelar</button>
+                  <button type='reset' onClick={handleModal}>Cancelar</button>
                   <button type='submit' data-testid='submit' disabled={state.isFormInvalid} >Confirmar</button>
                 </div>
+
+                <FormStatus />
+
               </form>
             </FormContext.Provider>
 
