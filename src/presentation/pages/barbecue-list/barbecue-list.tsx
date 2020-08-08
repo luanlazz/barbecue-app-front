@@ -47,7 +47,6 @@ const BarbecueList: React.FC<Props> = ({ loadBarbecueList, validation }: Props) 
         isLoading: false,
         error: error.message
       }))
-    console.log('load')
   }, [])
 
   useEffect(() => { validate('description') }, [state.description])
@@ -57,10 +56,7 @@ const BarbecueList: React.FC<Props> = ({ loadBarbecueList, validation }: Props) 
     const formData = { date, description }
     setState(old => ({ ...old, [`${field}Error`]: validation.validate(field, formData) }))
     setState(old => ({ ...old, isFormInvalid: !!old.dateError }))
-    console.log('validate')
   }
-
-  console.log('state', state.dateError)
 
   const newBarbecue = (): void => {
     openModal()
@@ -100,12 +96,12 @@ const BarbecueList: React.FC<Props> = ({ loadBarbecueList, validation }: Props) 
                 <textarea name='observation' rows={2} className={Styles.observation} placeholder="observação" />
                 <span>Valores sugeridos</span>
                 <div className={Styles.suggest}>
-                  <Input type="number" name='suggestValueFood' placeholder="comida" />
-                  <Input type="number" name='suggestValueDrink' placeholder="bebida" />
+                  <input type="number" name='suggestValueFood' placeholder="comida" />
+                  <input type="number" name='suggestValueDrink' placeholder="bebida" />
                 </div>
                 <div className={Styles.buttonsWrap}>
                   <button type='reset' onClick={closeModal}>Cancelar</button>
-                  <button type='submit'>Confirmar</button>
+                  <button type='submit' data-testid='submit' disabled={state.isFormInvalid} >Confirmar</button>
                 </div>
               </form>
             </FormContext.Provider>
