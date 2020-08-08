@@ -36,6 +36,20 @@ const openModal = async (): Promise<void> => {
   fireEvent.click(newItem)
 }
 
+const populateFieldDate = (fieldName: string, value: Date = faker.date.recent()): void => {
+  const input = screen.getByTestId(`${fieldName}-input`)
+  fireEvent.input(input, { target: { value } })
+}
+
+const simulateValidSubmit = async (date: Date = faker.date.recent(), description: string = faker.random.words()): Promise<void> => {
+  await openModal()
+  populateFieldDate('date', date)
+  Helper.populateField('description', description)
+  const form = screen.getByTestId('form')
+  fireEvent.submit(form)
+  await waitFor(() => form)
+}
+
 describe('BarbecueList Component', () => {
   test('Should present 3 empty items on start', async () => {
     makeSut()
@@ -97,5 +111,11 @@ describe('BarbecueList Component', () => {
     Helper.populateField('date')
     Helper.populateField('description')
     expect(screen.getByTestId('submit')).toBeEnabled()
+  })
+
+  test('Should show spinner on submit', async () => {
+    makeSut()
+    await simulateValidSubmit()
+    expect(screen.queryByTestId('spinner')).toBeInTheDocument()
   })
 })
