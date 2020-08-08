@@ -94,7 +94,7 @@ describe('Login Component', () => {
 
   test('Should show spinner on submit', async () => {
     makeSut()
-    await await simulateValidSubmit()
+    await simulateValidSubmit()
     expect(screen.queryByTestId('spinner')).toBeInTheDocument()
   })
 

@@ -3,14 +3,26 @@ import { render, screen, waitFor, fireEvent } from '@testing-library/react'
 import { BarbecueList } from '@/presentation/pages'
 import { UnexpectedError } from '@/domain/errors'
 import { LoadBarbecueListSpy } from '@/presentation/test/mock-barbecue'
+import { ValidationStub, Helper } from '@/presentation/test'
+import faker from 'faker'
 
 type SutTypes = {
   loadBarbecueListSpy: LoadBarbecueListSpy
 }
 
-const makeSut = (loadBarbecueListSpy = new LoadBarbecueListSpy()): SutTypes => {
+type SutParams = {
+  validationError: string
+}
+
+const makeSut = (loadBarbecueListSpy = new LoadBarbecueListSpy(), params?: SutParams): SutTypes => {
+  const validationStub = new ValidationStub()
+  validationStub.errorMessage = params?.validationError
+
   render(
-    <BarbecueList loadBarbecueList={loadBarbecueListSpy} />
+    <BarbecueList
+      loadBarbecueList={loadBarbecueListSpy}
+      validation={validationStub}
+    />
   )
   return {
     loadBarbecueListSpy
@@ -50,6 +62,13 @@ describe('BarbecueList Component', () => {
     expect(screen.queryByTestId('error')).toHaveTextContent(error.message)
   })
 
+  test('Should show new item', async () => {
+    makeSut()
+    const barbecueList = screen.getByTestId('barbecue-list')
+    await waitFor(() => barbecueList)
+    expect(screen.queryByTestId('newItem')).toBeInTheDocument()
+  })
+
   test('Should open modal on click in new barbecue', async () => {
     makeSut()
     const barbecueList = screen.getByTestId('barbecue-list')
@@ -57,5 +76,20 @@ describe('BarbecueList Component', () => {
     const newItem = screen.getByTestId('newItem')
     fireEvent.click(newItem)
     expect(screen.queryByTestId('modal')).toBeInTheDocument()
+  })
+
+  test.only('Should show description error if Validation fails', async () => {
+    const validationError = faker.random.words()
+    const loadBarbecueListSpy = new LoadBarbecueListSpy()
+    makeSut(loadBarbecueListSpy,{ validationError })
+    const barbecueList = screen.getByTestId('barbecue-list')
+    await waitFor(() => barbecueList)
+    const newItem = screen.getByTestId('newItem')
+    fireEvent.click(newItem)
+    expect(screen.queryByTestId('modal')).toBeInTheDocument()
+    expect(screen.queryByTestId('form')).toBeInTheDocument()
+    expect(screen.queryByTestId('date-input')).toBeInTheDocument()
+    Helper.populateField('description')
+    Helper.testStatusForField('description-status', validationError, '🟡')
   })
 })

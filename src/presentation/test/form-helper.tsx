@@ -8,6 +8,6 @@ export const testStatusForField = (fieldName: string, title: string, content: st
 }
 
 export const populateField = (fieldName: string, value: string = faker.random.word()): void => {
-  const input = screen.getByTestId(fieldName)
+  const input = screen.getByTestId(`${fieldName}-input`)
   fireEvent.input(input, { target: { value } })
 }
