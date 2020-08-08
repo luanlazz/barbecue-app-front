@@ -2,12 +2,13 @@ import React from 'react'
 import { render, screen, waitFor, fireEvent } from '@testing-library/react'
 import { BarbecueList } from '@/presentation/pages'
 import { UnexpectedError } from '@/domain/errors'
-import { LoadBarbecueListSpy } from '@/presentation/test/mock-barbecue'
+import { LoadBarbecueListSpy, SaveBarbecueSpy } from '@/presentation/test/mock-barbecue'
 import { ValidationStub, Helper } from '@/presentation/test'
 import faker from 'faker'
 
 type SutTypes = {
   loadBarbecueListSpy: LoadBarbecueListSpy
+  saveBarbecueSpy: SaveBarbecueSpy
 }
 
 type SutParams = {
@@ -17,15 +18,17 @@ type SutParams = {
 const makeSut = (loadBarbecueListSpy = new LoadBarbecueListSpy(), params?: SutParams): SutTypes => {
   const validationStub = new ValidationStub()
   validationStub.errorMessage = params?.validationError
-
+  const saveBarbecueSpy = new SaveBarbecueSpy()
   render(
     <BarbecueList
       loadBarbecueList={loadBarbecueListSpy}
+      saveBarbecue={saveBarbecueSpy}
       validation={validationStub}
     />
   )
   return {
-    loadBarbecueListSpy
+    loadBarbecueListSpy,
+    saveBarbecueSpy
   }
 }
 
@@ -36,15 +39,17 @@ const openModal = async (): Promise<void> => {
   fireEvent.click(newItem)
 }
 
-const populateFieldDate = (fieldName: string, value: Date = faker.date.recent()): void => {
-  const input = screen.getByTestId(`${fieldName}-input`)
-  fireEvent.input(input, { target: { value } })
-}
-
-const simulateValidSubmit = async (date: Date = faker.date.recent(), description: string = faker.random.words()): Promise<void> => {
+const simulateValidSubmit = async (
+  description: string = faker.random.words(),
+  observation: string = faker.random.words(),
+  suggestValueFood: number = faker.random.number(),
+  suggestValueDrink: number = faker.random.number()
+): Promise<void> => {
   await openModal()
-  populateFieldDate('date', date)
   Helper.populateField('description', description)
+  Helper.populateField('observation', observation)
+  Helper.populateField('suggestValueFood', suggestValueFood.toString())
+  Helper.populateField('suggestValueDrink', suggestValueDrink.toString())
   const form = screen.getByTestId('form')
   fireEvent.submit(form)
   await waitFor(() => form)
@@ -117,5 +122,18 @@ describe('BarbecueList Component', () => {
     makeSut()
     await simulateValidSubmit()
     expect(screen.queryByTestId('spinner')).toBeInTheDocument()
+  })
+
+  test.only('Should call SaveBarbecue with correct values', async () => {
+    const { saveBarbecueSpy } = makeSut()
+    const description = faker.random.words()
+    const observation = faker.random.words()
+    const valueSuggestFood = faker.random.number()
+    const valueSuggestDrink = faker.random.number()
+    await simulateValidSubmit(description, observation, valueSuggestFood, valueSuggestDrink)
+    expect(saveBarbecueSpy.params.description).toEqual(description)
+    expect(saveBarbecueSpy.params.observation).toEqual(observation)
+    expect(saveBarbecueSpy.params.valueSuggestFood).toEqual(valueSuggestFood)
+    expect(saveBarbecueSpy.params.valueSuggestDrink).toEqual(valueSuggestDrink)
   })
 })
