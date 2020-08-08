@@ -31,7 +31,7 @@ const Input: React.FC<Props> = (props: Props) => {
     <div className={Styles.inputWrap}>
       <input
         {...props}
-        data-testid={props.name}
+        data-testid={`${props.name}-input`}
         readOnly
         onFocus={enableInput}
         onChange={handleChange}

@@ -4,16 +4,19 @@ import { Header, Input } from '@/presentation/components'
 import { BarbecueListItems, BarbecueContext, Error } from '@/presentation/pages/barbecue-list/components'
 import { LoadBarbecueList } from '@/domain/usecases'
 import { FormContext } from '@/presentation/contexts'
+import { Validation } from '@/presentation/protocols/validation'
 
 type Props = {
   loadBarbecueList: LoadBarbecueList
+  validation: Validation
 }
 
-const BarbecueList: React.FC<Props> = ({ loadBarbecueList }: Props) => {
+const BarbecueList: React.FC<Props> = ({ loadBarbecueList, validation }: Props) => {
   const [state, setState] = useState({
     barbecues: [] as LoadBarbecueList.Model[],
     isLoading: false,
     isModalOpen: false,
+    isFormInvalid: true,
     error: '',
     date: '',
     dateError: '',
@@ -44,7 +47,20 @@ const BarbecueList: React.FC<Props> = ({ loadBarbecueList }: Props) => {
         isLoading: false,
         error: error.message
       }))
+    console.log('load')
   }, [])
+
+  useEffect(() => { validate('description') }, [state.description])
+
+  const validate = (field: string): void => {
+    const { date, description } = state
+    const formData = { date, description }
+    setState(old => ({ ...old, [`${field}Error`]: validation.validate(field, formData) }))
+    setState(old => ({ ...old, isFormInvalid: !!old.dateError }))
+    console.log('validate')
+  }
+
+  console.log('state', state.dateError)
 
   const newBarbecue = (): void => {
     openModal()
@@ -78,9 +94,9 @@ const BarbecueList: React.FC<Props> = ({ loadBarbecueList }: Props) => {
             </span>
 
             <FormContext.Provider value={{ state, setState }}>
-              <form className={Styles.form}>
-                <Input type="date" className={Styles.date} name='date' placeholder="data" />
-                <Input type="text" className={Styles.description} name='description' placeholder="descrição" />
+              <form data-testid='form' className={Styles.form}>
+                <Input type="date" name='date' className={Styles.date} placeholder="data" />
+                <Input type="text" name='description' className={Styles.description} placeholder="descrição" />
                 <textarea name='observation' rows={2} className={Styles.observation} placeholder="observação" />
                 <span>Valores sugeridos</span>
                 <div className={Styles.suggest}>
