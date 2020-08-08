@@ -60,22 +60,32 @@ const BarbecueList: React.FC<Props> = ({ loadBarbecueList, saveBarbecue, validat
     setState(old => ({ ...old, isFormInvalid: !!old.dateError || !!old.descriptionError || !!old.suggestValueDrinkError || !!old.suggestValueFoodError }))
   }
 
-  const handleNewBarbecue = async (): Promise<void> => {
+  const handleNewBarbecue = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
+    event.preventDefault()
     try {
       if (state.isLoading || state.isFormInvalid) return
 
       setState({
         ...state,
-        isLoading: true
+        isLoading: true,
+        mainError: ''
       })
 
-      await saveBarbecue.save({
+      const barbecue = await saveBarbecue.save({
         date: state.date,
         description: state.description,
         observation: state.observation,
         valueSuggestDrink: parseInt(state.suggestValueDrink),
         valueSuggestFood: parseInt(state.suggestValueFood)
       })
+
+      setState({
+        ...state,
+        isLoading: false,
+        barbecues: Object.assign(state.barbecues, { barbecue })
+      })
+
+      handleModal()
     } catch (error) {
       setState({
         ...state,
@@ -118,7 +128,7 @@ const BarbecueList: React.FC<Props> = ({ loadBarbecueList, saveBarbecue, validat
             <FormContext.Provider value={{ state, setState }}>
               <form data-testid='form' className={Styles.form} onSubmit={handleNewBarbecue}>
 
-                <Input type="date" data-testid='date-input' name='date' className={Styles.date} placeholder="data" />
+                <Input type="date" name='date' className={Styles.date} placeholder="data" />
                 <Input type="text" name='description' className={Styles.description} placeholder="descrição" />
                 <textarea
                   data-testid='observation-input'
