@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, screen, waitFor } from '@testing-library/react'
+import { render, screen, waitFor, fireEvent } from '@testing-library/react'
 import { BarbecueList } from '@/presentation/pages'
 import { UnexpectedError } from '@/domain/errors'
 import { LoadBarbecueListSpy } from '@/presentation/test/mock-barbecue'
@@ -48,5 +48,14 @@ describe('BarbecueList Component', () => {
     await waitFor(() => screen.getByTestId('barbecue-list'))
     expect(screen.queryByTestId('barbecue-list')).not.toBeInTheDocument()
     expect(screen.queryByTestId('error')).toHaveTextContent(error.message)
+  })
+
+  test('Should open modal on click in new barbecue', async () => {
+    makeSut()
+    const barbecueList = screen.getByTestId('barbecue-list')
+    await waitFor(() => barbecueList)
+    const newItem = screen.getByTestId('newItem')
+    fireEvent.click(newItem)
+    expect(screen.queryByTestId('modal')).toBeInTheDocument()
   })
 })
