@@ -7,7 +7,7 @@ export namespace LoadParticipantsList {
     id: string
     barbecueId: string
     name: string
-    pay: true
+    pay: boolean
     value: number
   }
 }

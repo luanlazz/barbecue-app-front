@@ -1,9 +1,9 @@
 import { RemoteLoadParticipantsList } from './remote-load-participants-list'
-import { HttpClientSpy } from '@/data/test'
+import { HttpClientSpy, mockRemoteParticipantsModel } from '@/data/test'
 import { LoadParticipantsList } from '@/domain/usecases'
-import faker from 'faker'
 import { HttpStatusCode } from '@/data/protocols/http'
 import { UnexpectedError } from '@/domain/errors'
+import faker from 'faker'
 
 type SutTypes = {
   sut: RemoteLoadParticipantsList
@@ -60,7 +60,18 @@ describe('RemoteLoadParticipantsList', () => {
     httpClientSpy.response = {
       statusCode: HttpStatusCode.noContent
     }
-    const barbecues = await sut.loadAll()
-    expect(barbecues).toEqual([])
+    const participants = await sut.loadAll()
+    expect(participants).toEqual([])
+  })
+
+  test('Should return a participantsList if HttpClient returns 200', async () => {
+    const { sut, httpClientSpy } = makeSut()
+    const httpResult = mockRemoteParticipantsModel()
+    httpClientSpy.response = {
+      statusCode: HttpStatusCode.ok,
+      body: httpResult
+    }
+    const participants = await sut.loadAll()
+    expect(participants).toEqual(httpResult)
   })
 })
