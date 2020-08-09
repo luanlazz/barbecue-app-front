@@ -1,7 +1,8 @@
 import { RemoteLoadParticipantsList } from './remote-load-participants-list'
-import { HttpClientSpy, mockRemoteParticipantsModel } from '@/data/test'
-import { LoadParticipantsList } from '@/domain/usecases'
 import { HttpStatusCode } from '@/data/protocols/http'
+import { HttpClientSpy } from '@/data/test'
+import { mockParticipantsModel } from '@/domain/test'
+import { LoadParticipantsList } from '@/domain/usecases'
 import { UnexpectedError } from '@/domain/errors'
 import faker from 'faker'
 
@@ -66,7 +67,7 @@ describe('RemoteLoadParticipantsList', () => {
 
   test('Should return a participantsList if HttpClient returns 200', async () => {
     const { sut, httpClientSpy } = makeSut()
-    const httpResult = mockRemoteParticipantsModel()
+    const httpResult = mockParticipantsModel()
     httpClientSpy.response = {
       statusCode: HttpStatusCode.ok,
       body: httpResult

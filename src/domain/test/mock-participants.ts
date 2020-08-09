@@ -1,7 +1,7 @@
 import { LoadParticipantsList } from '@/domain/usecases'
 import faker from 'faker'
 
-export const mockRemoteParticipantModel = (): LoadParticipantsList.Model => ({
+export const mockParticipantModel = (): LoadParticipantsList.Model => ({
   id: faker.random.uuid(),
   barbecueId: faker.random.uuid(),
   name: faker.name.findName(),
@@ -9,7 +9,7 @@ export const mockRemoteParticipantModel = (): LoadParticipantsList.Model => ({
   value: faker.random.number()
 })
 
-export const mockRemoteParticipantsModel = (): LoadParticipantsList.Model[] => ([
-  mockRemoteParticipantModel(),
-  mockRemoteParticipantModel()
+export const mockParticipantsModel = (): LoadParticipantsList.Model[] => ([
+  mockParticipantModel(),
+  mockParticipantModel()
 ])
