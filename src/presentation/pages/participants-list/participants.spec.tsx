@@ -2,6 +2,7 @@ import React from 'react'
 import { render, screen, waitFor } from '@testing-library/react'
 import { ParticipantsList } from '@/presentation/pages'
 import { LoadParticipantsListSpy } from '@/presentation/test'
+import { UnexpectedError } from '@/domain/errors'
 
 type SutTypes = {
   loadParticipantsListSpy: LoadParticipantsListSpy
@@ -35,5 +36,15 @@ describe('ParticipantsList Component', () => {
     await waitFor(() => barbecueList)
     expect(barbecueList.querySelectorAll('tr')).toHaveLength(2)
     expect(screen.queryByTestId('error')).not.toBeInTheDocument()
+  })
+
+  test('Should render error on failure', async () => {
+    const loadParticipantsListSpy = new LoadParticipantsListSpy()
+    const error = new UnexpectedError()
+    jest.spyOn(loadParticipantsListSpy, 'loadAll').mockRejectedValueOnce(error)
+    makeSut(loadParticipantsListSpy)
+    await waitFor(() => screen.getByTestId('participants-list'))
+    expect(screen.queryByTestId('participants-list')).not.toBeInTheDocument()
+    expect(screen.queryByTestId('error')).toHaveTextContent(error.message)
   })
 })
