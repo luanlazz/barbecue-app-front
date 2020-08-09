@@ -1,5 +1,6 @@
-import { HttpClient } from '@/data/protocols/http'
+import { HttpClient, HttpStatusCode } from '@/data/protocols/http'
 import { LoadParticipantsList } from '@/domain/usecases'
+import { UnexpectedError } from '@/domain/errors'
 
 export class RemoteLoadParticipantsList implements LoadParticipantsList {
   constructor (
@@ -8,10 +9,14 @@ export class RemoteLoadParticipantsList implements LoadParticipantsList {
   ) {}
 
   async loadAll (): Promise<LoadParticipantsList.Model[]> {
-    await this.httpClient.request({
+    const httpResponse = await this.httpClient.request({
       url: this.url,
       method: 'get'
     })
-    return null
+
+    switch (httpResponse.statusCode) {
+      case HttpStatusCode.ok: return null
+      default: throw new UnexpectedError()
+    }
   }
 }
