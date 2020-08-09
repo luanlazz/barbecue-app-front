@@ -78,6 +78,7 @@ const Login: React.FC<Props> = ({ validation, authentication }: Props) => {
             <SecondaryButton data-testid="signup-link" to="/signup">
               Criar conta
             </SecondaryButton>
+            <span className={Styles.optionText}>ou</span>
             <SubmitButton text='Entrar' />
           </div>
 

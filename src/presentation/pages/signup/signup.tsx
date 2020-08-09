@@ -89,6 +89,7 @@ const SignUp: React.FC<Props> = ({ validation, addAccount }: Props) => {
             <SecondaryButton data-testid='login-link' replace to='/login'>
               Login
             </SecondaryButton>
+            <span className={Styles.optionText}>ou</span>
             <SubmitButton text='Cadastrar' />
           </div>
 

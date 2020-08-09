@@ -7,9 +7,8 @@
   color: $white;
   display: flex;
   justify-content: center;
-  margin-top: 64px;
   text-decoration: none;
-  width: 30%;
+  flex-basis: 20%;
 
   &:hover {
     background-color: 0.9;

@@ -1,8 +1,7 @@
 @import "@/presentation/styles/colors.scss";
 
 .submit {
-  margin-top: 64px;
-  width: 60%;
+  flex-basis: 60%;
   
   &:disabled {
     background-color: $disabled;
