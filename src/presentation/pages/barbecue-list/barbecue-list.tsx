@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Styles from './barbecue-list-styles.scss'
-import { Header, Input, FormStatus } from '@/presentation/components'
+import { Header, Input, FormStatus, MainContainer, ContentContainer } from '@/presentation/components'
 import { BarbecueListItems, BarbecueContext, Error } from '@/presentation/pages/barbecue-list/components'
 import { LoadBarbecueList, SaveBarbecue } from '@/domain/usecases'
 import { FormContext } from '@/presentation/contexts'
@@ -109,17 +109,17 @@ const BarbecueList: React.FC<Props> = ({ loadBarbecueList, saveBarbecue, validat
   }
 
   return (
-    <div className={Styles.barbecueListWrap}>
+    <MainContainer>
 
       <Header />
 
       <BarbecueContext.Provider value={{ state, setState, handleModal }}>
-        <div className={Styles.contentWrap}>
+        <ContentContainer>
           {state.error
             ? <Error />
             : <BarbecueListItems />
           }
-        </div>
+        </ContentContainer>
 
         {state.isModalOpen && <div data-testid='modal' className={(Styles.modal)}>
           <div className={Styles.inputWrap}>
@@ -161,7 +161,7 @@ const BarbecueList: React.FC<Props> = ({ loadBarbecueList, saveBarbecue, validat
 
       </BarbecueContext.Provider>
 
-    </div>
+    </MainContainer>
   )
 }
 

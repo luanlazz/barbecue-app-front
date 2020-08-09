@@ -1,0 +1,64 @@
+@import "@/presentation/styles/colors.scss";
+
+.participants {
+  display: flex;
+  flex-direction: column;
+
+  table {
+    background-color: $white;
+    border-collapse: collapse;
+    flex-basis: auto;
+    line-height: 32px;
+    margin: 10px;
+    table-layout: auto;
+    vertical-align: middle;
+
+    tr {      
+      display: table-row;
+      vertical-align: inherit;
+    }
+
+    td, th {
+      border-bottom: 1px solid #E5C231;
+      display: table-cell;
+      vertical-align: inherit;
+    }
+
+    .f {
+      table-layout: fixed;
+      justify-content: center;
+      width: 25px;
+    }
+
+    .dot {
+      border-radius: 50%;
+      border: 3px solid #998220;
+      display: block;
+      height: 15px;
+      margin: 0px 10px;
+      width: 15px;
+    }
+
+    .paid {
+      .dot {
+        animation: test 500ms;
+        background: #FFD836;
+        border: 3px solid#FFD836;
+      }
+
+      .value {
+        text-decoration-line: line-through;
+      }
+    }
+    
+    .name {
+      text-align: left;
+      min-width: 100px;
+      word-wrap: break-word;
+    }
+
+    .value {
+      text-align: center;
+    }
+  }
+}
