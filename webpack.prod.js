@@ -33,10 +33,10 @@ module.exports = merge(common, {
   },
   plugins: [
     new DefinePlugin({
-      'process.env.API_URL': JSON.stringify('https://localhost:5050/api')
+      'process.env.API_URL': JSON.stringify('https://barbecue-back.herokuapp.com/')
     }),
     new HtmlWebpackPlugin({
-      template: './template.dev.html'
+      template: './template.prod.html'
     }),
     new MiniCssExtractPlugin({
       filename: 'main-bundle-[hash].css'
