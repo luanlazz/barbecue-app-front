@@ -5,7 +5,7 @@ script:
   - eslint 'src/**'
   - npm run test:coveralls
 deploy:
-  provider: Heroku,
-  api_key: $HEROKU_API
   app: barbecue-front
+  provider: Heroku
+  api_key: $HEROKU_API
   skip_cleanup: true
