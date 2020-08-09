@@ -1,5 +1,5 @@
 export interface LoadParticipantsList {
-  loadAll(barbecueId: string): Promise<LoadParticipantsList.Model>
+  loadAll(): Promise<LoadParticipantsList.Model[]>
 }
 
 export namespace LoadParticipantsList {

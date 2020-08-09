@@ -1,6 +1,6 @@
 import { HttpClient, HttpStatusCode } from '@/data/protocols/http'
 import { UnexpectedError } from '@/domain/errors'
-import { LoadBarbecueList } from '@/domain/usecases/barbecue/load-barbecue-list'
+import { LoadBarbecueList } from '@/domain/usecases'
 
 export class RemoteLoadBarbecueList implements LoadBarbecueList {
   constructor (

@@ -1,4 +1,4 @@
-import { RemoteLoadBarbecueList } from '@/data/usecases/load-barbecue-list/remote-load-barbecue-list'
+import { RemoteLoadBarbecueList } from '@/data/usecases'
 import faker from 'faker'
 
 export const mockRemoteBarbecueModel = (): RemoteLoadBarbecueList.Model => ({

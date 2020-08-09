@@ -1,5 +1,5 @@
 import { HttpClient, HttpStatusCode } from '@/data/protocols/http'
-import { SaveBarbecue } from '@/domain/usecases/barbecue/save-barbecue'
+import { SaveBarbecue } from '@/domain/usecases'
 import { UnexpectedError } from '@/domain/errors'
 
 export class RemoteSaveBarbecue implements SaveBarbecue {
