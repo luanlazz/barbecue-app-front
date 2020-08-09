@@ -2,6 +2,8 @@ import { RemoteLoadParticipantsList } from './remote-load-participants-list'
 import { HttpClientSpy } from '@/data/test'
 import { LoadParticipantsList } from '@/domain/usecases'
 import faker from 'faker'
+import { HttpStatusCode } from '@/data/protocols/http'
+import { UnexpectedError } from '@/domain/errors'
 
 type SutTypes = {
   sut: RemoteLoadParticipantsList
@@ -24,5 +26,14 @@ describe('RemoteLoadParticipantsList', () => {
     await sut.loadAll()
     expect(httpClientSpy.url).toBe(url)
     expect(httpClientSpy.method).toBe('get')
+  })
+
+  test('Should throw UnexpectedError if HttpClient return 403', async () => {
+    const { sut, httpClientSpy } = makeSut()
+    httpClientSpy.response = {
+      statusCode: HttpStatusCode.forbidden
+    }
+    const promise = sut.loadAll()
+    await expect(promise).rejects.toThrow(new UnexpectedError())
   })
 })
