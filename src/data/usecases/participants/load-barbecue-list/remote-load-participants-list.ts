@@ -15,7 +15,7 @@ export class RemoteLoadParticipantsList implements LoadParticipantsList {
     })
 
     switch (httpResponse.statusCode) {
-      case HttpStatusCode.ok: return null
+      case HttpStatusCode.ok: return httpResponse.body
       case HttpStatusCode.noContent: return []
       default: throw new UnexpectedError()
     }
