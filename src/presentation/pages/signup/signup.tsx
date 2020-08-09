@@ -45,11 +45,11 @@ const SignUp: React.FC<Props> = ({ validation, addAccount }: Props) => {
     try {
       event.preventDefault()
 
-      setState({
-        ...state,
+      setState(old => ({
+        ...old,
         isLoading: true,
         mainError: ''
-      })
+      }))
 
       if (state.isLoading || state.isFormInvalid) return
 
@@ -64,11 +64,11 @@ const SignUp: React.FC<Props> = ({ validation, addAccount }: Props) => {
 
       history.replace('/')
     } catch (error) {
-      setState({
-        ...state,
+      setState(old => ({
+        ...old,
         isLoading: false,
         mainError: error.message
-      })
+      }))
     }
   }
 

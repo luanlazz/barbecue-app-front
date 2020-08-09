@@ -33,22 +33,22 @@ const BarbecueList: React.FC<Props> = ({ loadBarbecueList, saveBarbecue, validat
   })
 
   useEffect(() => {
-    setState({
-      ...state,
+    setState(old => ({
+      ...old,
       isLoading: true
-    })
+    }))
 
     loadBarbecueList.loadAll()
-      .then(barbecues => setState({
-        ...state,
+      .then(barbecues => setState(old => ({
+        ...old,
         isLoading: false,
         barbecues
-      }))
-      .catch(error => setState({
-        ...state,
+      })))
+      .catch(error => setState(old => ({
+        ...old,
         isLoading: false,
         error: error.message
-      }))
+      })))
   }, [])
 
   useEffect(() => { validate('date') }, [state.date, state.isModalOpen])
@@ -65,11 +65,11 @@ const BarbecueList: React.FC<Props> = ({ loadBarbecueList, saveBarbecue, validat
     event.preventDefault()
     if (state.isLoading || state.isFormInvalid) return
 
-    setState({
+    setState(old => ({
       ...state,
       isLoading: true,
       mainError: ''
-    })
+    }))
 
     saveBarbecue.save({
       date: state.date,
