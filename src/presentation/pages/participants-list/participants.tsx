@@ -40,8 +40,8 @@ const ParticipantsList: React.FC<Props> = ({ loadParticipantsList }: Props) => {
 
       <ContentContainer>
         <div className={Styles.wrapParticipants}>
-          <div data-testid='participants-list' className={Styles.participantsList}>
-            <table>
+          <div className={Styles.participantsList}>
+            <table data-testid='participants-list'>
               <tbody>
                 {state.participants.map(participant => (
                   <tr key={participant.id} className={participant.pay ? Styles.paid : ''}>
