@@ -1,4 +1,6 @@
 import React from 'react'
+import { Router } from 'react-router-dom'
+import { createMemoryHistory } from 'history'
 import { render, screen, waitFor, fireEvent } from '@testing-library/react'
 import { BarbecueList } from '@/presentation/pages'
 import { UnexpectedError, InvalidCredentialsError } from '@/domain/errors'
@@ -14,16 +16,20 @@ type SutParams = {
   validationError: string
 }
 
+const history = createMemoryHistory({ initialEntries: ['/'] })
+
 const makeSut = (loadBarbecueListSpy = new LoadBarbecueListSpy(), params?: SutParams): SutTypes => {
   const validationStub = new ValidationStub()
   validationStub.errorMessage = params?.validationError
   const saveBarbecueSpy = new SaveBarbecueSpy()
   render(
-    <BarbecueList
-      loadBarbecueList={loadBarbecueListSpy}
-      saveBarbecue={saveBarbecueSpy}
-      validation={validationStub}
-    />
+    <Router history={history}>
+      <BarbecueList
+        loadBarbecueList={loadBarbecueListSpy}
+        saveBarbecue={saveBarbecueSpy}
+        validation={validationStub}
+      />
+    </Router>
   )
   return {
     loadBarbecueListSpy,

@@ -10,16 +10,18 @@
   min-width: 200px;
 
   .barbecueContent {
-    background-color: $white;
-    border: none;          
+    background-color: $white;    
+    border: none;      
+    color: $black;    
     display: flex;
     flex-direction: column;
     flex-grow: 1;
     justify-content: space-between;
     overflow: hidden;
     padding: 16px;
-    position: relative; 
-    
+    position: relative;
+    text-decoration: none;
+
     .details {
       display: flex;
       flex-direction: column;

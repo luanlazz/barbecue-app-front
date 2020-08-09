@@ -2,6 +2,7 @@ import React from 'react'
 import Styles from './barbecue-item-styles.scss'
 import { IconMoney, IconPeople } from '@/images/index'
 import { LoadBarbecueList } from '@/domain/usecases'
+import { Link } from 'react-router-dom'
 
 type Prop = {
   barbecue: LoadBarbecueList.Model
@@ -10,7 +11,7 @@ type Prop = {
 const BarbecueItem: React.FC<Prop> = ({ barbecue }: Prop) => {
   return (
     <li className={Styles.barbecueItemWrap}>
-      <div className={Styles.barbecueContent}>
+      <Link to={`/barbecue/${barbecue.id}`} className={Styles.barbecueContent}>
         <div className={Styles.details}>
           <time>
             <span data-testid='date' className={Styles.date}>
@@ -42,7 +43,7 @@ const BarbecueItem: React.FC<Prop> = ({ barbecue }: Prop) => {
             </span>
           </div>
         </div>
-      </div>
+      </Link>
     </li>
   )
 }

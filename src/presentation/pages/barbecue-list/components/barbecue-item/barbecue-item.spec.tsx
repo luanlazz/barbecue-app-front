@@ -1,12 +1,20 @@
 import React from 'react'
+import { Router } from 'react-router-dom'
+import { createMemoryHistory } from 'history'
 import { render, screen } from '@testing-library/react'
 import { BarbecueItem } from '@/presentation/pages/barbecue-list/components'
 import { mockBarbecueModel } from '@/domain/test'
 
+const history = createMemoryHistory({ initialEntries: ['/'] })
+
 describe('BarbecueItem Component', () => {
   test('Should render with correct values', () => {
     const barbecue = mockBarbecueModel()
-    render(<BarbecueItem barbecue={barbecue} />)
+    render(
+      <Router history={history}>
+        <BarbecueItem barbecue={barbecue} />
+      </Router>
+    )
     expect(screen.getByTestId('date')).toHaveTextContent(Intl.DateTimeFormat('pt-BR', {
       day: 'numeric',
       month: 'numeric'
