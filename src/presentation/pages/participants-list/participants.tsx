@@ -53,7 +53,12 @@ const ParticipantsList: React.FC<Props> = ({ loadParticipantsList }: Props) => {
                           <span className={Styles.dot} />
                         </td>
                         <td className={Styles.name}>{participant.name}</td>
-                        <td className={Styles.value}>{participant.value}</td>
+                        <td className={Styles.value}>
+                          {new Intl.NumberFormat('pt', {
+                            style: 'currency',
+                            currency: 'BRL'
+                          }).format(participant.value).toString()}
+                        </td>
                       </tr>
                     ))}
                   </tbody>
