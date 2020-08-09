@@ -2,8 +2,7 @@ import React from 'react'
 import { render, screen, waitFor, fireEvent } from '@testing-library/react'
 import { BarbecueList } from '@/presentation/pages'
 import { UnexpectedError, InvalidCredentialsError } from '@/domain/errors'
-import { LoadBarbecueListSpy, SaveBarbecueSpy } from '@/presentation/test/mock-barbecue'
-import { ValidationStub, Helper } from '@/presentation/test'
+import { ValidationStub, Helper, LoadBarbecueListSpy, SaveBarbecueSpy } from '@/presentation/test'
 import faker from 'faker'
 
 type SutTypes = {
