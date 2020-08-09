@@ -22,6 +22,9 @@ describe('RemoteLoadBarbecueList', () => {
   test('Should call HttpClient with correct URL and method', async () => {
     const url = faker.internet.url()
     const { sut, httpClientSpy } = makeSut(url)
+    httpClientSpy.response = {
+      statusCode: HttpStatusCode.noContent
+    }
     await sut.loadAll()
     expect(httpClientSpy.url).toBe(url)
     expect(httpClientSpy.method).toBe('get')

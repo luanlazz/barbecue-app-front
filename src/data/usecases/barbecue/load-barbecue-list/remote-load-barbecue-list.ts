@@ -14,10 +14,8 @@ export class RemoteLoadBarbecueList implements LoadBarbecueList {
       method: 'get'
     })
 
-    const remoteBarbecues = httpResponse.body || []
-
     switch (httpResponse.statusCode) {
-      case HttpStatusCode.ok: return remoteBarbecues.map(barbecue => ({
+      case HttpStatusCode.ok: return httpResponse.body.map(barbecue => ({
         ...barbecue,
         date: new Date(barbecue.date)
       }))
