@@ -33,7 +33,7 @@ module.exports = merge(common, {
   },
   plugins: [
     new DefinePlugin({
-      'process.env.API_URL': JSON.stringify('https://barbecue-back.herokuapp.com/')
+      'process.env.API_URL': JSON.stringify('https://barbecue-back.herokuapp.com')
     }),
     new HtmlWebpackPlugin({
       template: './template.prod.html'
