@@ -1,8 +1,38 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import Styles from './participants-styles.scss'
 import { Header, MainContainer, ContentContainer } from '@/presentation/components'
+import { LoadParticipantsList } from '@/domain/usecases'
 
-const ParticipantsList: React.FC = () => {
+type Props = {
+  loadParticipantsList: LoadParticipantsList
+}
+
+const ParticipantsList: React.FC<Props> = ({ loadParticipantsList }: Props) => {
+  const [state, setState] = useState({
+    participants: [] as LoadParticipantsList.Model[],
+    isLoading: false,
+    error: ''
+  })
+
+  useEffect(() => {
+    setState(old => ({
+      ...old,
+      isLoading: true
+    }))
+
+    loadParticipantsList.loadAll()
+      .then(participants => setState(old => ({
+        ...old,
+        isLoading: false,
+        participants
+      })))
+      .catch(error => setState(old => ({
+        ...old,
+        isLoading: false,
+        error: error.message
+      })))
+  }, [])
+
   return (
     <MainContainer>
 
@@ -10,23 +40,18 @@ const ParticipantsList: React.FC = () => {
 
       <ContentContainer>
         <div className={Styles.wrapParticipants}>
-          <div className={Styles.participants}>
+          <div data-testid='participants-list' className={Styles.participantsList}>
             <table>
               <tbody>
-                <tr className={Styles.paid}>
-                  <td className={Styles.f}>
-                    <span className={Styles.dot} />
-                  </td>
-                  <td className={Styles.name}>Pedro</td>
-                  <td className={Styles.value}>R$ 20,00</td>
-                </tr>
-                <tr>
-                  <td>
-                    <span className={Styles.dot} />
-                  </td>
-                  <td className={Styles.name}>Alice</td>
-                  <td className={Styles.value}>R$ 10,00</td>
-                </tr>
+                {state.participants.map(participant => (
+                  <tr key={participant.id} className={participant.pay ? Styles.paid : ''}>
+                    <td className={Styles.f}>
+                      <span className={Styles.dot} />
+                    </td>
+                    <td className={Styles.name}>{participant.name}</td>
+                    <td className={Styles.value}>{participant.value}</td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
