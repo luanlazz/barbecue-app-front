@@ -54,4 +54,13 @@ describe('RemoteLoadParticipantsList', () => {
     const promise = sut.loadAll()
     await expect(promise).rejects.toThrow(new UnexpectedError())
   })
+
+  test('Should return empty list if HttpClient returns 204', async () => {
+    const { sut, httpClientSpy } = makeSut()
+    httpClientSpy.response = {
+      statusCode: HttpStatusCode.noContent
+    }
+    const barbecues = await sut.loadAll()
+    expect(barbecues).toEqual([])
+  })
 })
