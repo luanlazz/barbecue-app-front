@@ -20,7 +20,7 @@ const BarbecueList: React.FC<Props> = ({ loadBarbecueList, saveBarbecue, validat
     isFormInvalid: true,
     error: '',
     mainError: '',
-    date: new Date(),
+    date: null,
     dateError: '',
     description: '',
     descriptionError: '',
@@ -51,48 +51,50 @@ const BarbecueList: React.FC<Props> = ({ loadBarbecueList, saveBarbecue, validat
       }))
   }, [])
 
-  useEffect(() => { validate('description') }, [state.description])
+  useEffect(() => { validate('date') }, [state.date, state.isModalOpen])
+  useEffect(() => { validate('description') }, [state.description, state.isModalOpen])
 
   const validate = (field: string): void => {
-    const { date, description, suggestValueDrink, suggestValueFood } = state
-    const formData = { date, description, suggestValueDrink, suggestValueFood }
+    const { date, description } = state
+    const formData = { date, description }
     setState(old => ({ ...old, [`${field}Error`]: validation.validate(field, formData) }))
-    setState(old => ({ ...old, isFormInvalid: !!old.dateError || !!old.descriptionError || !!old.suggestValueDrinkError || !!old.suggestValueFoodError }))
+    setState(old => ({ ...old, isFormInvalid: !!old.dateError || !!old.descriptionError }))
   }
 
   const handleNewBarbecue = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault()
-    try {
-      if (state.isLoading || state.isFormInvalid) return
+    if (state.isLoading || state.isFormInvalid) return
 
-      setState({
-        ...state,
-        isLoading: true,
-        mainError: ''
-      })
+    setState({
+      ...state,
+      isLoading: true,
+      mainError: ''
+    })
 
-      const barbecue = await saveBarbecue.save({
-        date: state.date,
-        description: state.description,
-        observation: state.observation,
-        valueSuggestDrink: parseInt(state.suggestValueDrink),
-        valueSuggestFood: parseInt(state.suggestValueFood)
-      })
-
-      setState({
-        ...state,
+    saveBarbecue.save({
+      date: state.date,
+      description: state.description,
+      observation: state.observation,
+      valueSuggestDrink: parseInt(state.suggestValueDrink),
+      valueSuggestFood: parseInt(state.suggestValueFood)
+    })
+      .then(barbecue => setState(old => ({
+        ...old,
+        date: null,
+        description: '',
+        observation: '',
+        suggestValueDrink: '0',
+        suggestValueFood: '0',
         isLoading: false,
-        barbecues: Object.assign(state.barbecues, { barbecue })
-      })
-
-      handleModal()
-    } catch (error) {
-      setState({
+        barbecues: [...old.barbecues, barbecue]
+      })))
+      .catch(error => setState({
         ...state,
         isLoading: false,
         mainError: error.message
-      })
-    }
+      }))
+
+    handleModal()
   }
 
   const handleModal = (): void => {
@@ -140,8 +142,8 @@ const BarbecueList: React.FC<Props> = ({ loadBarbecueList, saveBarbecue, validat
                 />
                 <span>Valores sugeridos</span>
                 <div className={Styles.suggest}>
-                  <Input type="number" name='suggestValueFood' placeholder="comida" />
-                  <Input type="number" name='suggestValueDrink' placeholder="bebida" />
+                  <Input type="number" min={0} name='suggestValueFood' placeholder="comida" />
+                  <Input type="number" min={0} name='suggestValueDrink' placeholder="bebida" />
                 </div>
 
                 <div className={Styles.buttonsWrap}>

@@ -102,8 +102,7 @@ describe('BarbecueList Component', () => {
 
   test('Should show description error if Validation fails', async () => {
     const validationError = faker.random.words()
-    const loadBarbecueListSpy = new LoadBarbecueListSpy()
-    makeSut(loadBarbecueListSpy,{ validationError })
+    makeSut(undefined,{ validationError })
     await openModal()
     Helper.populateField('description')
     Helper.testStatusForField('description-status', validationError, '🟡')
@@ -116,13 +115,6 @@ describe('BarbecueList Component', () => {
     Helper.populateField('description')
     expect(screen.getByTestId('submit')).toBeEnabled()
   })
-
-  // test('Should show spinner on submit', async () => {
-  //   makeSut()
-  //   await openModal()
-  //   await simulateValidSubmit()
-  //   expect(screen.queryByTestId('spinner')).toBeInTheDocument()
-  // })
 
   test('Should call SaveBarbecue with correct values', async () => {
     const { saveBarbecueSpy } = makeSut()
@@ -137,14 +129,6 @@ describe('BarbecueList Component', () => {
     expect(saveBarbecueSpy.params.valueSuggestFood).toEqual(valueSuggestFood)
     expect(saveBarbecueSpy.params.valueSuggestDrink).toEqual(valueSuggestDrink)
   })
-
-  // test('Should call SaveBarbecue only once', async () => {
-  //   const { saveBarbecueSpy } = makeSut()
-  //   await openModal()
-  //   await simulateValidSubmit()
-  //   await simulateValidSubmit()
-  //   expect(saveBarbecueSpy.callsCount).toBe(1)
-  // })
 
   test('Should not call SaveBarbecue if form is invalid', async () => {
     const validationError = faker.random.words()
@@ -168,16 +152,13 @@ describe('BarbecueList Component', () => {
     makeSut()
     const barbecueList = screen.getByTestId('barbecue-list')
     await waitFor(() => barbecueList)
-    expect(barbecueList.querySelectorAll('li.barbecueItemWrap')).toHaveLength(2)
-
+    const countBefore = barbecueList.querySelectorAll('li.barbecueItemWrap').length
     await openModal()
     await simulateValidSubmit()
-
     expect(screen.queryByTestId('modal')).not.toBeInTheDocument()
     await waitFor(() => screen.getByTestId('barbecue-list'))
-
     const barbecueListAfter = screen.getByTestId('barbecue-list')
     await waitFor(() => barbecueListAfter)
-    expect(barbecueListAfter.querySelectorAll('li.barbecueItemWrap')).toHaveLength(2)
+    expect(barbecueListAfter.querySelectorAll('li.barbecueItemWrap')).toHaveLength(countBefore + 1)
   })
 })

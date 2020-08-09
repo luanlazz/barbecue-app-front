@@ -26,15 +26,21 @@ textarea {
 }
 
 .barbecueListWrap {
-  display: block;
-  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 0;
+  min-height: 100vh;
+  padding: 0;
+  width: 100%;
+  overflow-x: hidden;
   
   .contentWrap {
     align-self: center;
     background-color: $white;
-    height: 100%;
-    margin: auto;
-    max-width: 600px;
+    justify-content: center;
+    min-height: 70vh;
+    max-width: 750px;
     padding: 24px;
   }
 }
@@ -115,9 +121,14 @@ textarea {
         button[type=submit] {
           background-color: $primaryLight;
           color: $black;
+
+          &:disabled {
+            background-color: $disabled;
+            color: rgba(138, 135, 135, 0.849);
+          }
   
-          &:hover {
-            background-color: $primary;
+          &:active hover {
+            background-color: $primary;       
           }
         }
   
@@ -132,6 +143,15 @@ textarea {
           }
         }
       }
+    }
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .barbecueListWrap {
+    .contentWrap {
+      min-height: 80vh;
+      min-width: 100%;
     }
   }
 }
