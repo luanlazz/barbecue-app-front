@@ -45,4 +45,13 @@ describe('RemoteLoadParticipantsList', () => {
     const promise = sut.loadAll()
     await expect(promise).rejects.toThrow(new UnexpectedError())
   })
+
+  test('Should throw UnexpectedError if HttpClient returns 500', async () => {
+    const { sut, httpClientSpy } = makeSut()
+    httpClientSpy.response = {
+      statusCode: HttpStatusCode.serverError
+    }
+    const promise = sut.loadAll()
+    await expect(promise).rejects.toThrow(new UnexpectedError())
+  })
 })
