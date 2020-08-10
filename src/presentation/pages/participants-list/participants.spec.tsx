@@ -37,9 +37,9 @@ describe('ParticipantsList Component', () => {
 
   test('Should render ParticipantsItems on success', async () => {
     makeSut()
-    const barbecueList = screen.getByTestId('participants-list')
-    await waitFor(() => barbecueList)
-    expect(barbecueList.querySelectorAll('tr')).toHaveLength(2)
+    const participantsList = screen.getByTestId('participants-list')
+    await waitFor(() => participantsList)
+    expect(participantsList.querySelectorAll('tr')).toHaveLength(2)
     expect(screen.queryByTestId('error')).not.toBeInTheDocument()
   })
 
@@ -57,5 +57,13 @@ describe('ParticipantsList Component', () => {
     const { loadBarbecueByIdSpy } = makeSut()
     expect(loadBarbecueByIdSpy.callsCount).toBe(1)
     await waitFor(() => screen.getByTestId('barbecue-info'))
+  })
+
+  test('Should render BarbecueItem on success', async () => {
+    makeSut()
+    const barbecueInfo = screen.getByTestId('barbecue-info')
+    await waitFor(() => barbecueInfo)
+    expect(barbecueInfo).toBeInTheDocument()
+    expect(screen.queryByTestId('error')).not.toBeInTheDocument()
   })
 })
