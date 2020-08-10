@@ -1,5 +1,6 @@
-import { HttpClient } from '@/data/protocols/http'
+import { HttpClient, HttpStatusCode } from '@/data/protocols/http'
 import { LoadBarbecueById } from '@/domain/usecases'
+import { UnexpectedError } from '@/domain/errors'
 
 export class RemoteLoadBarbecueById implements LoadBarbecueById {
   constructor (
@@ -8,11 +9,15 @@ export class RemoteLoadBarbecueById implements LoadBarbecueById {
   ) {}
 
   async loadById (): Promise<LoadBarbecueById.Model> {
-    await this.httpClient.request({
+    const httpResponse = await this.httpClient.request({
       url: this.url,
       method: 'get'
     })
-    return null
+
+    switch (httpResponse.statusCode) {
+      case HttpStatusCode.noContent: return null
+      default: throw new UnexpectedError()
+    }
   }
 }
 
