@@ -9,7 +9,7 @@ type Props = {
 
 const BarbecueInfo: React.FC<Props> = ({ barbecue }: Props) => {
   return (
-    <div className={Styles.barbecue}>
+    <div data-testid='barbecue-info' className={Styles.barbecue}>
       <div className={Styles.info}>
         <span className={Styles.date}>01/12</span>
         <span className={Styles.description}>Niver do Gui</span>
