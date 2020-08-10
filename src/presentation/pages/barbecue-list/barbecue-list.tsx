@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Styles from './barbecue-list-styles.scss'
-import { Header, Input, InputNoStatus, FormStatus, MainContainer, ContentContainer } from '@/presentation/components'
+import { Header, Input, InputNoStatus, FormStatus, MainContainer, ContentContainer, Modal } from '@/presentation/components'
 import { BarbecueListItems, BarbecueContext, Error } from '@/presentation/pages/barbecue-list/components'
 import { LoadBarbecueList, SaveBarbecue } from '@/domain/usecases'
 import { FormContext } from '@/presentation/contexts'
@@ -121,13 +121,9 @@ const BarbecueList: React.FC<Props> = ({ loadBarbecueList, saveBarbecue, validat
           }
         </ContentContainer>
 
-        {state.isModalOpen && <div data-testid='modal' className={(Styles.modal)}>
-          <div className={Styles.inputWrap}>
-            <span className={Styles.title}>
-              Próximo churas
-            </span>
-
-            <FormContext.Provider value={{ state, setState }}>
+        {state.isModalOpen &&
+          <FormContext.Provider value={{ state, setState }}>
+            <Modal title='Próximo churas'>
               <form data-testid='form' className={Styles.form} onSubmit={handleNewBarbecue}>
 
                 <Input type="date" name='date' className={Styles.date} placeholder="data" />
@@ -154,10 +150,9 @@ const BarbecueList: React.FC<Props> = ({ loadBarbecueList, saveBarbecue, validat
                 <FormStatus />
 
               </form>
-            </FormContext.Provider>
-
-          </div>
-        </div>}
+            </Modal>
+          </FormContext.Provider>
+        }
 
       </BarbecueContext.Provider>
 

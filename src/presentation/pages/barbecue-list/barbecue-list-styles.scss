@@ -26,106 +26,74 @@ textarea {
   }
 }
 
-.modal {
-  align-items: center;
-  background-color: rgba(0,0,0,0.4);
-  display: flex;
-  justify-content: center;
-  height: 100%;
-  left: 0;
-  overflow: auto;
-  position: fixed;
-  top: 0;
-  z-index: 2000;
-  width: 100%;
+.form {
+  display: inherit;
+  flex-direction: inherit;
+  text-align: center;
 
-  .inputWrap {
-    align-items: center;
-    animation: animate 300ms;
-    background-color: $white;
+  input,
+  textarea {
+    margin: 8px;
+  }
+
+  .date {
+    width: auto;
+  }
+
+  .observation {
+    margin-top: 24px;
+    resize: none;
+    padding: 0px 40px 0px 8px;
+    position: relative;
+  }
+
+  .suggest {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    
+    input {
+      text-align: center;
+      width: 100px;
+    }
+  }
+
+  .buttonsWrap {
+    display: inline-flex;
+    justify-content: space-evenly;
     border: none;
     border-radius: 8px;
-    box-shadow: 5px 5px 40px -3px rgba(0,0,0,0.79);
-    display: flex;
-    flex-direction: column;
-    margin: 15% auto;
-    padding: 20px;
+    color: $white;
+    width: 100%;
+    padding-top: 20px;
+
+    button {
+      padding: 0px 10px;
+      line-height: 35px;
+    }
     
-    .title {
-      font-size: 30px;
-      margin-bottom: 10px;
+    button[type=submit] {
+      background-color: $primaryLight;
+      color: $black;
+
+      &:disabled {
+        background-color: $disabled;
+        color: rgba(138, 135, 135, 0.849);
+      }
+
+      &:active hover {
+        background-color: $primary;       
+      }
     }
 
-    .form {
-      display: inherit;
-      flex-direction: inherit;
-      text-align: center;
+    button[type=reset] {
+      background-color: transparent;
+      color: $greyLight;
+      border: 1px solid $greyLight;
 
-      input,
-      textarea {
-        margin: 8px;
-      }
-  
-      .date {
-        width: auto;
-      }
-  
-      .observation {
-        margin-top: 24px;
-        resize: none;
-        padding: 0px 40px 0px 8px;
-        position: relative;
-      }
-
-      .suggest {
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        
-        input {
-          text-align: center;
-          width: 100px;
-        }
-      }
-
-      .buttonsWrap {
-        display: inline-flex;
-        justify-content: space-evenly;
-        border: none;
-        border-radius: 8px;
-        color: $white;
-        width: 100%;
-        padding-top: 20px;
-  
-        button {
-          padding: 0px 10px;
-          line-height: 35px;
-        }
-        
-        button[type=submit] {
-          background-color: $primaryLight;
-          color: $black;
-
-          &:disabled {
-            background-color: $disabled;
-            color: rgba(138, 135, 135, 0.849);
-          }
-  
-          &:active hover {
-            background-color: $primary;       
-          }
-        }
-  
-        button[type=reset] {
-          background-color: transparent;
-          color: $greyLight;
-          border: 1px solid $greyLight;
-  
-          &:hover {
-            border: 1px solid red;
-            color: red;
-          }
-        }
+      &:hover {
+        border: 1px solid red;
+        color: red;
       }
     }
   }

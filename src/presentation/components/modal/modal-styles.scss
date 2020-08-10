@@ -1,0 +1,34 @@
+@import "@/presentation/styles/colors.scss";
+
+.modal {
+  align-items: center;
+  background-color: rgba(0,0,0,0.4);
+  display: flex;
+  justify-content: center;
+  height: 100%;
+  left: 0;
+  overflow: auto;
+  position: fixed;
+  top: 0;
+  z-index: 2000;
+  width: 100%;
+
+  .inputWrap {
+    align-items: center;
+    animation: animate 300ms;
+    background-color: $white;
+    border: none;
+    border-radius: 8px;
+    box-shadow: 5px 5px 40px -3px rgba(0,0,0,0.79);
+    display: flex;
+    flex-direction: column;
+    margin: 15% auto;
+    padding: 20px;
+
+    .title {
+      font-size: 30px;
+      margin-bottom: 10px;
+    }
+  }
+
+}
