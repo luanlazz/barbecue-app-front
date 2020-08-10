@@ -17,8 +17,9 @@ input[type="text"] {
 input[type="number"],
 textarea {
   border-radius: 4px;
-  line-height: 40px;
   border: 1px solid $greyLight;
+  line-height: 32px;
+  margin-top: 16px;
 
   &:focus {
     outline: none;
@@ -58,6 +59,7 @@ textarea {
     .form {
       display: inherit;
       flex-direction: inherit;
+      text-align: center;
 
       input,
       textarea {
@@ -69,8 +71,10 @@ textarea {
       }
   
       .observation {
+        margin-top: 24px;
         resize: none;
-        width: 100%;
+        padding: 0px 40px 0px 8px;
+        position: relative;
       }
 
       .suggest {

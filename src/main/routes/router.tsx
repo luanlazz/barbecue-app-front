@@ -2,7 +2,7 @@ import React, { Suspense } from 'react'
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import { setCurrentAccountAdapter, getCurrentAccountAdapter } from '@/main/adapters/current-account-adapter'
 import { makeBarbecueList, makeLogin, makeSignUp, makeParticipantsList } from '@/main/factories/pages'
-import { Spinner, PrivateRoute } from '@/presentation/components'
+import { PrivateRoute , BackgroundLoading } from '@/presentation/components'
 import { ApiContext } from '@/presentation/contexts'
 
 const Router: React.FC = () => {
@@ -14,7 +14,7 @@ const Router: React.FC = () => {
       }}
     >
       <BrowserRouter>
-        <Suspense fallback={<Spinner />}>
+        <Suspense fallback={<BackgroundLoading />}>
           <Switch>
             <Route path='/login' exact component={makeLogin} />
             <Route path='/signup' exact component={makeSignUp} />

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Styles from './barbecue-list-styles.scss'
-import { Header, Input, FormStatus, MainContainer, ContentContainer } from '@/presentation/components'
+import { Header, Input, InputNoStatus, FormStatus, MainContainer, ContentContainer } from '@/presentation/components'
 import { BarbecueListItems, BarbecueContext, Error } from '@/presentation/pages/barbecue-list/components'
 import { LoadBarbecueList, SaveBarbecue } from '@/domain/usecases'
 import { FormContext } from '@/presentation/contexts'
@@ -142,8 +142,8 @@ const BarbecueList: React.FC<Props> = ({ loadBarbecueList, saveBarbecue, validat
                 />
                 <span>Valores sugeridos</span>
                 <div className={Styles.suggest}>
-                  <Input type="number" min={0} name='suggestValueFood' placeholder="comida" />
-                  <Input type="number" min={0} name='suggestValueDrink' placeholder="bebida" />
+                  <InputNoStatus type="number" min={0} name='suggestValueFood' placeholder="comida" />
+                  <InputNoStatus type="number" min={0} name='suggestValueDrink' placeholder="bebida" />
                 </div>
 
                 <div className={Styles.buttonsWrap}>

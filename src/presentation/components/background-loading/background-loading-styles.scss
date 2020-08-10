@@ -1,0 +1,41 @@
+@import "@/presentation/styles/colors.scss";
+
+.animationWrapper {
+  align-items: center;
+  display: flex;
+  min-width: 100%;
+  min-height: 100vh;
+  justify-content: center;
+
+  .circle {
+    width: 20px;
+    height: 20px;
+    border-radius: 100%;
+    background-color: $black;
+    animation: move-the-circle 1s infinite;
+    transform-origin: center center;
+  }
+
+}
+
+@for $num from 1 through 8 {
+  .circle:nth-child(#{$num}) {
+    left: ($num - 1) * 30px;
+    animation-delay: $num * .1s;
+  }
+}
+
+@keyframes move-the-circle {
+  0% {
+    transform: translate(0, 0) scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: translate(0, 50px) scale(.4);
+    opacity: .5;
+  }
+  100% {
+    transform: translate(0, 0) scale(1);
+    opacity: 1;
+  }
+}
