@@ -15,6 +15,10 @@ export class RemoteLoadBarbecueById implements LoadBarbecueById {
     })
 
     switch (httpResponse.statusCode) {
+      case HttpStatusCode.ok: return {
+        ...httpResponse.body,
+        date: new Date(httpResponse.body.date)
+      }
       case HttpStatusCode.noContent: return null
       default: throw new UnexpectedError()
     }
