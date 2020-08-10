@@ -4,15 +4,15 @@ import { LoadBarbecueList } from '@/domain/usecases'
 import { BarbecueItemEmpty, BarbecueItem, BarbecueNewItem, BarbecueContext } from '@/presentation/pages/barbecue-list/components'
 
 const BarbecueListItems: React.FC = () => {
-  const { state } = useContext(BarbecueContext)
+  const { barbecueListState } = useContext(BarbecueContext)
 
   return (
     <ul data-testid='barbecue-list' className={Styles.listWrap}>
-      {state.isLoading
+      {barbecueListState.isLoading
         ? <BarbecueItemEmpty />
-        : state.barbecues.map((barbecue: LoadBarbecueList.Model) => <BarbecueItem key={barbecue.id} barbecue={barbecue} />)
+        : barbecueListState.barbecues.map((barbecue: LoadBarbecueList.Model) => <BarbecueItem key={barbecue.id} barbecue={barbecue} />)
       }
-      {!state.isLoading && <BarbecueNewItem /> }
+      {!barbecueListState.isLoading && <BarbecueNewItem /> }
     </ul>
   )
 }

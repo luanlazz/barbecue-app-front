@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import Styles from './barbecue-info-styles.scss'
 import { LoadBarbecueById } from '@/domain/usecases'
+import { ParticipantsContext } from '@/presentation/pages/participants-list/components'
 import { IconPeople, IconMoney } from '@/images'
 
 type Props = {
@@ -8,6 +9,8 @@ type Props = {
 }
 
 const BarbecueInfo: React.FC<Props> = ({ barbecue }: Props) => {
+  const { handleEditBarbecue } = useContext(ParticipantsContext)
+
   return (
     <div data-testid='barbecue-info' className={Styles.barbecue}>
       <div className={Styles.info}>
@@ -41,6 +44,8 @@ const BarbecueInfo: React.FC<Props> = ({ barbecue }: Props) => {
           </span>
         </div>
       </div>
+
+      <div className={Styles.editButton} onClick={handleEditBarbecue}/>
     </div>
   )
 }

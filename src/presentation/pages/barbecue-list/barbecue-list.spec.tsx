@@ -149,6 +149,7 @@ describe('BarbecueList Component', () => {
     jest.spyOn(saveBarbecueSpy, 'save').mockRejectedValueOnce(error)
     await openModal()
     await simulateValidSubmit()
+    expect(screen.queryByTestId('modal')).toBeInTheDocument()
     expect(screen.getByTestId('main-error')).toHaveTextContent(error.message)
     expect(screen.getByTestId('error-wrap').children).toHaveLength(1)
   })
