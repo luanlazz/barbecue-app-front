@@ -12,7 +12,7 @@ type Props = {
 const ParticipantsList: React.FC<Props> = ({ loadParticipantsList, loadBarbecueById }: Props) => {
   const [state, setState] = useState({
     participants: [] as LoadParticipantsList.Model[],
-    barbecue: {},
+    barbecue: {} as LoadBarbecueById.Model,
     isLoading: false,
     error: ''
   })
@@ -66,7 +66,7 @@ const ParticipantsList: React.FC<Props> = ({ loadParticipantsList, loadBarbecueB
             ? <Error />
             : <>
               <div className={Styles.wrapParticipants}>
-                <BarbecueInfo barbecue={null} />
+                <BarbecueInfo barbecue={state.barbecue} />
                 <ParticipantsListItems />
               </div>
             </>

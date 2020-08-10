@@ -23,6 +23,7 @@
     "@typescript-eslint/method-signature-style": "off",
     "@typescript-eslint/no-floating-promises": "off",
     "@typescript-eslint/no-namespace": "off",
+    "@typescript-eslint/consistent-type-assertions": "off",
     "import/export": "off",
     "no-redeclare": "off",
     "react/jsx-uses-react": "error",

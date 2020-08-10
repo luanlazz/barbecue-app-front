@@ -1,6 +1,6 @@
 import React, { lazy } from 'react'
 import { useParams } from 'react-router-dom'
-import { makeRemoteLoadParticipantsList } from '../../usecases/load-participants/remote-load-participants-list-factory'
+import { makeRemoteLoadParticipantsList, makeRemoteLoadBarbecueById } from '@/main/factories/usecases'
 
 const ParticipantsList = lazy(async () => import('@/presentation/pages/participants-list/participants'))
 
@@ -10,6 +10,7 @@ export const makeParticipantsList: React.FC = () => {
   return (
     <ParticipantsList
       loadParticipantsList={makeRemoteLoadParticipantsList(barbecueId)}
+      loadBarbecueById={makeRemoteLoadBarbecueById(barbecueId)}
     />
   )
 }
