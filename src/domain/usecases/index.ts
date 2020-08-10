@@ -1,5 +1,6 @@
 export * from './account/add-account'
 export * from './account/authentication'
+export * from './barbecue/load-barbecue-by-id'
 export * from './barbecue/load-barbecue-list'
 export * from './barbecue/save-barbecue'
 export * from './participants/load-participants-list'

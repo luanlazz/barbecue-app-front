@@ -1,9 +1,8 @@
-
 export interface LoadBarbecueById {
-  loadById (barbecueId): Promise<LoadBarbecueList.Model>
+  loadById(): Promise<LoadBarbecueById.Model>
 }
 
-export namespace LoadBarbecueList {
+export namespace LoadBarbecueById {
   export type Model = {
     id: string
     accountId: string
