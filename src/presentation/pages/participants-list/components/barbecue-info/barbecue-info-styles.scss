@@ -1,0 +1,46 @@
+@import "@/presentation/styles/colors.scss";
+
+.barbecue {
+  border: none;
+  display: inline-flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin: 10px;
+  min-width: 100%;
+
+  .info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex-wrap: wrap;
+    overflow: hidden;
+    padding: 10px;
+    
+    .date {
+      color: #000;
+      font-size: 25px;
+      font-weight: 800;
+      width: 100%;
+    }
+  
+    .description {
+      font-size: 18px;
+      font-weight: bold;
+    }
+  }
+
+  .totals {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex-wrap: wrap;
+    overflow: hidden;
+    padding-right: 50px;
+
+    span {
+      font-size: 14px;
+      margin-left: 8px;
+      font-weight: 800;
+    }
+  }
+}

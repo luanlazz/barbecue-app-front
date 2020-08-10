@@ -1,2 +1,5 @@
+export { default as BarbecueInfo } from './barbecue-info/barbecue-info'
 export { default as ParticipantsContext } from './context/context'
+export { default as ParticipantItem } from './participant-item/participant-item'
+export { default as ParticipantsListItems } from './participants-list/participants-list'
 export { default as Error } from './error/error'

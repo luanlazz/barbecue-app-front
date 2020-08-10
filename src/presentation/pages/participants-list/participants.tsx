@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import Styles from './participants-styles.scss'
 import { Header, MainContainer, ContentContainer } from '@/presentation/components'
 import { LoadParticipantsList } from '@/domain/usecases'
-import { Error, ParticipantsContext } from './components'
+import { Error, ParticipantsContext, ParticipantsListItems, BarbecueInfo } from './components'
 
 type Props = {
   loadParticipantsList: LoadParticipantsList
@@ -43,28 +43,12 @@ const ParticipantsList: React.FC<Props> = ({ loadParticipantsList }: Props) => {
         <ContentContainer>
           {state.error
             ? <Error />
-            : <div className={Styles.wrapParticipants}>
-              <div className={Styles.participantsList}>
-                <table data-testid='participants-list'>
-                  <tbody>
-                    {state.participants.map(participant => (
-                      <tr key={participant.id} className={participant.pay ? Styles.paid : ''}>
-                        <td className={Styles.f}>
-                          <span className={Styles.dot} />
-                        </td>
-                        <td className={Styles.name}>{participant.name}</td>
-                        <td className={Styles.value}>
-                          {new Intl.NumberFormat('pt', {
-                            style: 'currency',
-                            currency: 'BRL'
-                          }).format(participant.value).toString()}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+            : <>
+              <div className={Styles.wrapParticipants}>
+                <BarbecueInfo barbecue={null} />
+                <ParticipantsListItems />
               </div>
-            </div>
+            </>
           }
         </ContentContainer>
       </ParticipantsContext.Provider>

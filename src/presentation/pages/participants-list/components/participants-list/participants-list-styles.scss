@@ -1,0 +1,16 @@
+@import "@/presentation/styles/colors.scss";
+
+.participantsList {
+  display: flex;
+  flex-direction: column;
+
+  table {
+    background-color: $white;
+    border-collapse: collapse;
+    flex-basis: auto;
+    line-height: 32px;
+    margin: 10px;
+    table-layout: auto;
+    vertical-align: middle;
+  }
+}

@@ -9,6 +9,13 @@
   padding: 24px;
 }
 
+@media only screen and (max-width: 1200px) {
+  .contentContainer {
+    min-height: 80vh;
+    min-width: 70%;
+  }
+}
+
 @media only screen and (max-width: 960px) {
   .contentContainer {
     min-height: 80vh;

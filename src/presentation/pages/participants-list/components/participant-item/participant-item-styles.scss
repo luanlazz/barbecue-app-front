@@ -1,0 +1,50 @@
+@import "@/presentation/styles/colors.scss";
+
+tr {      
+  display: table-row;
+  vertical-align: inherit;
+}
+
+td, th {
+  border-bottom: 1px solid $primary;
+  display: table-cell;
+  vertical-align: inherit;
+}
+
+.f {
+  table-layout: fixed;
+  justify-content: center;
+  width: 25px;
+}
+
+.dot {
+  border-radius: 50%;
+  border: 3px solid $primaryDark;
+  display: block;
+  height: 15px;
+  margin: 0px 10px;
+  width: 15px;
+}
+
+.paid {
+  .dot {
+    animation: test 500ms;
+    background: $primary;
+    border: 3px solid $primary;
+  }
+
+  .value {
+    text-decoration-line: line-through;
+  }
+}
+
+.name {
+  text-align: left;
+  min-width: 100px;
+  word-wrap: break-word;
+}
+
+.value {
+  text-align: center;
+}
+  
