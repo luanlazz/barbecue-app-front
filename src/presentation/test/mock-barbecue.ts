@@ -1,4 +1,4 @@
-import { LoadBarbecueList, SaveBarbecue } from '@/domain/usecases'
+import { LoadBarbecueById, LoadBarbecueList, SaveBarbecue } from '@/domain/usecases'
 import { mockBarbecuesModel, mockBarbecueModel } from '@/domain/test'
 
 export class LoadBarbecueListSpy implements LoadBarbecueList {
@@ -8,6 +8,16 @@ export class LoadBarbecueListSpy implements LoadBarbecueList {
   async loadAll (): Promise<LoadBarbecueList.Model[]> {
     this.callsCount++
     return this.barbecues
+  }
+}
+
+export class LoadBarbecueByIdSpy implements LoadBarbecueById {
+  callsCount: number = 0
+  barbecue = mockBarbecueModel()
+
+  async loadById (): Promise<LoadBarbecueById.Model> {
+    this.callsCount++
+    return this.barbecue
   }
 }
 
