@@ -1,6 +1,7 @@
 import { RemoteLoadBarbecueById } from './remote-load-barbecue-by-id'
 import { HttpClientSpy } from '@/data/test'
 import { HttpStatusCode } from '@/data/protocols/http'
+import { UnexpectedError } from '@/domain/errors'
 import faker from 'faker'
 
 type SutTypes = {
@@ -27,5 +28,14 @@ describe('RemoteLoadBarbecueById', () => {
     await sut.loadById()
     expect(httpClientSpy.url).toBe(url)
     expect(httpClientSpy.method).toBe('get')
+  })
+
+  test('Should throw UnexpectedError if HttpClient return 403', async () => {
+    const { sut, httpClientSpy } = makeSut()
+    httpClientSpy.response = {
+      statusCode: HttpStatusCode.forbidden
+    }
+    const promise = sut.loadById()
+    await expect(promise).rejects.toThrow(new UnexpectedError())
   })
 })
