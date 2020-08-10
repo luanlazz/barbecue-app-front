@@ -1,5 +1,5 @@
 import { RemoteLoadBarbecueById } from './remote-load-barbecue-by-id'
-import { HttpClientSpy } from '@/data/test'
+import { HttpClientSpy, mockRemoteBarbecueModel } from '@/data/test'
 import { HttpStatusCode } from '@/data/protocols/http'
 import { UnexpectedError } from '@/domain/errors'
 import faker from 'faker'
@@ -23,7 +23,8 @@ describe('RemoteLoadBarbecueById', () => {
     const url = faker.internet.url()
     const { sut, httpClientSpy } = makeSut(url)
     httpClientSpy.response = {
-      statusCode: HttpStatusCode.noContent
+      statusCode: HttpStatusCode.ok,
+      body: mockRemoteBarbecueModel()
     }
     await sut.loadById()
     expect(httpClientSpy.url).toBe(url)
@@ -55,5 +56,27 @@ describe('RemoteLoadBarbecueById', () => {
     }
     const promise = sut.loadById()
     await expect(promise).rejects.toThrow(new UnexpectedError())
+  })
+
+  test('Should return a barbecueList if HttpClient returns 200', async () => {
+    const { sut, httpClientSpy } = makeSut()
+    const httpResult = mockRemoteBarbecueModel()
+    httpClientSpy.response = {
+      statusCode: HttpStatusCode.ok,
+      body: httpResult
+    }
+    const barbecue = await sut.loadById()
+    expect(barbecue).toEqual({
+      id: httpResult.id,
+      accountId: httpResult.accountId,
+      date: new Date(httpResult.date),
+      description: httpResult.description,
+      observation: httpResult.observation,
+      valueSuggestDrink: httpResult.valueSuggestDrink,
+      valueSuggestFood: httpResult.valueSuggestFood,
+      valueTotal: httpResult.valueTotal,
+      numParticipants: httpResult.numParticipants,
+      valueCollected: httpResult.valueCollected
+    })
   })
 })
