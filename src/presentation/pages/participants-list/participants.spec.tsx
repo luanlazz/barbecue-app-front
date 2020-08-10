@@ -66,4 +66,14 @@ describe('ParticipantsList Component', () => {
     expect(barbecueInfo).toBeInTheDocument()
     expect(screen.queryByTestId('error')).not.toBeInTheDocument()
   })
+
+  test('Should render error on failure', async () => {
+    const loadBarbecueById = new LoadBarbecueByIdSpy()
+    const error = new UnexpectedError()
+    jest.spyOn(loadBarbecueById, 'loadById').mockRejectedValueOnce(error)
+    makeSut(undefined, loadBarbecueById)
+    await waitFor(() => screen.getByTestId('barbecue-info'))
+    expect(screen.queryByTestId('barbecue-info')).not.toBeInTheDocument()
+    expect(screen.queryByTestId('error')).toHaveTextContent(error.message)
+  })
 })
