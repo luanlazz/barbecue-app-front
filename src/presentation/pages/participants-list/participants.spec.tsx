@@ -171,4 +171,11 @@ describe('ParticipantsList Component', () => {
     await simulateValidSubmit()
     expect(saveBarbecueSpy.callsCount).toBe(0)
   })
+
+  test('Should close modal after SaveBarbecue success', async () => {
+    makeSut()
+    await openModal()
+    await simulateValidSubmit()
+    expect(screen.queryByTestId('modal')).not.toBeInTheDocument()
+  })
 })
