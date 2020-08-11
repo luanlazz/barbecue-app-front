@@ -10,6 +10,7 @@ const Modal: React.FC<Props> = ({ title, children }: Props) => {
   return (
     <div data-testid='modal' className={(Styles.modal)}>
       <div className={Styles.inputWrap}>
+        <div className={Styles.close} />
         <span className={Styles.title}>
           {title}
         </span>

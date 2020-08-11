@@ -1,6 +1,6 @@
 import { HttpClient, HttpStatusCode } from '@/data/protocols/http'
 import { LoadBarbecueById } from '@/domain/usecases'
-import { UnexpectedError } from '@/domain/errors'
+import { UnexpectedError, AccessDeniedError } from '@/domain/errors'
 
 export class RemoteLoadBarbecueById implements LoadBarbecueById {
   constructor (
@@ -20,6 +20,7 @@ export class RemoteLoadBarbecueById implements LoadBarbecueById {
         date: new Date(httpResponse.body.date)
       }
       case HttpStatusCode.noContent: return null
+      case HttpStatusCode.forbidden: throw new AccessDeniedError()
       default: throw new UnexpectedError()
     }
   }

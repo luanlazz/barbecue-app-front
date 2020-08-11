@@ -1,6 +1,6 @@
 import { HttpClient, HttpStatusCode } from '@/data/protocols/http'
 import { LoadParticipantsList } from '@/domain/usecases'
-import { UnexpectedError } from '@/domain/errors'
+import { UnexpectedError, AccessDeniedError } from '@/domain/errors'
 
 export class RemoteLoadParticipantsList implements LoadParticipantsList {
   constructor (
@@ -17,6 +17,7 @@ export class RemoteLoadParticipantsList implements LoadParticipantsList {
     switch (httpResponse.statusCode) {
       case HttpStatusCode.ok: return httpResponse.body
       case HttpStatusCode.noContent: return []
+      case HttpStatusCode.forbidden: throw new AccessDeniedError()
       default: throw new UnexpectedError()
     }
   }

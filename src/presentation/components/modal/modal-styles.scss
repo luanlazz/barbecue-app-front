@@ -24,10 +24,25 @@
     flex-direction: column;
     margin: 15% auto;
     padding: 20px;
+    position: relative;
 
     .title {
       font-size: 30px;
       margin-bottom: 10px;
+    }
+
+    .close {
+      background-color: $primaryLight;
+      border-radius: 50%;
+      height: 20px;
+      width: 20px;
+      right: 5px;
+      top: 5px;
+      position: absolute;
+
+      &:hover {
+        transform: scale(1.1);
+      }
     }
   }
 }

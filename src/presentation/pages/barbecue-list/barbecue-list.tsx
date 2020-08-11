@@ -56,7 +56,7 @@ const BarbecueList: React.FC<Props> = ({ loadBarbecueList, saveBarbecue, validat
         </ContentContainer>
 
         {barbecueListState.isModalOpen &&
-          <Modal title='Próximo churas'>
+          <Modal title='Próximo churas' >
             <BarbecueInput
               saveBarbecue={saveBarbecue}
               validation={validation}
