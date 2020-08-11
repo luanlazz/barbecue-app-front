@@ -105,6 +105,14 @@ describe('ParticipantsList Component', () => {
     expect(screen.queryByTestId('modal')).toBeInTheDocument()
   })
 
+  test('Should show date error if Validation fails', async () => {
+    const validationError = faker.random.words()
+    makeSut(undefined, undefined, { validationError })
+    await openModal()
+    Helper.populateField('date')
+    Helper.testStatusForField('date-status', validationError, '🟡')
+  })
+
   test('Should show description error if Validation fails', async () => {
     const validationError = faker.random.words()
     makeSut(undefined, undefined, { validationError })
