@@ -120,4 +120,12 @@ describe('ParticipantsList Component', () => {
     Helper.populateField('description')
     Helper.testStatusForField('description-status', validationError, '🟡')
   })
+
+  test('Should enable submit button if form is valid', async () => {
+    makeSut()
+    await openModal()
+    Helper.populateField('date')
+    Helper.populateField('description')
+    expect(screen.getByTestId('submit')).toBeEnabled()
+  })
 })
