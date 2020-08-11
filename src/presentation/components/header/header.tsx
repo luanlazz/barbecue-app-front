@@ -1,20 +1,13 @@
-import React, { memo, useContext } from 'react'
-import { useHistory } from 'react-router-dom'
+import React, { memo } from 'react'
 import Styles from './header-styles.scss'
-import { ApiContext } from '@/presentation/contexts'
+import { useLogout } from '@/presentation/hooks'
 
 type Props = {
   buttonExit?: boolean
 }
 
 const Header: React.FC<Props> = ({ buttonExit }: Props) => {
-  const history = useHistory()
-  const { setCurrentAccount } = useContext(ApiContext)
-
-  const logout = (): void => {
-    setCurrentAccount(undefined)
-    history.replace('/login')
-  }
+  const logout = useLogout()
 
   return (
     <header className={Styles.header}>
