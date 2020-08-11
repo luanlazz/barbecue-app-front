@@ -3,9 +3,10 @@ import { Router } from 'react-router-dom'
 import { createMemoryHistory } from 'history'
 import { render, screen, waitFor, fireEvent } from '@testing-library/react'
 import { ParticipantsList } from '@/presentation/pages'
-import { LoadParticipantsListSpy, LoadBarbecueByIdSpy } from '@/presentation/test'
+import { LoadParticipantsListSpy, LoadBarbecueByIdSpy, ValidationStub, SaveBarbecueSpy, Helper } from '@/presentation/test'
 import { UnexpectedError } from '@/domain/errors'
 import { ApiContext } from '@/presentation/contexts'
+import faker from 'faker'
 
 type SutTypes = {
   loadParticipantsListSpy: LoadParticipantsListSpy
@@ -21,12 +22,17 @@ const history = createMemoryHistory({ initialEntries: ['/barbecue'] })
 const makeSut = (loadParticipantsListSpy = new LoadParticipantsListSpy(),
   loadBarbecueByIdSpy = new LoadBarbecueByIdSpy(),
   params?: SutParams): SutTypes => {
+  const validationStub = new ValidationStub()
+  validationStub.errorMessage = params?.validationError
+  const saveBarbecueSpy = new SaveBarbecueSpy()
   render(
     <ApiContext.Provider value={{ }}>
       <Router history={history}>
         <ParticipantsList
           loadParticipantsList={loadParticipantsListSpy}
           loadBarbecueById={loadBarbecueByIdSpy}
+          saveBarbecue={saveBarbecueSpy}
+          validation={validationStub}
         />
       </Router>
     </ApiContext.Provider>
@@ -97,5 +103,13 @@ describe('ParticipantsList Component', () => {
     makeSut()
     await openModal()
     expect(screen.queryByTestId('modal')).toBeInTheDocument()
+  })
+
+  test('Should show description error if Validation fails', async () => {
+    const validationError = faker.random.words()
+    makeSut(undefined, undefined, { validationError })
+    await openModal()
+    Helper.populateField('description')
+    Helper.testStatusForField('description-status', validationError, '🟡')
   })
 })
