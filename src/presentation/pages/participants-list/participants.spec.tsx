@@ -1,7 +1,7 @@
 import React from 'react'
 import { Router } from 'react-router-dom'
 import { createMemoryHistory } from 'history'
-import { render, screen, waitFor } from '@testing-library/react'
+import { render, screen, waitFor, fireEvent } from '@testing-library/react'
 import { ParticipantsList } from '@/presentation/pages'
 import { LoadParticipantsListSpy, LoadBarbecueByIdSpy } from '@/presentation/test'
 import { UnexpectedError } from '@/domain/errors'
@@ -35,6 +35,13 @@ const makeSut = (loadParticipantsListSpy = new LoadParticipantsListSpy(),
     loadParticipantsListSpy,
     loadBarbecueByIdSpy
   }
+}
+
+const openModal = async (): Promise<void> => {
+  const barbecueInfo = screen.getByTestId('barbecue-info')
+  await waitFor(() => barbecueInfo)
+  const editItem = screen.getByTestId('editItem')
+  fireEvent.click(editItem)
 }
 
 describe('ParticipantsList Component', () => {
@@ -84,5 +91,11 @@ describe('ParticipantsList Component', () => {
     await waitFor(() => screen.getByTestId('barbecue-info'))
     expect(screen.queryByTestId('barbecue-info')).not.toBeInTheDocument()
     expect(screen.queryByTestId('error')).toHaveTextContent(error.message)
+  })
+
+  test('Should open modal if click in edit barbecue', async () => {
+    makeSut()
+    await openModal()
+    expect(screen.queryByTestId('modal')).toBeInTheDocument()
   })
 })
