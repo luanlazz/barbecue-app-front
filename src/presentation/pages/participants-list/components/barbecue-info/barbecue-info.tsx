@@ -32,15 +32,19 @@ const BarbecueInfo: React.FC<Props> = ({ barbecue }: Props) => {
         </div>
         <div className={Styles.money}>
           <IconMoney />
-          <span className={Styles.valueTotal}>
-            {new Intl.NumberFormat('pt', {
-              style: 'currency',
-              currency: 'BRL'
-            }).format(barbecue.valueTotal).toString()}
-            /
-            {new Intl.NumberFormat('pt', {
-              currency: 'BRL'
-            }).format(barbecue.valueCollected).toString()}
+          <span className={Styles.wrapMoney}>
+            <span className={Styles.valueTotal}>
+              {new Intl.NumberFormat('pt', {
+                style: 'currency',
+                currency: 'BRL'
+              }).format(barbecue.valueTotal).toString()}
+            </span>
+            <span className={Styles.separate}>/</span>
+            <span className={Styles.valueCollected}>
+              {new Intl.NumberFormat('pt', {
+                currency: 'BRL'
+              }).format(barbecue.valueCollected).toString()}
+            </span>
           </span>
         </div>
       </div>
