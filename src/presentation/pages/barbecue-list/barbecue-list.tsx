@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { Header, MainContainer, ContentContainer, Modal } from '@/presentation/components'
 import { BarbecueListItems, BarbecueContext, Error, BarbecueInput } from '@/presentation/pages/barbecue-list/components'
 import { Validation } from '@/presentation/protocols/validation'
-import { useErrorHandler } from '@/presentation/hooks'
+import { useErrorHandler, useModal } from '@/presentation/hooks'
 import { LoadBarbecueList, SaveBarbecue } from '@/domain/usecases'
 
 type Props = {
@@ -21,10 +21,11 @@ const BarbecueList: React.FC<Props> = ({ loadBarbecueList, saveBarbecue, validat
     }))
   })
 
+  const { isShowing, handleModal } = useModal()
+
   const [barbecueListState, setBarbecueListState] = useState({
     barbecues: [] as LoadBarbecueList.Model[],
     isLoading: false,
-    isModalOpen: false,
     error: ''
   })
 
@@ -43,10 +44,6 @@ const BarbecueList: React.FC<Props> = ({ loadBarbecueList, saveBarbecue, validat
       .catch(handleError)
   }, [])
 
-  const handleModal = (): void => {
-    setBarbecueListState(old => ({ ...old, isModalOpen: !old.isModalOpen }))
-  }
-
   return (
     <MainContainer>
 
@@ -60,14 +57,12 @@ const BarbecueList: React.FC<Props> = ({ loadBarbecueList, saveBarbecue, validat
           }
         </ContentContainer>
 
-        {barbecueListState.isModalOpen &&
-          <Modal title='Próximo churas' >
-            <BarbecueInput
-              saveBarbecue={saveBarbecue}
-              validation={validation}
-            />
-          </Modal>
-        }
+        <Modal isShowing={isShowing} handleModal={handleModal} title='Próximo churas' >
+          <BarbecueInput
+            saveBarbecue={saveBarbecue}
+            validation={validation}
+          />
+        </Modal>
 
       </BarbecueContext.Provider>
 

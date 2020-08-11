@@ -4,7 +4,7 @@ import { Header, MainContainer, ContentContainer, Modal, Input, InputNoStatus, F
 import { LoadParticipantsList, LoadBarbecueById } from '@/domain/usecases'
 import { Error, ParticipantsContext, ParticipantsListItems, BarbecueInfo } from './components'
 import { FormContext } from '@/presentation/contexts'
-import { useErrorHandler } from '@/presentation/hooks'
+import { useErrorHandler, useModal } from '@/presentation/hooks'
 
 type Props = {
   loadParticipantsList: LoadParticipantsList
@@ -20,10 +20,11 @@ const ParticipantsList: React.FC<Props> = ({ loadParticipantsList, loadBarbecueB
     }))
   })
 
+  const { isShowing, handleModal } = useModal()
+
   const [state, setState] = useState({
     participants: [] as LoadParticipantsList.Model[],
     barbecue: {} as LoadBarbecueById.Model,
-    isModalOpen: false,
     isLoading: false,
     isFormInvalid: false,
     error: ''
@@ -76,10 +77,6 @@ const ParticipantsList: React.FC<Props> = ({ loadParticipantsList, loadBarbecueB
     event.preventDefault()
   }
 
-  const handleModal = (): void => {
-    setState({ ...state, isModalOpen: !state.isModalOpen })
-  }
-
   const handleChangeTextArea = (event: React.ChangeEvent<HTMLTextAreaElement>): void => {
     setState({
       ...state,
@@ -104,38 +101,37 @@ const ParticipantsList: React.FC<Props> = ({ loadParticipantsList, loadBarbecueB
             </>
           }
 
-          {state.isModalOpen &&
-            <FormContext.Provider value={{ state, setState, barbecueState, setBarbecueState }}>
-              <Modal title='Próximo churas'>
-                <form data-testid='form' className={Styles.form}>
+          <FormContext.Provider value={{ state, setState, barbecueState, setBarbecueState }}>
+            <Modal isShowing={isShowing} handleModal={handleModal} title='Próximo churas'>
+              <form data-testid='form' className={Styles.form}>
 
-                  <Input type="date" name='date' className={Styles.date} placeholder="data" />
-                  <Input type="text" name='description' className={Styles.description} placeholder="descrição" />
-                  <textarea
-                    data-testid='observation-input'
-                    name='observation'
-                    rows={2}
-                    className={Styles.observation}
-                    placeholder="observação"
-                    onChange={handleChangeTextArea}
-                  />
-                  <span>Valores sugeridos</span>
-                  <div className={Styles.suggest}>
-                    <InputNoStatus type="number" min={0} name='suggestValueFood' placeholder="comida" />
-                    <InputNoStatus type="number" min={0} name='suggestValueDrink' placeholder="bebida" />
-                  </div>
+                <Input type="date" name='date' className={Styles.date} placeholder="data" />
+                <Input type="text" name='description' className={Styles.description} placeholder="descrição" />
+                <textarea
+                  data-testid='observation-input'
+                  name='observation'
+                  rows={2}
+                  className={Styles.observation}
+                  placeholder="observação"
+                  onChange={handleChangeTextArea}
+                />
+                <span>Valores sugeridos</span>
+                <div className={Styles.suggest}>
+                  <InputNoStatus type="number" min={0} name='suggestValueFood' placeholder="comida" />
+                  <InputNoStatus type="number" min={0} name='suggestValueDrink' placeholder="bebida" />
+                </div>
 
-                  <div className={Styles.buttonsWrap}>
-                    <button type='reset' onClick={handleModal}>Cancelar</button>
-                    <button type='submit' data-testid='submit' disabled={state.isFormInvalid} >Confirmar</button>
-                  </div>
+                <div className={Styles.buttonsWrap}>
+                  <button type='reset'>Cancelar</button>
+                  <button type='submit' data-testid='submit' disabled={state.isFormInvalid} >Confirmar</button>
+                </div>
 
-                  <FormStatus />
+                <FormStatus />
 
-                </form>
-              </Modal>
-            </FormContext.Provider>
-          }
+              </form>
+            </Modal>
+          </FormContext.Provider>
+
         </ContentContainer>
       </ParticipantsContext.Provider>
 
