@@ -35,6 +35,7 @@ const Input: React.FC<Props> = (props: Props) => {
         readOnly
         onFocus={enableInput}
         onChange={handleChange}
+        value={state[props.name]}
       />
       <span data-testid={`${props.name}-status`} title={getTitle()} className={Styles.status}>{getStatus()}</span>
     </div>

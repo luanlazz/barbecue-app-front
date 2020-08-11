@@ -18,7 +18,7 @@ const BarbecueInput: React.FC<Props> = ({ saveBarbecue,validation }: Props) => {
     isLoading: false,
     mainError: '',
     isFormInvalid: true,
-    date: null,
+    date: new Date().toISOString().split('T')[0],
     dateError: '',
     description: '',
     descriptionError: '',
@@ -51,7 +51,7 @@ const BarbecueInput: React.FC<Props> = ({ saveBarbecue,validation }: Props) => {
     }))
 
     saveBarbecue.save({
-      date: state.date,
+      date: new Date(state.date),
       description: state.description,
       observation: state.observation,
       valueSuggestDrink: parseInt(state.suggestValueDrink),
@@ -75,7 +75,7 @@ const BarbecueInput: React.FC<Props> = ({ saveBarbecue,validation }: Props) => {
     <FormContext.Provider value={{ state, setState }}>
       <form data-testid='form' className={Styles.form} onSubmit={handleNewBarbecue}>
 
-        <Input type="date" name='date' className={Styles.date} placeholder="data" />
+        <Input id='date' type="date" name='date' className={Styles.date} placeholder="data" />
         <Input type="text" name='description' className={Styles.description} placeholder="descrição" />
         <TextArea name='observation' className={Styles.observation} placeholder="observação" />
 
