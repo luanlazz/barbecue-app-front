@@ -5,6 +5,7 @@ import { render, screen, waitFor, fireEvent } from '@testing-library/react'
 import { BarbecueList } from '@/presentation/pages'
 import { UnexpectedError, InvalidCredentialsError } from '@/domain/errors'
 import { ValidationStub, Helper, LoadBarbecueListSpy, SaveBarbecueSpy } from '@/presentation/test'
+import { ApiContext } from '@/presentation/contexts'
 import faker from 'faker'
 
 type SutTypes = {
@@ -23,13 +24,15 @@ const makeSut = (loadBarbecueListSpy = new LoadBarbecueListSpy(), params?: SutPa
   validationStub.errorMessage = params?.validationError
   const saveBarbecueSpy = new SaveBarbecueSpy()
   render(
-    <Router history={history}>
-      <BarbecueList
-        loadBarbecueList={loadBarbecueListSpy}
-        saveBarbecue={saveBarbecueSpy}
-        validation={validationStub}
-      />
-    </Router>
+    <ApiContext.Provider value={{}}>
+      <Router history={history}>
+        <BarbecueList
+          loadBarbecueList={loadBarbecueListSpy}
+          saveBarbecue={saveBarbecueSpy}
+          validation={validationStub}
+        />
+      </Router>
+    </ApiContext.Provider>
   )
   return {
     loadBarbecueListSpy,

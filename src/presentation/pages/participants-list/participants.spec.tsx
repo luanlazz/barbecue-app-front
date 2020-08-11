@@ -1,8 +1,11 @@
 import React from 'react'
+import { Router } from 'react-router-dom'
+import { createMemoryHistory } from 'history'
 import { render, screen, waitFor } from '@testing-library/react'
 import { ParticipantsList } from '@/presentation/pages'
 import { LoadParticipantsListSpy, LoadBarbecueByIdSpy } from '@/presentation/test'
 import { UnexpectedError } from '@/domain/errors'
+import { ApiContext } from '@/presentation/contexts'
 
 type SutTypes = {
   loadParticipantsListSpy: LoadParticipantsListSpy
@@ -13,14 +16,20 @@ type SutParams = {
   validationError: string
 }
 
+const history = createMemoryHistory({ initialEntries: ['/barbecue'] })
+
 const makeSut = (loadParticipantsListSpy = new LoadParticipantsListSpy(),
   loadBarbecueByIdSpy = new LoadBarbecueByIdSpy(),
   params?: SutParams): SutTypes => {
   render(
-    <ParticipantsList
-      loadParticipantsList={loadParticipantsListSpy}
-      loadBarbecueById={loadBarbecueByIdSpy}
-    />
+    <ApiContext.Provider value={{ }}>
+      <Router history={history}>
+        <ParticipantsList
+          loadParticipantsList={loadParticipantsListSpy}
+          loadBarbecueById={loadBarbecueByIdSpy}
+        />
+      </Router>
+    </ApiContext.Provider>
   )
   return {
     loadParticipantsListSpy,
