@@ -1,12 +1,10 @@
-import React, { useEffect, useState, useContext } from 'react'
+import React, { useEffect, useState } from 'react'
 // import Styles from './barbecue-list-styles.scss'
 import { Header, MainContainer, ContentContainer, Modal } from '@/presentation/components'
 import { BarbecueListItems, BarbecueContext, Error, BarbecueInput } from '@/presentation/pages/barbecue-list/components'
 import { Validation } from '@/presentation/protocols/validation'
+import { useErrorHandler } from '@/presentation/hooks'
 import { LoadBarbecueList, SaveBarbecue } from '@/domain/usecases'
-import { AccessDeniedError } from '@/domain/errors'
-import { useHistory } from 'react-router-dom'
-import { ApiContext } from '@/presentation/contexts'
 
 type Props = {
   loadBarbecueList: LoadBarbecueList
@@ -15,8 +13,13 @@ type Props = {
 }
 
 const BarbecueList: React.FC<Props> = ({ loadBarbecueList, saveBarbecue, validation }: Props) => {
-  const history = useHistory()
-  const { setCurrentAccount } = useContext(ApiContext)
+  const handleError = useErrorHandler((error: Error) => {
+    setBarbecueListState(old => ({
+      ...old,
+      isLoading: false,
+      error: error.message
+    }))
+  })
 
   const [barbecueListState, setBarbecueListState] = useState({
     barbecues: [] as LoadBarbecueList.Model[],
@@ -37,18 +40,7 @@ const BarbecueList: React.FC<Props> = ({ loadBarbecueList, saveBarbecue, validat
         isLoading: false,
         barbecues
       })))
-      .catch(error => {
-        if (error instanceof AccessDeniedError) {
-          setCurrentAccount(undefined)
-          history.replace('/login')
-        } else {
-          setBarbecueListState(old => ({
-            ...old,
-            isLoading: false,
-            error: error.message
-          }))
-        }
-      })
+      .catch(handleError)
   }, [])
 
   const handleModal = (): void => {

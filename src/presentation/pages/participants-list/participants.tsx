@@ -4,6 +4,7 @@ import { Header, MainContainer, ContentContainer, Modal, Input, InputNoStatus, F
 import { LoadParticipantsList, LoadBarbecueById } from '@/domain/usecases'
 import { Error, ParticipantsContext, ParticipantsListItems, BarbecueInfo } from './components'
 import { FormContext } from '@/presentation/contexts'
+import { useErrorHandler } from '@/presentation/hooks'
 
 type Props = {
   loadParticipantsList: LoadParticipantsList
@@ -11,6 +12,14 @@ type Props = {
 }
 
 const ParticipantsList: React.FC<Props> = ({ loadParticipantsList, loadBarbecueById }: Props) => {
+  const handleError = useErrorHandler((error: Error) => {
+    setState(old => ({
+      ...old,
+      isLoading: false,
+      error: error.message
+    }))
+  })
+
   const [state, setState] = useState({
     participants: [] as LoadParticipantsList.Model[],
     barbecue: {} as LoadBarbecueById.Model,
@@ -45,11 +54,7 @@ const ParticipantsList: React.FC<Props> = ({ loadParticipantsList, loadBarbecueB
         isLoading: false,
         participants
       })))
-      .catch(error => setState(old => ({
-        ...old,
-        isLoading: false,
-        error: error.message
-      })))
+      .catch(handleError)
   }, [])
 
   useEffect(() => {
@@ -64,11 +69,7 @@ const ParticipantsList: React.FC<Props> = ({ loadParticipantsList, loadBarbecueB
         isLoading: false,
         barbecue
       })))
-      .catch(error => setState(old => ({
-        ...old,
-        isLoading: false,
-        error: error.message
-      })))
+      .catch(handleError)
   }, [])
 
   const handleEditBarbecue = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
