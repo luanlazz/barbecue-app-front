@@ -73,16 +73,12 @@ const ParticipantsList: React.FC<Props> = ({ loadParticipantsList, loadBarbecueB
       .catch(handleError)
   }, [])
 
-  const handleEditBarbecue = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
-    event.preventDefault()
-  }
-
   return (
     <MainContainer>
 
       <Header buttonExit />
 
-      <ParticipantsContext.Provider value={{ state, handleEditBarbecue }}>
+      <ParticipantsContext.Provider value={{ state, handleModal }}>
         <ContentContainer>
           {state.error
             ? <Error />

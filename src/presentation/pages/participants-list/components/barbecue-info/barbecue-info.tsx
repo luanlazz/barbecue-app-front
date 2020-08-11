@@ -9,7 +9,7 @@ type Props = {
 }
 
 const BarbecueInfo: React.FC<Props> = ({ barbecue }: Props) => {
-  const { handleEditBarbecue } = useContext(ParticipantsContext)
+  const { handleModal } = useContext(ParticipantsContext)
 
   return (
     <div data-testid='barbecue-info' className={Styles.barbecue}>
@@ -49,7 +49,7 @@ const BarbecueInfo: React.FC<Props> = ({ barbecue }: Props) => {
         </div>
       </div>
 
-      <div className={Styles.editButton} onClick={handleEditBarbecue}/>
+      <div data-testid='editItem' className={Styles.editButton} onClick={handleModal}/>
     </div>
   )
 }
