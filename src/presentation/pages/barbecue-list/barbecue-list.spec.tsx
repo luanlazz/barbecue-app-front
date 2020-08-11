@@ -54,11 +54,13 @@ const openModal = async (): Promise<void> => {
 }
 
 const simulateValidSubmit = async (
+  date: string = new Date(faker.date.recent()).toISOString().split('T')[0],
   description: string = faker.random.words(),
   observation: string = faker.random.words(),
   suggestValueFood: number = faker.random.number(),
   suggestValueDrink: number = faker.random.number()
 ): Promise<void> => {
+  Helper.populateField('date', date)
   Helper.populateField('description', description)
   Helper.populateField('observation', observation)
   Helper.populateField('suggestValueFood', suggestValueFood.toString())
@@ -149,12 +151,14 @@ describe('BarbecueList Component', () => {
 
   test('Should call SaveBarbecue with correct values', async () => {
     const { saveBarbecueSpy } = makeSut()
+    const date = new Date(faker.date.recent()).toISOString().split('T')[0]
     const description = faker.random.words()
     const observation = faker.random.words()
     const valueSuggestFood = faker.random.number()
     const valueSuggestDrink = faker.random.number()
     await openModal()
-    await simulateValidSubmit(description, observation, valueSuggestFood, valueSuggestDrink)
+    await simulateValidSubmit(date, description, observation, valueSuggestFood, valueSuggestDrink)
+    expect(saveBarbecueSpy.params.date).toEqual(new Date(date))
     expect(saveBarbecueSpy.params.description).toEqual(description)
     expect(saveBarbecueSpy.params.observation).toEqual(observation)
     expect(saveBarbecueSpy.params.valueSuggestFood).toEqual(valueSuggestFood)
