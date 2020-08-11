@@ -89,7 +89,7 @@ const ParticipantsList: React.FC<Props> = ({ loadParticipantsList, loadBarbecueB
   return (
     <MainContainer>
 
-      <Header />
+      <Header buttonExit />
 
       <ParticipantsContext.Provider value={{ state, handleEditBarbecue }}>
         <ContentContainer>

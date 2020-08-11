@@ -45,7 +45,7 @@ const BarbecueList: React.FC<Props> = ({ loadBarbecueList, saveBarbecue, validat
   return (
     <MainContainer>
 
-      <Header />
+      <Header buttonExit />
 
       <BarbecueContext.Provider value={{ barbecueListState, setBarbecueListState, handleModal }}>
         <ContentContainer>
