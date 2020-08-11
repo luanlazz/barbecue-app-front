@@ -1,16 +1,19 @@
 import React from 'react'
 import { Router } from 'react-router-dom'
-import { createMemoryHistory } from 'history'
+import { createMemoryHistory, MemoryHistory } from 'history'
 import { render, screen, waitFor, fireEvent } from '@testing-library/react'
 import { BarbecueList } from '@/presentation/pages'
-import { UnexpectedError, InvalidCredentialsError } from '@/domain/errors'
-import { ValidationStub, Helper, LoadBarbecueListSpy, SaveBarbecueSpy } from '@/presentation/test'
 import { ApiContext } from '@/presentation/contexts'
+import { ValidationStub, Helper, LoadBarbecueListSpy, SaveBarbecueSpy } from '@/presentation/test'
+import { UnexpectedError, InvalidCredentialsError, AccessDeniedError } from '@/domain/errors'
+import { AccountModel } from '@/domain/models'
 import faker from 'faker'
 
 type SutTypes = {
   loadBarbecueListSpy: LoadBarbecueListSpy
   saveBarbecueSpy: SaveBarbecueSpy
+  history: MemoryHistory
+  setCurrentAccountMock: (account: AccountModel) => void
 }
 
 type SutParams = {
@@ -23,8 +26,9 @@ const makeSut = (loadBarbecueListSpy = new LoadBarbecueListSpy(), params?: SutPa
   const validationStub = new ValidationStub()
   validationStub.errorMessage = params?.validationError
   const saveBarbecueSpy = new SaveBarbecueSpy()
+  const setCurrentAccountMock = jest.fn()
   render(
-    <ApiContext.Provider value={{}}>
+    <ApiContext.Provider value={{ setCurrentAccount: setCurrentAccountMock }}>
       <Router history={history}>
         <BarbecueList
           loadBarbecueList={loadBarbecueListSpy}
@@ -36,7 +40,9 @@ const makeSut = (loadBarbecueListSpy = new LoadBarbecueListSpy(), params?: SutPa
   )
   return {
     loadBarbecueListSpy,
-    saveBarbecueSpy
+    saveBarbecueSpy,
+    history,
+    setCurrentAccountMock
   }
 }
 
@@ -85,7 +91,7 @@ describe('BarbecueList Component', () => {
     expect(screen.queryByTestId('error')).not.toBeInTheDocument()
   })
 
-  test('Should render error on failure', async () => {
+  test('Should render error on UnexpectedError', async () => {
     const loadBarbecueListSpy = new LoadBarbecueListSpy()
     const error = new UnexpectedError()
     jest.spyOn(loadBarbecueListSpy, 'loadAll').mockRejectedValueOnce(error)
@@ -93,6 +99,15 @@ describe('BarbecueList Component', () => {
     await waitFor(() => screen.getByTestId('barbecue-list'))
     expect(screen.queryByTestId('barbecue-list')).not.toBeInTheDocument()
     expect(screen.queryByTestId('error')).toHaveTextContent(error.message)
+  })
+
+  test('Should logout on accessDeniedError', async () => {
+    const loadBarbecueListSpy = new LoadBarbecueListSpy()
+    jest.spyOn(loadBarbecueListSpy, 'loadAll').mockRejectedValueOnce(new AccessDeniedError())
+    const { history, setCurrentAccountMock } = makeSut(loadBarbecueListSpy)
+    await waitFor(() => screen.getByTestId('barbecue-list'))
+    expect(setCurrentAccountMock).toHaveBeenCalledWith(undefined)
+    expect(history.location.pathname).toBe('/login')
   })
 
   test('Should show new item after loading', async () => {
