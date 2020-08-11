@@ -1,7 +1,7 @@
 import { RemoteLoadBarbecueList } from './remote-load-barbecue-list'
 import { HttpClientSpy, mockRemoteBarbecuesModel } from '@/data/test'
 import { HttpStatusCode } from '@/data/protocols/http'
-import { UnexpectedError } from '@/domain/errors'
+import { UnexpectedError, AccessDeniedError } from '@/domain/errors'
 import faker from 'faker'
 
 type SutTypes = {
@@ -36,7 +36,7 @@ describe('RemoteLoadBarbecueList', () => {
       statusCode: HttpStatusCode.forbidden
     }
     const promise = sut.loadAll()
-    await expect(promise).rejects.toThrow(new UnexpectedError())
+    await expect(promise).rejects.toThrow(new AccessDeniedError())
   })
 
   test('Should throw UnexpectedError if HttpClient returns 404', async () => {

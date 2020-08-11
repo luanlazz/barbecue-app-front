@@ -3,7 +3,7 @@ import { HttpClientSpy } from '@/data/test'
 import { HttpStatusCode } from '@/data/protocols/http'
 import { mockRemoteBarbecueModel } from '@/data/test/mock-remote-barbecue'
 import { mockBarbecueParams } from '@/domain/test/mock-barbecue'
-import { UnexpectedError } from '@/domain/errors'
+import { UnexpectedError, AccessDeniedError } from '@/domain/errors'
 import faker from 'faker'
 
 type SutTypes = {
@@ -46,7 +46,7 @@ describe('RemoteSaveBarbecue', () => {
       statusCode: HttpStatusCode.forbidden
     }
     const promise = sut.save(mockBarbecueParams())
-    await expect(promise).rejects.toThrow(new UnexpectedError())
+    await expect(promise).rejects.toThrow(new AccessDeniedError())
   })
 
   test('Should throw UnexpectedError if HttpClient return 404', async () => {

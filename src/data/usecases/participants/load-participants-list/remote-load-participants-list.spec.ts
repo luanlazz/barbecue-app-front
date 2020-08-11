@@ -3,7 +3,7 @@ import { HttpStatusCode } from '@/data/protocols/http'
 import { HttpClientSpy } from '@/data/test'
 import { mockParticipantsModel } from '@/domain/test'
 import { LoadParticipantsList } from '@/domain/usecases'
-import { UnexpectedError } from '@/domain/errors'
+import { UnexpectedError, AccessDeniedError } from '@/domain/errors'
 import faker from 'faker'
 
 type SutTypes = {
@@ -35,7 +35,7 @@ describe('RemoteLoadParticipantsList', () => {
       statusCode: HttpStatusCode.forbidden
     }
     const promise = sut.loadAll()
-    await expect(promise).rejects.toThrow(new UnexpectedError())
+    await expect(promise).rejects.toThrow(new AccessDeniedError())
   })
 
   test('Should throw UnexpectedError if HttpClient returns 404', async () => {
