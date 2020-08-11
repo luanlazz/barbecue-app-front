@@ -163,4 +163,12 @@ describe('ParticipantsList Component', () => {
     expect(saveBarbecueSpy.params.valueSuggestFood).toEqual(valueSuggestFood)
     expect(saveBarbecueSpy.params.valueSuggestDrink).toEqual(valueSuggestDrink)
   })
+
+  test('Should not call SaveBarbecue if form is invalid', async () => {
+    const validationError = faker.random.words()
+    const { saveBarbecueSpy } = makeSut(undefined, undefined, { validationError })
+    await openModal()
+    await simulateValidSubmit()
+    expect(saveBarbecueSpy.callsCount).toBe(0)
+  })
 })
