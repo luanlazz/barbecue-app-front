@@ -2,7 +2,7 @@ import { RemoteSaveParticipant } from './remote-save-participant'
 import { HttpClientSpy } from '@/data/test'
 import { HttpStatusCode } from '@/data/protocols/http'
 import { SaveParticipant } from '@/domain/usecases'
-import { mockParticipantParams } from '@/domain/test'
+import { mockParticipantParams, mockParticipantModel } from '@/domain/test'
 import { UnexpectedError, AccessDeniedError } from '@/domain/errors'
 import faker from 'faker'
 
@@ -11,10 +11,11 @@ type SutTypes = {
   httpClientSpy: HttpClientSpy<SaveParticipant.Model>
 }
 
-const makeSut = (url: string = faker.internet.url()): SutTypes => {
+const makeSut = (url: string = faker.internet.url(), response = mockParticipantModel()): SutTypes => {
   const httpClientSpy = new HttpClientSpy<SaveParticipant.Model>()
   httpClientSpy.response = {
-    statusCode: HttpStatusCode.ok
+    statusCode: HttpStatusCode.ok,
+    body: response
   }
   const sut = new RemoteSaveParticipant(url, httpClientSpy)
   return {
@@ -72,5 +73,18 @@ describe('RemoteSaveParticipant', () => {
     }
     const promise = sut.save(mockParticipantParams())
     await expect(promise).rejects.toThrow(new UnexpectedError())
+  })
+
+  test('Should return the participant on success', async () => {
+    const httpResult = mockParticipantModel()
+    const { sut } = makeSut(null, httpResult)
+    const participant = await sut.save(mockParticipantParams())
+    await expect(participant).toEqual({
+      id: httpResult.id,
+      barbecueId: httpResult.barbecueId,
+      name: httpResult.name,
+      pay: httpResult.pay,
+      value: httpResult.value
+    })
   })
 })
