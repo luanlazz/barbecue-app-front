@@ -3,7 +3,7 @@ import { HttpClientSpy } from '@/data/test'
 import { HttpStatusCode } from '@/data/protocols/http'
 import { SaveParticipant } from '@/domain/usecases'
 import { mockParticipantParams } from '@/domain/test'
-import { UnexpectedError } from '@/domain/errors'
+import { UnexpectedError, AccessDeniedError } from '@/domain/errors'
 import faker from 'faker'
 
 type SutTypes = {
@@ -46,5 +46,14 @@ describe('RemoteSaveParticipant', () => {
     }
     const promise = sut.save(mockParticipantParams())
     await expect(promise).rejects.toThrow(new UnexpectedError())
+  })
+
+  test('Should throw AccessDeniedError if HttpClient return 403', async () => {
+    const { sut, httpClientSpy } = makeSut()
+    httpClientSpy.response = {
+      statusCode: HttpStatusCode.forbidden
+    }
+    const promise = sut.save(mockParticipantParams())
+    await expect(promise).rejects.toThrow(new AccessDeniedError())
   })
 })

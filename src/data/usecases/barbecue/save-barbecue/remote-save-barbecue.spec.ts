@@ -40,7 +40,7 @@ describe('RemoteSaveBarbecue', () => {
     expect(httpClientSpy.body).toBe(barbecueParams)
   })
 
-  test('Should throw UnexpectedError if HttpClient return 403', async () => {
+  test('Should throw AccessDeniedError if HttpClient return 403', async () => {
     const { sut, httpClientSpy } = makeSut()
     httpClientSpy.response = {
       statusCode: HttpStatusCode.forbidden
