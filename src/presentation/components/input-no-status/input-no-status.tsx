@@ -26,6 +26,7 @@ const InputNoStatus: React.FC<Props> = (props: Props) => {
         readOnly
         onFocus={enableInput}
         onChange={handleChange}
+        value={state[props.name]}
       />
     </div>
   )

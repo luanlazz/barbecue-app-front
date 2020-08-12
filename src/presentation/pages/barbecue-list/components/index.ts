@@ -3,5 +3,4 @@ export { default as BarbecueNewItem } from './barbecue-new-item/barbecue-new-ite
 export { default as BarbecueItemEmpty } from './barbecue-item-empty/barbecue-item-empty'
 export { default as BarbecueListItems } from './barbecue-list/barbecue-list-items'
 export { default as BarbecueContext } from './context/context'
-export { default as BarbecueInput } from './barbecue-input/barbecue-input'
 export { default as Error } from './error/error'

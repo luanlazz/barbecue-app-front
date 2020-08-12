@@ -27,6 +27,7 @@ const Input: React.FC<Props> = (props: Props) => {
         data-testid={`${props.name}-input`}
         onChange={handleChange}
         onFocus={enableInput}
+        value={state[props.name]}
       />
     </div>
   )

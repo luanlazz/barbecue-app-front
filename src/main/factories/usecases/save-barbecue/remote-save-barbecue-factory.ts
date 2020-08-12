@@ -4,5 +4,5 @@ import { RemoteSaveBarbecue } from '@/data/usecases'
 import { SaveBarbecue } from '@/domain/usecases'
 
 export const makeRemoteSaveBarbecue = (barbecueId?: string): SaveBarbecue => {
-  return new RemoteSaveBarbecue(makeApiUrl(`/barbecue/${barbecueId}`), makeAuthorizeHttpClientDecorator())
+  return new RemoteSaveBarbecue(makeApiUrl(`/barbecue/${barbecueId || ''}`), makeAuthorizeHttpClientDecorator())
 }

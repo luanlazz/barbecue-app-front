@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
 // import Styles from './barbecue-list-styles.scss'
 import { Header, MainContainer, ContentContainer, Modal } from '@/presentation/components'
-import { BarbecueListItems, BarbecueContext, Error, BarbecueInput } from '@/presentation/pages/barbecue-list/components'
+import { BarbecueListItems, BarbecueContext, Error } from '@/presentation/pages/barbecue-list/components'
 import { Validation } from '@/presentation/protocols/validation'
 import { useErrorHandler, useModal } from '@/presentation/hooks'
 import { LoadBarbecueList, SaveBarbecue } from '@/domain/usecases'
+import BarbecueForm from '@/presentation/pages/ui/barbecue-form'
 
 type Props = {
   loadBarbecueList: LoadBarbecueList
@@ -20,7 +21,6 @@ const BarbecueList: React.FC<Props> = ({ loadBarbecueList, saveBarbecue, validat
       error: error.message
     }))
   })
-
   const { isShowing, handleModal } = useModal()
 
   const [barbecueListState, setBarbecueListState] = useState({
@@ -44,6 +44,13 @@ const BarbecueList: React.FC<Props> = ({ loadBarbecueList, saveBarbecue, validat
       .catch(handleError)
   }, [])
 
+  const handleNewBarbecue = (barbecue: SaveBarbecue.Model): void => {
+    setBarbecueListState(old => ({
+      ...old,
+      barbecues: [...old.barbecues, barbecue]
+    }))
+  }
+
   return (
     <MainContainer>
 
@@ -58,9 +65,11 @@ const BarbecueList: React.FC<Props> = ({ loadBarbecueList, saveBarbecue, validat
         </ContentContainer>
 
         <Modal isShowing={isShowing} handleModal={handleModal} title='Próximo churas' >
-          <BarbecueInput
+          <BarbecueForm
             saveBarbecue={saveBarbecue}
             validation={validation}
+            callBack={handleNewBarbecue}
+            handleModal={handleModal}
           />
         </Modal>
 

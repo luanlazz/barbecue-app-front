@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import Styles from './participants-styles.scss'
-import { Header, MainContainer, ContentContainer, Modal , Input, InputNoStatus, FormStatus, TextArea } from '@/presentation/components'
+import { Header, MainContainer, ContentContainer, Modal } from '@/presentation/components'
 import { Error, ParticipantsContext, ParticipantsListItems, BarbecueInfo, BarbecueInfoEmpty } from './components'
-import { FormContext } from '@/presentation/contexts'
 import { useErrorHandler, useModal } from '@/presentation/hooks'
 import { LoadParticipantsList, LoadBarbecueById, SaveBarbecue } from '@/domain/usecases'
 import { Validation } from '@/presentation/protocols/validation'
+import BarbecueForm from '@/presentation/pages/ui/barbecue-form'
 
 type Props = {
   loadParticipantsList: LoadParticipantsList
@@ -31,30 +31,8 @@ const ParticipantsList: React.FC<Props> = ({ loadParticipantsList, loadBarbecueB
     isLoadingBarbecue: false,
     isLoadingParticipants: false,
     isLoading: false,
-    isFormInvalid: false,
-    error: '',
-    mainError: '',
-    date: '',
-    dateError: '',
-    description: '',
-    descriptionError: '',
-    observation: '',
-    observationError: '',
-    suggestValueDrink: '0',
-    suggestValueDrinkError: '',
-    suggestValueFood: '0',
-    suggestValueFoodError: ''
+    error: ''
   })
-
-  useEffect(() => { validate('date') }, [state.date])
-  useEffect(() => { validate('description') }, [state.description])
-
-  const validate = (field: string): void => {
-    const { date, description } = state
-    const formData = { date, description }
-    setState(old => ({ ...old, [`${field}Error`]: validation.validate(field, formData) }))
-    setState(old => ({ ...old, isFormInvalid: !!old.dateError || !!old.descriptionError }))
-  }
 
   useEffect(() => {
     setState(old => ({
@@ -81,53 +59,23 @@ const ParticipantsList: React.FC<Props> = ({ loadParticipantsList, loadBarbecueB
       .then(barbecue => setState(old => ({
         ...old,
         isLoadingBarbecue: false,
-        barbecue,
-        date: new Date(barbecue.date).toISOString().split('T')[0],
-        description: barbecue.description,
-        observation: barbecue.observation,
-        suggestValueDrink: barbecue.valueSuggestDrink.toString(),
-        suggestValueFood: barbecue.valueSuggestFood.toString()
+        barbecue
       })))
       .catch(handleError)
   }, [])
 
-  const handleSaveBarbecue = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
-    event.preventDefault()
-    if (state.isLoading || state.isFormInvalid) return
-
+  const handleSaveBarbecue = async (barbecue: SaveBarbecue.Model): Promise<void> => {
     setState(old => ({
       ...old,
-      isLoading: true,
-      mainError: ''
+      barbecue: {
+        ...old.barbecue,
+        date: barbecue.date,
+        description: barbecue.description,
+        observation: barbecue.observation,
+        valueSuggestDrink: barbecue.valueSuggestDrink,
+        valueSuggestFood: barbecue.valueSuggestFood
+      }
     }))
-
-    saveBarbecue.save({
-      date: new Date(state.date),
-      description: state.description,
-      observation: state.observation,
-      valueSuggestDrink: parseInt(state.suggestValueDrink),
-      valueSuggestFood: parseInt(state.suggestValueFood)
-    })
-      .then(barbecue => {
-        setState(old => ({
-          ...old,
-          isLoading: false,
-          barbecue: {
-            ...old.barbecue,
-            date: barbecue.date,
-            description: barbecue.description,
-            observation: barbecue.observation,
-            valueSuggestDrink: barbecue.valueSuggestDrink,
-            valueSuggestFood: barbecue.valueSuggestFood
-          }
-        }))
-        handleModal()
-      })
-      .catch(error => setState(old => ({
-        ...old,
-        isLoading: false,
-        mainError: error.message
-      })))
   }
 
   return (
@@ -150,32 +98,15 @@ const ParticipantsList: React.FC<Props> = ({ loadParticipantsList, loadBarbecueB
             </>
           }
 
-          <FormContext.Provider value={{ state, setState }}>
-            <Modal isShowing={isShowing} handleModal={handleModal} title='Alteração'>
-              <FormContext.Provider value={{ state, setState }}>
-                <form data-testid='form' className={Styles.form} onSubmit={handleSaveBarbecue}>
-
-                  <Input id='date' type="date" name='date' className={Styles.date} placeholder="data" />
-                  <Input type="text" name='description' className={Styles.description} placeholder="descrição" />
-                  <TextArea name='observation' className={Styles.observation} placeholder="observação" />
-
-                  <span>Valores sugeridos</span>
-                  <div className={Styles.suggest}>
-                    <InputNoStatus type="number" min={0} name='suggestValueFood' placeholder="comida" />
-                    <InputNoStatus type="number" min={0} name='suggestValueDrink' placeholder="bebida" />
-                  </div>
-
-                  <div className={Styles.buttonsWrap}>
-                    <button type='reset' onClick={() => handleModal()}>Cancelar</button>
-                    <button type='submit' data-testid='submit' disabled={state.isFormInvalid}>Confirmar</button>
-                  </div>
-
-                  <FormStatus />
-
-                </form>
-              </FormContext.Provider>
-            </Modal>
-          </FormContext.Provider>
+          <Modal isShowing={isShowing} handleModal={handleModal} title='Alteração'>
+            <BarbecueForm
+              saveBarbecue={saveBarbecue}
+              validation={validation}
+              callBack={handleSaveBarbecue}
+              handleModal={handleModal}
+              barbecue={state.barbecue}
+            />
+          </Modal>
 
         </ContentContainer>
       </ParticipantsContext.Provider>
