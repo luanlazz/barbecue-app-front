@@ -30,4 +30,11 @@ describe('RemoteSaveParticipant', () => {
     expect(httpClientSpy.url).toBe(url)
     expect(httpClientSpy.method).toBe('put')
   })
+
+  test('Should call HttpClient with correct body', async () => {
+    const { sut, httpClientSpy } = makeSut()
+    const participantParams = mockParticipantParams()
+    await sut.save(participantParams)
+    expect(httpClientSpy.body).toBe(participantParams)
+  })
 })
