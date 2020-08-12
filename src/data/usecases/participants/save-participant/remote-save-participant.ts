@@ -1,5 +1,6 @@
-import { HttpClient } from '@/data/protocols/http'
+import { HttpClient, HttpStatusCode } from '@/data/protocols/http'
 import { SaveParticipant } from '@/domain/usecases'
+import { UnexpectedError } from '@/domain/errors'
 
 export class RemoteSaveParticipant implements SaveParticipant {
   constructor (
@@ -8,11 +9,15 @@ export class RemoteSaveParticipant implements SaveParticipant {
   ) {}
 
   async save (participant: SaveParticipant.Params): Promise<SaveParticipant.Model> {
-    await this.httpClient.request({
+    const httpResponse = await this.httpClient.request({
       url: this.url,
       method: 'put',
       body: participant
     })
-    return null
+
+    switch (httpResponse.statusCode) {
+      case HttpStatusCode.ok: return null
+      default: throw new UnexpectedError()
+    }
   }
 }
