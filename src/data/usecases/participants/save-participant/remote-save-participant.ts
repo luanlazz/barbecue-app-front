@@ -10,7 +10,8 @@ export class RemoteSaveParticipant implements SaveParticipant {
   async save (participant: SaveParticipant.Params): Promise<SaveParticipant.Model> {
     await this.httpClient.request({
       url: this.url,
-      method: 'put'
+      method: 'put',
+      body: participant
     })
     return null
   }
