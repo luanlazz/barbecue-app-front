@@ -46,8 +46,7 @@ const makeSut = (loadParticipantsListSpy = new LoadParticipantsListSpy(),
 }
 
 const openModal = async (): Promise<void> => {
-  const barbecueInfo = screen.getByTestId('barbecue-info')
-  await waitFor(() => barbecueInfo)
+  await waitFor(() => screen.getByTestId('header'))
   const editItem = screen.getByTestId('editItem')
   fireEvent.click(editItem)
 }
@@ -78,8 +77,8 @@ describe('ParticipantsList Component', () => {
 
   test('Should render ParticipantsItems on success', async () => {
     makeSut()
+    await waitFor(() => screen.getByTestId('header'))
     const participantsList = screen.getByTestId('participants-list')
-    await waitFor(() => participantsList)
     expect(participantsList.querySelectorAll('tr')).toHaveLength(2)
     expect(screen.queryByTestId('error')).not.toBeInTheDocument()
   })
@@ -89,7 +88,7 @@ describe('ParticipantsList Component', () => {
     const error = new UnexpectedError()
     jest.spyOn(loadParticipantsListSpy, 'loadAll').mockRejectedValueOnce(error)
     makeSut(loadParticipantsListSpy)
-    await waitFor(() => screen.getByTestId('participants-list'))
+    await waitFor(() => screen.getByTestId('header'))
     expect(screen.queryByTestId('participants-list')).not.toBeInTheDocument()
     expect(screen.queryByTestId('error')).toHaveTextContent(error.message)
   })
@@ -97,13 +96,13 @@ describe('ParticipantsList Component', () => {
   test('Should call LoadBarbecueById', async () => {
     const { loadBarbecueByIdSpy } = makeSut()
     expect(loadBarbecueByIdSpy.callsCount).toBe(1)
-    await waitFor(() => screen.getByTestId('barbecue-info'))
+    await waitFor(() => screen.getByTestId('header'))
   })
 
   test('Should render BarbecueItem on success', async () => {
     makeSut()
+    await waitFor(() => screen.getByTestId('header'))
     const barbecueInfo = screen.getByTestId('barbecue-info')
-    await waitFor(() => barbecueInfo)
     expect(barbecueInfo).toBeInTheDocument()
     expect(screen.queryByTestId('error')).not.toBeInTheDocument()
   })
@@ -113,7 +112,7 @@ describe('ParticipantsList Component', () => {
     const error = new UnexpectedError()
     jest.spyOn(loadBarbecueById, 'loadById').mockRejectedValueOnce(error)
     makeSut(undefined, loadBarbecueById)
-    await waitFor(() => screen.getByTestId('barbecue-info'))
+    await waitFor(() => screen.getByTestId('header'))
     expect(screen.queryByTestId('barbecue-info')).not.toBeInTheDocument()
     expect(screen.queryByTestId('error')).toHaveTextContent(error.message)
   })

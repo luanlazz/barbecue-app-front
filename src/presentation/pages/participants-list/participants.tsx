@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import Styles from './participants-styles.scss'
 import { Header, MainContainer, ContentContainer, Modal , Input, InputNoStatus, FormStatus, TextArea } from '@/presentation/components'
-import { Error, ParticipantsContext, ParticipantsListItems, BarbecueInfo } from './components'
-
+import { Error, ParticipantsContext, ParticipantsListItems, BarbecueInfo, BarbecueInfoEmpty } from './components'
 import { FormContext } from '@/presentation/contexts'
 import { useErrorHandler, useModal } from '@/presentation/hooks'
 import { LoadParticipantsList, LoadBarbecueById, SaveBarbecue } from '@/domain/usecases'
@@ -29,6 +28,8 @@ const ParticipantsList: React.FC<Props> = ({ loadParticipantsList, loadBarbecueB
   const [state, setState] = useState({
     participants: [] as LoadParticipantsList.Model[],
     barbecue: {} as LoadBarbecueById.Model,
+    isLoadingBarbecue: false,
+    isLoadingParticipants: false,
     isLoading: false,
     isFormInvalid: false,
     error: '',
@@ -58,13 +59,13 @@ const ParticipantsList: React.FC<Props> = ({ loadParticipantsList, loadBarbecueB
   useEffect(() => {
     setState(old => ({
       ...old,
-      isLoading: true
+      isLoadingParticipants: true
     }))
 
     loadParticipantsList.loadAll()
       .then(participants => setState(old => ({
         ...old,
-        isLoading: false,
+        isLoadingParticipants: false,
         participants
       })))
       .catch(handleError)
@@ -73,13 +74,13 @@ const ParticipantsList: React.FC<Props> = ({ loadParticipantsList, loadBarbecueB
   useEffect(() => {
     setState(old => ({
       ...old,
-      isLoading: true
+      isLoadingBarbecue: true
     }))
 
     loadBarbecueById.loadById()
       .then(barbecue => setState(old => ({
         ...old,
-        isLoading: false,
+        isLoadingBarbecue: false,
         barbecue,
         date: new Date(barbecue.date).toISOString().split('T')[0],
         description: barbecue.description,
@@ -110,7 +111,15 @@ const ParticipantsList: React.FC<Props> = ({ loadParticipantsList, loadBarbecueB
       .then(barbecue => {
         setState(old => ({
           ...old,
-          barbecue
+          isLoading: false,
+          barbecue: {
+            ...old.barbecue,
+            date: barbecue.date,
+            description: barbecue.description,
+            observation: barbecue.observation,
+            valueSuggestDrink: barbecue.valueSuggestDrink,
+            valueSuggestFood: barbecue.valueSuggestFood
+          }
         }))
         handleModal()
       })
@@ -132,7 +141,10 @@ const ParticipantsList: React.FC<Props> = ({ loadParticipantsList, loadBarbecueB
             ? <Error />
             : <>
               <div className={Styles.wrapParticipants}>
-                <BarbecueInfo barbecue={state.barbecue} />
+                {state.isLoadingBarbecue
+                  ? <BarbecueInfoEmpty />
+                  : <BarbecueInfo barbecue={state.barbecue} />
+                }
                 <ParticipantsListItems />
               </div>
             </>
@@ -154,7 +166,7 @@ const ParticipantsList: React.FC<Props> = ({ loadParticipantsList, loadBarbecueB
                   </div>
 
                   <div className={Styles.buttonsWrap}>
-                    <button type='reset' onClick={() => handleModal}>Cancelar</button>
+                    <button type='reset' onClick={() => handleModal()}>Cancelar</button>
                     <button type='submit' data-testid='submit' disabled={state.isFormInvalid}>Confirmar</button>
                   </div>
 

@@ -1,17 +1,11 @@
 @import "@/presentation/styles/colors.scss";
 
-.barbecueItemEmpty {
-  background-color: $white;  
-  box-shadow: 6px 10px 27px -10px rgba(0,0,0,0.48);
+.emptyParticipant {
   display: flex;
   flex-direction: column;
-  flex-basis: 25%;
-  justify-content: space-between;
-  height: 100px;
-  margin: 16px;
+  height: 50px;
   position: relative;
   overflow: hidden;
-  min-width: 200px;
 
   background-repeat: no-repeat;
   background-image: 
@@ -20,15 +14,12 @@
     linear-gradient(to right, #CCC, #CCC),
     linear-gradient(to right, #CCC, #CCC);
   background-position: 
-    8px 8px,
-    8px 42px,
-    8px 90px,
-    90% 90px;
-  background-size: 
-    60px 30px,
-    90% 22px,
-    50px 27px,
-    50px 27px;
+    5% 10px,
+    89% 10px;
+
+  background-size:
+    40% 30px,
+    15% 30px;
 
   &::after{
     content: '';
@@ -41,18 +32,6 @@
     background-image: 
       linear-gradient(to right, transparent, rgba($white, 0.3), transparent);
     animation: shimmer 1.2s infinite;
-  }
-}
-
-@media only screen and (max-width: 960px) {
-  .barbecueItemEmpty {
-    flex-basis: 40%;
-  }
-}
-
-@media only screen and (max-width: 600px) {
-  .barbecueItemEmpty {
-    flex-basis: 100%;
   }
 }
 

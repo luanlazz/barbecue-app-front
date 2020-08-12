@@ -10,7 +10,7 @@ const Header: React.FC<Props> = ({ buttonExit }: Props) => {
   const logout = useLogout()
 
   return (
-    <header className={Styles.header}>
+    <header data-testid='header' className={Styles.header}>
       <h2>Agenda de Churras</h2>
       {buttonExit && <div data-testid='logout' className={Styles.exit} onClick={logout} />}
     </header>
