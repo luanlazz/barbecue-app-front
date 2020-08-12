@@ -5,21 +5,34 @@
   background-color: $white;
   justify-content: center;
   min-height: 70vh;
-  max-width: 750px;
   padding: 24px;
 }
 
-@media only screen and (max-width: 1200px) {
+@media only screen and (max-width: 1980px) {
   .contentContainer {
     min-height: 80vh;
-    min-width: 70%;
+    min-width: 60%;
   }
 }
 
-@media only screen and (max-width: 960px) {
+@media only screen and (max-width: 1024px) {
+  .contentContainer {
+    min-height: 80vh;
+    min-width: 75%;
+  }
+}
+
+@media only screen and (max-width: 900px) {
   .contentContainer {
     min-height: 80vh;
     min-width: 80%;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .contentContainer {
+    min-height: 80vh;
+    min-width: 90%;
   }
 }
 
