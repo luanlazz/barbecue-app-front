@@ -5,6 +5,8 @@ import { Input, Header, FormStatus, SubmitButton, SecondaryButton } from '@/pres
 import { Validation } from '@/presentation/protocols/validation'
 import { FormContext, ApiContext } from '@/presentation/contexts'
 import { Authentication } from '@/domain/usecases'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faSignInAlt } from '@fortawesome/free-solid-svg-icons'
 
 type Props = {
   validation: Validation
@@ -79,7 +81,7 @@ const Login: React.FC<Props> = ({ validation, authentication }: Props) => {
               Criar conta
             </SecondaryButton>
             <span className={Styles.optionText}>ou</span>
-            <SubmitButton text='Entrar' />
+            <SubmitButton text='Entrar' icon={<FontAwesomeIcon icon={faSignInAlt} />} />
           </div>
 
           <FormStatus />

@@ -1,5 +1,7 @@
 import React from 'react'
 import Styles from './modal-styles.scss'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTimes } from '@fortawesome/free-solid-svg-icons'
 
 type Props = {
   isShowing: boolean
@@ -11,7 +13,9 @@ type Props = {
 const Modal: React.FC<Props> = ({ isShowing, handleModal, title, children }: Props) => isShowing ? (
   <div data-testid='modal' className={(Styles.modal)}>
     <div className={Styles.inputWrap}>
-      <div className={Styles.close} onClick={() => handleModal()} />
+      <div className={Styles.close} onClick={() => handleModal()}>
+        <FontAwesomeIcon icon={faTimes} size='2x' />
+      </div>
       <span className={Styles.title}>
         {title}
       </span>

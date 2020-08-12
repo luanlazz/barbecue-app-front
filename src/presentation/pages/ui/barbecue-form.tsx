@@ -4,6 +4,8 @@ import { Input, InputNoStatus, FormStatus, TextArea } from '@/presentation/compo
 import { Validation } from '@/presentation/protocols/validation'
 import { SaveBarbecue } from '@/domain/usecases'
 import { FormContext } from '@/presentation/contexts'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faHamburger, faBeer } from '@fortawesome/free-solid-svg-icons'
 
 type CallBackType = (barbecue: SaveBarbecue.Params) => void
 
@@ -94,10 +96,12 @@ const BarbecueInput: React.FC<Props> = ({ saveBarbecue, validation, callBack, ba
         <Input type="text" name='description' className={Styles.description} placeholder="descrição" />
         <TextArea name='observation' className={Styles.observation} placeholder="observação" />
 
-        <span>Valores sugeridos</span>
+        <span className={Styles.textSuggest}>Valores sugeridos</span>
 
         <div className={Styles.suggest}>
+          <FontAwesomeIcon icon={faHamburger} size='2x' />
           <InputNoStatus type="number" min={0} name='suggestValueFood' placeholder="comida" />
+          <FontAwesomeIcon icon={faBeer} size='2x'/>
           <InputNoStatus type="number" min={0} name='suggestValueDrink' placeholder="bebida" />
         </div>
 

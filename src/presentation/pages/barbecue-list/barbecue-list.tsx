@@ -15,7 +15,7 @@ type Props = {
 
 const BarbecueList: React.FC<Props> = ({ loadBarbecueList, saveBarbecue, validation }: Props) => {
   const handleError = useErrorHandler((error: Error) => {
-    setBarbecueListState(old => ({
+    setState(old => ({
       ...old,
       isLoading: false,
       error: error.message
@@ -23,20 +23,20 @@ const BarbecueList: React.FC<Props> = ({ loadBarbecueList, saveBarbecue, validat
   })
   const { isShowing, handleModal } = useModal()
 
-  const [barbecueListState, setBarbecueListState] = useState({
+  const [state, setState] = useState({
     barbecues: [] as LoadBarbecueList.Model[],
     isLoading: false,
     error: ''
   })
 
   useEffect(() => {
-    setBarbecueListState(old => ({
+    setState(old => ({
       ...old,
       isLoading: true
     }))
 
     loadBarbecueList.loadAll()
-      .then(barbecues => setBarbecueListState(old => ({
+      .then(barbecues => setState(old => ({
         ...old,
         isLoading: false,
         barbecues
@@ -45,7 +45,7 @@ const BarbecueList: React.FC<Props> = ({ loadBarbecueList, saveBarbecue, validat
   }, [])
 
   const handleNewBarbecue = (barbecue: SaveBarbecue.Model): void => {
-    setBarbecueListState(old => ({
+    setState(old => ({
       ...old,
       barbecues: [...old.barbecues, barbecue]
     }))
@@ -56,9 +56,9 @@ const BarbecueList: React.FC<Props> = ({ loadBarbecueList, saveBarbecue, validat
 
       <Header buttonExit />
 
-      <BarbecueContext.Provider value={{ barbecueListState, setBarbecueListState, handleModal }}>
+      <BarbecueContext.Provider value={{ state, setState, handleModal }}>
         <ContentContainer>
-          {barbecueListState.error
+          {state.error
             ? <Error />
             : <BarbecueListItems />
           }

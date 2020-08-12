@@ -4,9 +4,10 @@ import Context from '@/presentation/contexts/form/form-context'
 
 type Props = {
   text: string
+  icon?: JSX.Element
 }
 
-const SubmitButton: React.FC<Props> = ({ text }: Props) => {
+const SubmitButton: React.FC<Props> = ({ text, icon }: Props) => {
   const { state } = useContext(Context)
 
   return (
@@ -16,7 +17,7 @@ const SubmitButton: React.FC<Props> = ({ text }: Props) => {
       disabled={state.isFormInvalid}
       type='submit'
     >
-      {text}
+      {text}  {icon}
     </button>
   )
 }

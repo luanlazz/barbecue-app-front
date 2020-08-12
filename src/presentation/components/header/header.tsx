@@ -16,7 +16,7 @@ const Header: React.FC<Props> = ({ buttonExit }: Props) => {
       <h2>Agenda de Churras</h2>
       {buttonExit &&
         <div data-testid='logout' className={Styles.exit} onClick={logout}>
-          <FontAwesomeIcon icon={faSignOutAlt} size="2x" />
+          <FontAwesomeIcon icon={faSignOutAlt} size="2x" className={Styles.iconExit} />
         </div>}
     </header>
   )

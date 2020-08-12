@@ -2,7 +2,8 @@ import React, { useContext } from 'react'
 import Styles from './barbecue-info-styles.scss'
 import { LoadBarbecueById } from '@/domain/usecases'
 import { ParticipantsContext } from '@/presentation/pages/participants-list/components'
-import { IconPeople, IconMoney } from '@/images'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faUserFriends, faDollarSign, faPen } from '@fortawesome/free-solid-svg-icons'
 
 type Props = {
   barbecue: LoadBarbecueById.Model
@@ -27,11 +28,12 @@ const BarbecueInfo: React.FC<Props> = ({ barbecue }: Props) => {
 
       <div className={Styles.totals}>
         <div className={Styles.peoples}>
-          <IconPeople />
+          <FontAwesomeIcon icon={faUserFriends} className={Styles.icon} size='lg' />
           <span className={Styles.count}>{barbecue.numParticipants}</span>
         </div>
+
         <div className={Styles.money}>
-          <IconMoney />
+          <FontAwesomeIcon icon={faDollarSign} className={Styles.icon} size='lg' />
           <span className={Styles.wrapMoney}>
             <span className={Styles.valueTotal}>
               {new Intl.NumberFormat('pt', {
@@ -49,7 +51,9 @@ const BarbecueInfo: React.FC<Props> = ({ barbecue }: Props) => {
         </div>
       </div>
 
-      <div data-testid='editItem' className={Styles.editButton} onClick={handleModal}/>
+      <div data-testid='editItem' className={Styles.editButton} onClick={handleModal}>
+        <FontAwesomeIcon icon={faPen} className={Styles.icon} size='2x' />
+      </div>
     </div>
   )
 }
