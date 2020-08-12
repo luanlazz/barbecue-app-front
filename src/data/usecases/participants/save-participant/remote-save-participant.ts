@@ -1,6 +1,6 @@
 import { HttpClient, HttpStatusCode } from '@/data/protocols/http'
 import { SaveParticipant } from '@/domain/usecases'
-import { UnexpectedError } from '@/domain/errors'
+import { UnexpectedError, AccessDeniedError } from '@/domain/errors'
 
 export class RemoteSaveParticipant implements SaveParticipant {
   constructor (
@@ -17,6 +17,7 @@ export class RemoteSaveParticipant implements SaveParticipant {
 
     switch (httpResponse.statusCode) {
       case HttpStatusCode.ok: return null
+      case HttpStatusCode.forbidden: throw new AccessDeniedError()
       default: throw new UnexpectedError()
     }
   }
