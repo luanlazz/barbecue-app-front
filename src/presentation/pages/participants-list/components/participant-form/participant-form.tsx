@@ -17,7 +17,7 @@ type Props = {
   handleModal: Function
 }
 
-const BarbecueInput: React.FC<Props> = ({ saveParticipant, validation, callBack, participant, handleModal }: Props) => {
+const ParticipantForm: React.FC<Props> = ({ saveParticipant, validation, callBack, participant, handleModal }: Props) => {
   const [state, setState] = useState({
     isLoading: false,
     mainError: '',
@@ -26,7 +26,7 @@ const BarbecueInput: React.FC<Props> = ({ saveParticipant, validation, callBack,
     nameError: '',
     pay: false,
     payError: '',
-    value: '',
+    value: '0',
     valueError: ''
   })
 
@@ -82,17 +82,23 @@ const BarbecueInput: React.FC<Props> = ({ saveParticipant, validation, callBack,
     <FormContext.Provider value={{ state, setState }}>
       <form data-testid='form' className={Styles.form} onSubmit={handleSubmit}>
 
-        <Input type="name" name='name' className={Styles.name} placeholder="nome" />
-        <InputNoStatus type='checkbox' name='pay' className={Styles.pay} placeholder="pago" />
+        <Input type="text" name='name' className={Styles.name} placeholder="nome" />
+
+        <span>Contribuição</span>
 
         <div className={Styles.value}>
-          <InputNoStatus type="number" min={0} name='value' placeholder="contribuição" />
+          <InputNoStatus type="number" min={0} name='value' placeholder="valor" />
 
           <div className={Styles.suggest}>
-            <FontAwesomeIcon icon={faHamburger} size='1x' />
-            <span>10</span>
-            <FontAwesomeIcon icon={faBeer} size='1x'/>
-            <span>20</span>
+            <div className={Styles.food}>
+              <FontAwesomeIcon icon={faHamburger} className={Styles.icon} size='1x' />
+              <span>10</span>
+            </div>
+
+            <div className={Styles.drink}>
+              <FontAwesomeIcon icon={faBeer} className={Styles.icon} size='1x' />
+              <span>20</span>
+            </div>
           </div>
         </div>
 
@@ -108,4 +114,4 @@ const BarbecueInput: React.FC<Props> = ({ saveParticipant, validation, callBack,
   )
 }
 
-export default BarbecueInput
+export default ParticipantForm

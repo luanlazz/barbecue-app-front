@@ -13,8 +13,9 @@ type Props = {
   loadParticipantsList: LoadParticipantsList
   loadBarbecueById: LoadBarbecueById
   saveBarbecue: SaveBarbecue
-  validation: Validation
+  validationBarbecue: Validation
   saveParticipant: SaveParticipant
+  validationParticipant: Validation
 }
 
 export enum MaintenanceParticipants {
@@ -23,7 +24,7 @@ export enum MaintenanceParticipants {
   addParticipant = 2
 }
 
-const ParticipantsList: React.FC<Props> = ({ loadParticipantsList, loadBarbecueById, saveBarbecue, validation, saveParticipant }: Props) => {
+const ParticipantsList: React.FC<Props> = ({ loadParticipantsList, loadBarbecueById, saveBarbecue, validationBarbecue, validationParticipant,saveParticipant }: Props) => {
   const handleError = useErrorHandler((error: Error) => {
     setState(old => ({
       ...old,
@@ -41,7 +42,8 @@ const ParticipantsList: React.FC<Props> = ({ loadParticipantsList, loadBarbecueB
     isLoadingParticipants: false,
     isLoading: false,
     error: '',
-    maintenance: MaintenanceParticipants.nothing
+    maintenance: MaintenanceParticipants.nothing,
+    updateBarbecue: false
   })
 
   useEffect(() => {
@@ -69,10 +71,11 @@ const ParticipantsList: React.FC<Props> = ({ loadParticipantsList, loadBarbecueB
       .then(barbecue => setState(old => ({
         ...old,
         isLoadingBarbecue: false,
+        updateBarbecue: false,
         barbecue
       })))
       .catch(handleError)
-  }, [])
+  }, [state.updateBarbecue])
 
   const handleMaintenance = (maintenance: MaintenanceParticipants): void => {
     setState(old => ({
@@ -85,6 +88,7 @@ const ParticipantsList: React.FC<Props> = ({ loadParticipantsList, loadBarbecueB
   const getTitleModal = (): string => {
     switch (state.maintenance) {
       case MaintenanceParticipants.setBarbecue: return 'Alteração'
+      case MaintenanceParticipants.addParticipant: return 'Novo participante'
     }
   }
 
@@ -105,6 +109,7 @@ const ParticipantsList: React.FC<Props> = ({ loadParticipantsList, loadBarbecueB
   const handleNewParticipant = async (participant: SaveParticipant.Model): Promise<void> => {
     setState(old => ({
       ...old,
+      updateBarbecue: true,
       participants: [...old.participants, { ...participant }]
     }))
   }
@@ -140,7 +145,7 @@ const ParticipantsList: React.FC<Props> = ({ loadParticipantsList, loadBarbecueB
             {state.maintenance === MaintenanceParticipants.setBarbecue &&
               <BarbecueForm
                 saveBarbecue={saveBarbecue}
-                validation={validation}
+                validation={validationBarbecue}
                 callBack={handleSaveBarbecue}
                 handleModal={handleModal}
                 barbecue={state.barbecue}
@@ -150,7 +155,7 @@ const ParticipantsList: React.FC<Props> = ({ loadParticipantsList, loadBarbecueB
             {state.maintenance === MaintenanceParticipants.addParticipant &&
               <ParticipantForm
                 saveParticipant={saveParticipant}
-                validation={validation}
+                validation={validationParticipant}
                 callBack={handleNewParticipant}
                 handleModal={handleModal}
                 participant={null}
