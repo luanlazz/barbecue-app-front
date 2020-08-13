@@ -1,20 +1,29 @@
 import React, { useState, useEffect } from 'react'
 import Styles from './participants-styles.scss'
 import { Header, MainContainer, ContentContainer, Modal } from '@/presentation/components'
-import { Error, ParticipantsContext, ParticipantsListItems, BarbecueInfo, BarbecueInfoEmpty } from './components'
+import { Error, ParticipantsContext, ParticipantsListItems, BarbecueInfo, BarbecueInfoEmpty, ParticipantForm } from './components'
 import { useErrorHandler, useModal } from '@/presentation/hooks'
-import { LoadParticipantsList, LoadBarbecueById, SaveBarbecue } from '@/domain/usecases'
+import { LoadParticipantsList, LoadBarbecueById, SaveBarbecue, SaveParticipant } from '@/domain/usecases'
 import { Validation } from '@/presentation/protocols/validation'
-import BarbecueForm from '@/presentation/pages/ui/barbecue-form'
+import BarbecueForm from '@/presentation/pages/ui/barbecue-form/barbecue-form'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPlus } from '@fortawesome/free-solid-svg-icons'
 
 type Props = {
   loadParticipantsList: LoadParticipantsList
   loadBarbecueById: LoadBarbecueById
   saveBarbecue: SaveBarbecue
   validation: Validation
+  saveParticipant: SaveParticipant
 }
 
-const ParticipantsList: React.FC<Props> = ({ loadParticipantsList, loadBarbecueById, saveBarbecue, validation }: Props) => {
+export enum MaintenanceParticipants {
+  nothing = 0,
+  setBarbecue = 1,
+  addParticipant = 2
+}
+
+const ParticipantsList: React.FC<Props> = ({ loadParticipantsList, loadBarbecueById, saveBarbecue, validation, saveParticipant }: Props) => {
   const handleError = useErrorHandler((error: Error) => {
     setState(old => ({
       ...old,
@@ -31,7 +40,8 @@ const ParticipantsList: React.FC<Props> = ({ loadParticipantsList, loadBarbecueB
     isLoadingBarbecue: false,
     isLoadingParticipants: false,
     isLoading: false,
-    error: ''
+    error: '',
+    maintenance: MaintenanceParticipants.nothing
   })
 
   useEffect(() => {
@@ -64,6 +74,20 @@ const ParticipantsList: React.FC<Props> = ({ loadParticipantsList, loadBarbecueB
       .catch(handleError)
   }, [])
 
+  const handleMaintenance = (maintenance: MaintenanceParticipants): void => {
+    setState(old => ({
+      ...old,
+      maintenance
+    }))
+    handleModal()
+  }
+
+  const getTitleModal = (): string => {
+    switch (state.maintenance) {
+      case MaintenanceParticipants.setBarbecue: return 'Alteração'
+    }
+  }
+
   const handleSaveBarbecue = async (barbecue: SaveBarbecue.Model): Promise<void> => {
     setState(old => ({
       ...old,
@@ -78,12 +102,19 @@ const ParticipantsList: React.FC<Props> = ({ loadParticipantsList, loadBarbecueB
     }))
   }
 
+  const handleNewParticipant = async (participant: SaveParticipant.Model): Promise<void> => {
+    setState(old => ({
+      ...old,
+      participants: [...old.participants, { ...participant }]
+    }))
+  }
+
   return (
     <MainContainer>
 
       <Header buttonExit />
 
-      <ParticipantsContext.Provider value={{ state, handleModal }}>
+      <ParticipantsContext.Provider value={{ state, handleMaintenance }}>
         <ContentContainer>
           {state.error
             ? <Error />
@@ -93,19 +124,38 @@ const ParticipantsList: React.FC<Props> = ({ loadParticipantsList, loadBarbecueB
                   ? <BarbecueInfoEmpty />
                   : <BarbecueInfo barbecue={state.barbecue} />
                 }
+
+                <button data-testid='newParticipant' onClick={() => handleMaintenance(MaintenanceParticipants.addParticipant)}>
+                  <div className={Styles.addParticipant}>
+                    <FontAwesomeIcon icon={faPlus} color='green' size='lg' /> Adicionar
+                  </div>
+                </button>
+
                 <ParticipantsListItems />
               </div>
             </>
           }
 
-          <Modal isShowing={isShowing} handleModal={handleModal} title='Alteração'>
-            <BarbecueForm
-              saveBarbecue={saveBarbecue}
-              validation={validation}
-              callBack={handleSaveBarbecue}
-              handleModal={handleModal}
-              barbecue={state.barbecue}
-            />
+          <Modal isShowing={isShowing} handleModal={handleModal} title={getTitleModal()}>
+            {state.maintenance === MaintenanceParticipants.setBarbecue &&
+              <BarbecueForm
+                saveBarbecue={saveBarbecue}
+                validation={validation}
+                callBack={handleSaveBarbecue}
+                handleModal={handleModal}
+                barbecue={state.barbecue}
+              />
+            }
+
+            {state.maintenance === MaintenanceParticipants.addParticipant &&
+              <ParticipantForm
+                saveParticipant={saveParticipant}
+                validation={validation}
+                callBack={handleNewParticipant}
+                handleModal={handleModal}
+                participant={null}
+              />
+            }
           </Modal>
 
         </ContentContainer>

@@ -1,6 +1,7 @@
 export { default as BarbecueInfo } from './barbecue-info/barbecue-info'
 export { default as BarbecueInfoEmpty } from './barbecue-info-empty/barbecue-info-empty'
 export { default as ParticipantsContext } from './context/context'
+export { default as ParticipantForm } from './participant-form/participant-form'
 export { default as ParticipantItem } from './participant-item/participant-item'
 export { default as ParticipantsListItems } from './participants-list/participants-list'
 export { default as ParticipantsItensEmpty } from './participants-itens-empty/participants-itens-empty'
