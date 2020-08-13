@@ -28,6 +28,7 @@ const makeSut = (loadParticipantsListSpy = new LoadParticipantsListSpy(),
   validationStub.errorMessage = params?.validationError
   const saveBarbecueSpy = new SaveBarbecueSpy()
   const saveParticipantSpy = new SaveParticipantSpy()
+
   render(
     <ApiContext.Provider value={{ }}>
       <Router history={history}>
@@ -35,8 +36,9 @@ const makeSut = (loadParticipantsListSpy = new LoadParticipantsListSpy(),
           loadParticipantsList={loadParticipantsListSpy}
           loadBarbecueById={loadBarbecueByIdSpy}
           saveBarbecue={saveBarbecueSpy}
-          validation={validationStub}
+          validationBarbecue={validationStub}
           saveParticipant={saveParticipantSpy}
+          validationParticipant={validationStub}
         />
       </Router>
     </ApiContext.Provider>
@@ -84,7 +86,6 @@ const simulateValidSubmitParticipant = async (
   value = faker.random.number()
 ): Promise<void> => {
   Helper.populateField('name', name)
-  Helper.populateField('pay', pay)
   Helper.populateField('value', value.toString())
   const form = screen.getByTestId('form')
   fireEvent.submit(form)
