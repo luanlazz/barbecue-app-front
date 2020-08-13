@@ -201,6 +201,12 @@ describe('ParticipantsList Component', () => {
     expect(screen.queryByTestId('modal')).not.toBeInTheDocument()
   })
 
+  test('Should open modal if click in new participant', async () => {
+    makeSut()
+    await openModalParticipant()
+    expect(screen.queryByTestId('modal')).toBeInTheDocument()
+  })
+
   test('Should call SaveParticipant with correct values', async () => {
     const { saveParticipantSpy } = makeSut()
     const name = faker.name.findName()
