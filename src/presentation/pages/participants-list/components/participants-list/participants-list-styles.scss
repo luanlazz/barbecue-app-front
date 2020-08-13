@@ -4,6 +4,12 @@
   display: flex;
   flex-direction: column;
 
+  .noParticipants {
+    display: inline;
+    text-align: center;
+    font-size: 26px;
+  }
+
   table {
     background-color: $white;
     border-collapse: collapse;

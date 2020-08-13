@@ -54,6 +54,16 @@ input[type="number"] {
       flex-direction: column;
       justify-content: center;
     }
+
+    .sumSuggest {
+      align-items: center;
+      display: flex;
+
+      span {
+        font-size: 28px;
+        margin: 0;
+      }
+    }
   }
 
   .buttonsWrap {
@@ -68,6 +78,7 @@ input[type="number"] {
     button {
       padding: 0px 10px;
       line-height: 35px;
+      outline: none;
     }
     
     button[type=submit] {

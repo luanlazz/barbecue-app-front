@@ -1,8 +1,8 @@
 @import "@/presentation/styles/colors.scss";
 
 .submit {
-  flex-basis: 60%;
-  
+  width: 100%;
+
   &:disabled {
     background-color: $disabled;
     color: rgba(138, 135, 135, 0.849);

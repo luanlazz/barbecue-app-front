@@ -47,7 +47,7 @@ const BarbecueList: React.FC<Props> = ({ loadBarbecueList, saveBarbecue, validat
   const handleNewBarbecue = (barbecue: SaveBarbecue.Model): void => {
     setState(old => ({
       ...old,
-      barbecues: [...old.barbecues, barbecue]
+      barbecues: [barbecue, ...old.barbecues]
     }))
   }
 

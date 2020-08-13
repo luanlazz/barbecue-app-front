@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { useHistory } from 'react-router-dom'
+import { useHistory, Link } from 'react-router-dom'
 import Styles from './signup-styles.scss'
-import { Input, Header, FormStatus, SubmitButton, SecondaryButton } from '@/presentation/components'
+import { Input, Header, FormStatus, SubmitButton } from '@/presentation/components'
 import { FormContext, ApiContext } from '@/presentation/contexts'
 import { Validation } from '@/presentation/protocols/validation'
 import { AddAccount } from '@/domain/usecases'
@@ -85,14 +85,17 @@ const SignUp: React.FC<Props> = ({ validation, addAccount }: Props) => {
           <Input type='text' name='name' placeholder='nome' />
           <Input type='email' name='email' placeholder='e-mail' />
           <Input type='password' name='password' placeholder='senha' />
-          <Input type='password' name='passwordConfirmation' placeholder='senha novamente' />
+          <Input type='password' name='passwordConfirmation' placeholder='confirme a senha' />
 
-          <div className={Styles.buttons}>
-            <SecondaryButton data-testid='login-link' replace to='/login'>
-              Login
-            </SecondaryButton>
-            <span className={Styles.optionText}>ou</span>
+          <div className={Styles.submit}>
             <SubmitButton text='Cadastrar' icon={<FontAwesomeIcon icon={faSignInAlt} />} />
+          </div>
+
+          <div className={Styles.login}>
+            <span>Voltar para o </span>
+            <Link data-testid='login-link' replace to='/login' className={Styles.link}>
+              Login
+            </Link>
           </div>
 
           <FormStatus />

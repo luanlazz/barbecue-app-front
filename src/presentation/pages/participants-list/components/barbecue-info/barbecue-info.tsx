@@ -57,7 +57,7 @@ const BarbecueInfo: React.FC<Props> = ({ barbecue }: Props) => {
         className={Styles.editButton}
         onClick={() => handleMaintenance(MaintenanceParticipants.setBarbecue)}
       >
-        <FontAwesomeIcon icon={faPen} className={Styles.icon} size='2x' />
+        <FontAwesomeIcon icon={faPen} className={Styles.icon} size='lg' />
       </div>
     </div>
   )

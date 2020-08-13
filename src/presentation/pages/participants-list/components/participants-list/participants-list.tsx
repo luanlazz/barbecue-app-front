@@ -7,8 +7,9 @@ const ParticipantsListItems: React.FC = () => {
 
   return (
     <div className={Styles.participantsList}>
-      {state.isLoadingParticipants
-        ? <ParticipantsItensEmpty />
+      {state.isLoadingParticipants && <ParticipantsItensEmpty />}
+      {(!state.isLoadingParticipants && !state.participants.length)
+        ? <span className={Styles.noParticipants}>Não há participantes cadastrados</span>
         : <table data-testid='participants-list'>
           <tbody>
             {state.participants.map(participant => (

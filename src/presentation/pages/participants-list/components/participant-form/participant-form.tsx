@@ -6,6 +6,7 @@ import { SaveParticipant } from '@/domain/usecases'
 import { FormContext } from '@/presentation/contexts'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHamburger, faBeer } from '@fortawesome/free-solid-svg-icons'
+import { BarbecueModel } from '@/domain/test'
 
 type CallBackType = (participant: SaveParticipant.Model) => void
 
@@ -14,10 +15,11 @@ type Props = {
   validation: Validation
   callBack: CallBackType
   participant?: SaveParticipant.Params
+  barbecue: BarbecueModel
   handleModal: Function
 }
 
-const ParticipantForm: React.FC<Props> = ({ saveParticipant, validation, callBack, participant, handleModal }: Props) => {
+const ParticipantForm: React.FC<Props> = ({ saveParticipant, validation, callBack, participant, barbecue, handleModal }: Props) => {
   const [state, setState] = useState({
     isLoading: false,
     mainError: '',
@@ -90,15 +92,25 @@ const ParticipantForm: React.FC<Props> = ({ saveParticipant, validation, callBac
           <InputNoStatus type="number" min={0} name='value' placeholder="valor" />
 
           <div className={Styles.suggest}>
-            <div className={Styles.food}>
-              <FontAwesomeIcon icon={faHamburger} className={Styles.icon} size='1x' />
-              <span>10</span>
-            </div>
+            {!!barbecue.valueSuggestFood &&
+              <div className={Styles.food}>
+                <FontAwesomeIcon icon={faHamburger} className={Styles.icon} size='1x' />
+                <span>{barbecue.valueSuggestFood}</span>
+              </div>
+            }
 
-            <div className={Styles.drink}>
-              <FontAwesomeIcon icon={faBeer} className={Styles.icon} size='1x' />
-              <span>20</span>
-            </div>
+            {!!barbecue.valueSuggestDrink &&
+              <div className={Styles.drink}>
+                <FontAwesomeIcon icon={faBeer} className={Styles.icon} size='1x' />
+                <span>{barbecue.valueSuggestDrink}</span>
+              </div>
+            }
+          </div>
+
+          <div className={Styles.sumSuggest}>
+            {(!!barbecue.valueSuggestFood && !!barbecue.valueSuggestDrink) &&
+              <span> = {barbecue.valueSuggestFood + barbecue.valueSuggestDrink}</span>
+            }
           </div>
         </div>
 

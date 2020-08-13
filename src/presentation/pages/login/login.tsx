@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { useHistory } from 'react-router-dom'
+import { useHistory, Link } from 'react-router-dom'
 import Styles from './login-styles.scss'
-import { Input, Header, FormStatus, SubmitButton, SecondaryButton } from '@/presentation/components'
+import { Input, Header, FormStatus, SubmitButton } from '@/presentation/components'
 import { Validation } from '@/presentation/protocols/validation'
 import { FormContext, ApiContext } from '@/presentation/contexts'
 import { Authentication } from '@/domain/usecases'
@@ -76,11 +76,14 @@ const Login: React.FC<Props> = ({ validation, authentication }: Props) => {
           <Input type='email' name='email' placeholder='email' />
           <Input type='password' name='password' placeholder='senha' />
 
-          <div className={Styles.buttons}>
-            <SecondaryButton data-testid="signup-link" to="/signup">
-              Criar conta
-            </SecondaryButton>
-            <span className={Styles.optionText}>ou</span>
+          <div className={Styles.signup}>
+            <span>Ainda não tem conta? </span>
+            <Link data-testid="signup-link" to="/signup">
+              Criar sua conta
+            </Link>
+          </div>
+
+          <div className={Styles.submit}>
             <SubmitButton text='Entrar' icon={<FontAwesomeIcon icon={faSignInAlt} />} />
           </div>
 

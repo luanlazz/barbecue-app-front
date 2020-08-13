@@ -130,13 +130,13 @@ const ParticipantsList: React.FC<Props> = ({ loadParticipantsList, loadBarbecueB
                   : <BarbecueInfo barbecue={state.barbecue} />
                 }
 
+                <ParticipantsListItems />
+
                 <button data-testid='newParticipant' onClick={() => handleMaintenance(MaintenanceParticipants.addParticipant)}>
                   <div className={Styles.addParticipant}>
-                    <FontAwesomeIcon icon={faPlus} color='green' size='lg' /> Adicionar
+                    <FontAwesomeIcon icon={faPlus} color='green' size='lg' />
                   </div>
                 </button>
-
-                <ParticipantsListItems />
               </div>
             </>
           }
@@ -159,6 +159,7 @@ const ParticipantsList: React.FC<Props> = ({ loadParticipantsList, loadBarbecueB
                 callBack={handleNewParticipant}
                 handleModal={handleModal}
                 participant={null}
+                barbecue={state.barbecue}
               />
             }
           </Modal>

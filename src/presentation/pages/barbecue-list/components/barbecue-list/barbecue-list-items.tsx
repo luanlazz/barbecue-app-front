@@ -8,11 +8,11 @@ const BarbecueListItems: React.FC = () => {
 
   return (
     <ul data-testid='barbecue-list' className={Styles.listWrap}>
+      {!state.isLoading && <BarbecueNewItem /> }
       {state.isLoading
         ? <BarbecueItemEmpty />
         : state.barbecues.map((barbecue: LoadBarbecueList.Model) => <BarbecueItem key={barbecue.id} barbecue={barbecue} />)
       }
-      {!state.isLoading && <BarbecueNewItem /> }
     </ul>
   )
 }
