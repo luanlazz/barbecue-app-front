@@ -92,7 +92,7 @@ const BarbecueInput: React.FC<Props> = ({ saveBarbecue, validation, callBack, ba
     <FormContext.Provider value={{ state, setState }}>
       <form data-testid='form' className={Styles.form} onSubmit={handleSubmit}>
 
-        <Input id='date' type="date" name='date' className={Styles.date} placeholder="data" />
+        <Input type="date" name='date' className={Styles.date} placeholder="data" />
         <Input type="text" name='description' className={Styles.description} placeholder="descrição" />
         <TextArea name='observation' className={Styles.observation} placeholder="observação" />
 

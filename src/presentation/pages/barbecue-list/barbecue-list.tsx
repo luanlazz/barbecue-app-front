@@ -5,7 +5,7 @@ import { BarbecueListItems, BarbecueContext, Error } from '@/presentation/pages/
 import { Validation } from '@/presentation/protocols/validation'
 import { useErrorHandler, useModal } from '@/presentation/hooks'
 import { LoadBarbecueList, SaveBarbecue } from '@/domain/usecases'
-import BarbecueForm from '@/presentation/pages/ui/barbecue-form'
+import BarbecueForm from '@/presentation/pages/ui/barbecue-form/barbecue-form'
 
 type Props = {
   loadBarbecueList: LoadBarbecueList

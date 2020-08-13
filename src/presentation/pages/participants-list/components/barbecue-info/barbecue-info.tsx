@@ -4,13 +4,14 @@ import { LoadBarbecueById } from '@/domain/usecases'
 import { ParticipantsContext } from '@/presentation/pages/participants-list/components'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUserFriends, faDollarSign, faPen } from '@fortawesome/free-solid-svg-icons'
+import { MaintenanceParticipants } from '../../participants'
 
 type Props = {
   barbecue: LoadBarbecueById.Model
 }
 
 const BarbecueInfo: React.FC<Props> = ({ barbecue }: Props) => {
-  const { handleModal } = useContext(ParticipantsContext)
+  const { handleMaintenance } = useContext(ParticipantsContext)
 
   return (
     <div data-testid='barbecue-info' className={Styles.barbecue}>
@@ -51,7 +52,11 @@ const BarbecueInfo: React.FC<Props> = ({ barbecue }: Props) => {
         </div>
       </div>
 
-      <div data-testid='editItem' className={Styles.editButton} onClick={handleModal}>
+      <div
+        data-testid='editItem'
+        className={Styles.editButton}
+        onClick={() => handleMaintenance(MaintenanceParticipants.setBarbecue)}
+      >
         <FontAwesomeIcon icon={faPen} className={Styles.icon} size='2x' />
       </div>
     </div>
