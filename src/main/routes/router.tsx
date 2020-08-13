@@ -18,7 +18,7 @@ const Router: React.FC = () => {
           <Switch>
             <Route path='/login' exact component={makeLogin} />
             <Route path='/signup' exact component={makeSignUp} />
-            <PrivateRoute path='/barbecue/:barbecueId/participants' component={makeParticipantsList} />
+            <PrivateRoute path='/barbecue/:barbecueId/participants/:participantId?' component={makeParticipantsList} />
             <PrivateRoute path='/' exact component={makeBarbecueList} />
           </Switch>
         </Suspense>

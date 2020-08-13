@@ -71,7 +71,7 @@ const BarbecueInput: React.FC<Props> = ({ saveBarbecue, validation, callBack, ba
     }))
 
     saveBarbecue.save({
-      date: new Date(state.date),
+      date: new Date(`${state.date}T00:00:00`),
       description: state.description,
       observation: state.observation,
       valueSuggestDrink: parseInt(state.suggestValueDrink),

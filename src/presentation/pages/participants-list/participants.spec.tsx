@@ -180,7 +180,7 @@ describe('ParticipantsList Component', () => {
     const valueSuggestDrink = faker.random.number()
     await openModalBarbecue()
     await simulateValidSubmitBarbecue(date, description, observation, valueSuggestFood, valueSuggestDrink)
-    expect(saveBarbecueSpy.params.date).toEqual(new Date(date))
+    expect(saveBarbecueSpy.params.date).toEqual(new Date(`${date}T00:00:00`))
     expect(saveBarbecueSpy.params.description).toEqual(description)
     expect(saveBarbecueSpy.params.observation).toEqual(observation)
     expect(saveBarbecueSpy.params.valueSuggestFood).toEqual(valueSuggestFood)

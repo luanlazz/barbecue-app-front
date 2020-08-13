@@ -12,7 +12,7 @@ type Prop = {
 const BarbecueItem: React.FC<Prop> = ({ barbecue }: Prop) => {
   return (
     <li className={Styles.barbecueItemWrap}>
-      <Link to={`/barbecue/${barbecue.id}/participants`} className={Styles.barbecueContent}>
+      <Link to={`/barbecue/${barbecue.id}/participants/`} className={Styles.barbecueContent}>
         <div className={Styles.details}>
           <time>
             <span data-testid='date' className={Styles.date}>

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { useHistory } from 'react-router-dom'
 import Styles from './participants-styles.scss'
 import { Header, MainContainer, ContentContainer, Modal } from '@/presentation/components'
 import { Error, ParticipantsContext, ParticipantsListItems, BarbecueInfo, BarbecueInfoEmpty, ParticipantForm } from './components'
@@ -21,7 +22,8 @@ type Props = {
 export enum MaintenanceParticipants {
   nothing = 0,
   setBarbecue = 1,
-  addParticipant = 2
+  addParticipant = 2,
+  setParticipant = 3
 }
 
 const ParticipantsList: React.FC<Props> = ({ loadParticipantsList, loadBarbecueById, saveBarbecue, validationBarbecue, validationParticipant,saveParticipant }: Props) => {
@@ -33,10 +35,13 @@ const ParticipantsList: React.FC<Props> = ({ loadParticipantsList, loadBarbecueB
     }))
   })
 
+  const history = useHistory()
+
   const { isShowing, handleModal } = useModal()
 
   const [state, setState] = useState({
     participants: [] as LoadParticipantsList.Model[],
+    participantMaintenance: {} as LoadParticipantsList.Model,
     barbecue: {} as LoadBarbecueById.Model,
     isLoadingBarbecue: false,
     isLoadingParticipants: false,
@@ -77,11 +82,22 @@ const ParticipantsList: React.FC<Props> = ({ loadParticipantsList, loadBarbecueB
       .catch(handleError)
   }, [state.updateBarbecue])
 
-  const handleMaintenance = (maintenance: MaintenanceParticipants): void => {
+  const handleMaintenance = (maintenance: MaintenanceParticipants, participantMaintenance?: LoadParticipantsList.Model): void => {
     setState(old => ({
       ...old,
-      maintenance
+      maintenance,
+      participantMaintenance
     }))
+
+    switch (maintenance) {
+      case MaintenanceParticipants.addParticipant:
+        history.replace(`/barbecue/${state.barbecue.id}/participants/`)
+        break
+      case MaintenanceParticipants.setParticipant:
+        history.replace(`/barbecue/${state.barbecue.id}/participants/${participantMaintenance.id}`)
+        break
+    }
+
     handleModal()
   }
 
@@ -89,6 +105,7 @@ const ParticipantsList: React.FC<Props> = ({ loadParticipantsList, loadBarbecueB
     switch (state.maintenance) {
       case MaintenanceParticipants.setBarbecue: return 'Alteração'
       case MaintenanceParticipants.addParticipant: return 'Novo participante'
+      case MaintenanceParticipants.setParticipant: return 'Alteração participante'
     }
   }
 
@@ -114,12 +131,31 @@ const ParticipantsList: React.FC<Props> = ({ loadParticipantsList, loadBarbecueB
     }))
   }
 
+  const handleUpdateParticipant = async (participantSave: SaveParticipant.Model): Promise<void> => {
+    setState(old => ({
+      ...old,
+      updateBarbecue: true,
+      participants: old.participants.map(participant => {
+        if (participant.id === participantSave.id) {
+          return {
+            ...participant,
+            name: participantSave.name,
+            pay: participantSave.pay,
+            value: participantSave.value
+          }
+        } else {
+          return participant
+        }
+      })
+    }))
+  }
+
   return (
     <MainContainer>
 
       <Header buttonExit />
 
-      <ParticipantsContext.Provider value={{ state, handleMaintenance }}>
+      <ParticipantsContext.Provider value={{ state, setState, handleMaintenance }}>
         <ContentContainer>
           {state.error
             ? <Error />
@@ -158,7 +194,17 @@ const ParticipantsList: React.FC<Props> = ({ loadParticipantsList, loadBarbecueB
                 validation={validationParticipant}
                 callBack={handleNewParticipant}
                 handleModal={handleModal}
-                participant={null}
+                barbecue={state.barbecue}
+              />
+            }
+
+            {state.maintenance === MaintenanceParticipants.setParticipant &&
+              <ParticipantForm
+                saveParticipant={saveParticipant}
+                validation={validationParticipant}
+                callBack={handleUpdateParticipant}
+                handleModal={handleModal}
+                participant={state.participantMaintenance}
                 barbecue={state.barbecue}
               />
             }
