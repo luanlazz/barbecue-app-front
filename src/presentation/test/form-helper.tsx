@@ -7,7 +7,7 @@ export const testStatusForField = (fieldName: string, title: string, content: st
   expect(fieldStatus).toHaveProperty('textContent', content)
 }
 
-export const populateField = (fieldName: string, value: string = faker.random.word()): void => {
+export const populateField = (fieldName: string, value: any = faker.random.word()): void => {
   const input = screen.getByTestId(`${fieldName}-input`)
   fireEvent.input(input, { target: { value } })
 }

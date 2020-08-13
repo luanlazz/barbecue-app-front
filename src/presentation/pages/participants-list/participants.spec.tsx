@@ -3,7 +3,7 @@ import { Router } from 'react-router-dom'
 import { createMemoryHistory } from 'history'
 import { render, screen, waitFor, fireEvent } from '@testing-library/react'
 import { ParticipantsList } from '@/presentation/pages'
-import { LoadParticipantsListSpy, LoadBarbecueByIdSpy, ValidationStub, SaveBarbecueSpy, Helper } from '@/presentation/test'
+import { LoadParticipantsListSpy, LoadBarbecueByIdSpy, ValidationStub, SaveBarbecueSpy, SaveParticipantSpy, Helper } from '@/presentation/test'
 import { UnexpectedError } from '@/domain/errors'
 import { ApiContext } from '@/presentation/contexts'
 import faker from 'faker'
@@ -12,6 +12,7 @@ type SutTypes = {
   loadParticipantsListSpy: LoadParticipantsListSpy
   loadBarbecueByIdSpy: LoadBarbecueByIdSpy
   saveBarbecueSpy: SaveBarbecueSpy
+  saveParticipantSpy: SaveParticipantSpy
 }
 
 type SutParams = {
@@ -26,6 +27,7 @@ const makeSut = (loadParticipantsListSpy = new LoadParticipantsListSpy(),
   const validationStub = new ValidationStub()
   validationStub.errorMessage = params?.validationError
   const saveBarbecueSpy = new SaveBarbecueSpy()
+  const saveParticipantSpy = new SaveParticipantSpy()
   render(
     <ApiContext.Provider value={{ }}>
       <Router history={history}>
@@ -34,6 +36,7 @@ const makeSut = (loadParticipantsListSpy = new LoadParticipantsListSpy(),
           loadBarbecueById={loadBarbecueByIdSpy}
           saveBarbecue={saveBarbecueSpy}
           validation={validationStub}
+          saveParticipant={saveParticipantSpy}
         />
       </Router>
     </ApiContext.Provider>
@@ -41,17 +44,24 @@ const makeSut = (loadParticipantsListSpy = new LoadParticipantsListSpy(),
   return {
     loadParticipantsListSpy,
     loadBarbecueByIdSpy,
-    saveBarbecueSpy
+    saveBarbecueSpy,
+    saveParticipantSpy
   }
 }
 
-const openModal = async (): Promise<void> => {
+const openModalBarbecue = async (): Promise<void> => {
   await waitFor(() => screen.getByTestId('header'))
   const editItem = screen.getByTestId('editItem')
   fireEvent.click(editItem)
 }
 
-const simulateValidSubmit = async (
+const openModalParticipant = async (): Promise<void> => {
+  await waitFor(() => screen.getByTestId('header'))
+  const newParticipant = screen.getByTestId('newParticipant')
+  fireEvent.click(newParticipant)
+}
+
+const simulateValidSubmitBarbecue = async (
   date: string = new Date(faker.date.recent()).toISOString().split('T')[0],
   description: string = faker.random.words(),
   observation: string = faker.random.words(),
@@ -63,6 +73,19 @@ const simulateValidSubmit = async (
   Helper.populateField('observation', observation)
   Helper.populateField('suggestValueFood', suggestValueFood.toString())
   Helper.populateField('suggestValueDrink', suggestValueDrink.toString())
+  const form = screen.getByTestId('form')
+  fireEvent.submit(form)
+  await waitFor(() => form)
+}
+
+const simulateValidSubmitParticipant = async (
+  name = faker.name.findName(),
+  pay = faker.random.boolean(),
+  value = faker.random.number()
+): Promise<void> => {
+  Helper.populateField('name', name)
+  Helper.populateField('pay', pay)
+  Helper.populateField('value', value.toString())
   const form = screen.getByTestId('form')
   fireEvent.submit(form)
   await waitFor(() => form)
@@ -119,14 +142,14 @@ describe('ParticipantsList Component', () => {
 
   test('Should open modal if click in edit barbecue', async () => {
     makeSut()
-    await openModal()
+    await openModalBarbecue()
     expect(screen.queryByTestId('modal')).toBeInTheDocument()
   })
 
   test('Should show date error if Validation fails', async () => {
     const validationError = faker.random.words()
     makeSut(undefined, undefined, { validationError })
-    await openModal()
+    await openModalBarbecue()
     Helper.populateField('date')
     Helper.testStatusForField('date-status', validationError, '🟡')
   })
@@ -134,14 +157,14 @@ describe('ParticipantsList Component', () => {
   test('Should show description error if Validation fails', async () => {
     const validationError = faker.random.words()
     makeSut(undefined, undefined, { validationError })
-    await openModal()
+    await openModalBarbecue()
     Helper.populateField('description')
     Helper.testStatusForField('description-status', validationError, '🟡')
   })
 
   test('Should enable submit button if form is valid', async () => {
     makeSut()
-    await openModal()
+    await openModalBarbecue()
     Helper.populateField('date')
     Helper.populateField('description')
     expect(screen.getByTestId('submit')).toBeEnabled()
@@ -154,8 +177,8 @@ describe('ParticipantsList Component', () => {
     const observation = faker.random.words()
     const valueSuggestFood = faker.random.number()
     const valueSuggestDrink = faker.random.number()
-    await openModal()
-    await simulateValidSubmit(date, description, observation, valueSuggestFood, valueSuggestDrink)
+    await openModalBarbecue()
+    await simulateValidSubmitBarbecue(date, description, observation, valueSuggestFood, valueSuggestDrink)
     expect(saveBarbecueSpy.params.date).toEqual(new Date(date))
     expect(saveBarbecueSpy.params.description).toEqual(description)
     expect(saveBarbecueSpy.params.observation).toEqual(observation)
@@ -166,15 +189,26 @@ describe('ParticipantsList Component', () => {
   test('Should not call SaveBarbecue if form is invalid', async () => {
     const validationError = faker.random.words()
     const { saveBarbecueSpy } = makeSut(undefined, undefined, { validationError })
-    await openModal()
-    await simulateValidSubmit()
+    await openModalBarbecue()
+    await simulateValidSubmitBarbecue()
     expect(saveBarbecueSpy.callsCount).toBe(0)
   })
 
   test('Should close modal after SaveBarbecue success', async () => {
     makeSut()
-    await openModal()
-    await simulateValidSubmit()
+    await openModalBarbecue()
+    await simulateValidSubmitBarbecue()
     expect(screen.queryByTestId('modal')).not.toBeInTheDocument()
+  })
+
+  test('Should call SaveParticipant with correct values', async () => {
+    const { saveParticipantSpy } = makeSut()
+    const name = faker.name.findName()
+    const pay = faker.random.boolean()
+    const value = faker.random.number()
+    await openModalParticipant()
+    await simulateValidSubmitParticipant(name, pay, value)
+    expect(saveParticipantSpy.params.name).toEqual(name)
+    expect(saveParticipantSpy.params.value).toEqual(value)
   })
 })
