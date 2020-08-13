@@ -217,4 +217,12 @@ describe('ParticipantsList Component', () => {
     expect(saveParticipantSpy.params.name).toEqual(name)
     expect(saveParticipantSpy.params.value).toEqual(value)
   })
+
+  test('Should not call SaveParticipant if form is invalid', async () => {
+    const validationError = faker.random.words()
+    const { saveParticipantSpy } = makeSut(undefined, undefined, { validationError })
+    await openModalParticipant()
+    await simulateValidSubmitParticipant()
+    expect(saveParticipantSpy.callsCount).toBe(0)
+  })
 })
