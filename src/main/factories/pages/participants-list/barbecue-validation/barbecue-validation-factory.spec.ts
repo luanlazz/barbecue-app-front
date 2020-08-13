@@ -1,9 +1,9 @@
-import { makeSaveValidationBarbecue } from './participants-barbecue-validation-factory'
+import { makeSaveBarbecueValidation } from './barbecue-validation-factory'
 import { ValidationComposite, RequiredFieldValidation, MinLengthValidation } from '@/validation/validators'
 
-describe('makeSaveValidationBarbecueFactory', () => {
+describe('makeSaveBarbecueValidationFactory', () => {
   test('Should make ValidationComposite with correct validations', () => {
-    const composite = makeSaveValidationBarbecue()
+    const composite = makeSaveBarbecueValidation()
     expect(composite).toEqual(ValidationComposite.build([
       new RequiredFieldValidation('date'),
       new RequiredFieldValidation('description'),
