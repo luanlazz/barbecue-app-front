@@ -4,6 +4,7 @@ export interface SaveParticipant {
 
 export namespace SaveParticipant {
   export type Params ={
+    id?: string
     name: string
     pay: boolean
     value: number

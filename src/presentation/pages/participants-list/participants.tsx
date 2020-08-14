@@ -102,14 +102,19 @@ const ParticipantsList: React.FC<Props> = ({ loadParticipantsList, loadBarbecueB
       case MaintenanceParticipants.removeParticipant:
         history.replace(`/barbecue/${state.barbecue.id}/participants/${participantMaintenance.id}`)
         break
+      case MaintenanceParticipants.setPaymentParticipant:
+        handlePaymentParticipant(participantMaintenance)
+        break
     }
 
-    handleModal()
+    if (maintenance !== MaintenanceParticipants.setPaymentParticipant) {
+      handleModal()
+    }
   }
 
   const getTitleModal = (): string => {
     switch (state.maintenance) {
-      case MaintenanceParticipants.setBarbecue: return 'Alteração'
+      case MaintenanceParticipants.setBarbecue: return 'Alterar churas'
       case MaintenanceParticipants.addParticipant: return 'Novo participante'
       case MaintenanceParticipants.setParticipant: return 'Alterar participante'
       case MaintenanceParticipants.removeParticipant: return 'Remover participante'
@@ -155,6 +160,29 @@ const ParticipantsList: React.FC<Props> = ({ loadParticipantsList, loadBarbecueB
         }
       })
     }))
+  }
+
+  const handlePaymentParticipant = async (participantParam: SaveParticipant.Model): Promise<void> => {
+    saveParticipant.save({
+      ...participantParam,
+      pay: !participantParam.pay
+    })
+      .then(participantSave => {
+        setState(old => ({
+          ...old,
+          updateBarbecue: true,
+          participants: old.participants.map(participant =>
+            participant.id === participantSave.id
+              ? ({ ...participant, pay: participantSave.pay })
+              : participant
+          )
+        }))
+      })
+      .catch(error => setState(old => ({
+        ...old,
+        isLoading: false,
+        error
+      })))
   }
 
   const handleRemoveParticipant = async (): Promise<void> => {
