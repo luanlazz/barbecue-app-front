@@ -2,12 +2,16 @@ import React from 'react'
 import { render, screen } from '@testing-library/react'
 import Modal from './modal'
 
+const makeSut = (isShowing: boolean): void => {
+  render(
+    <Modal isShowing={isShowing} handleModal={() => null } title='test'>
+    </Modal>
+  )
+}
+
 describe('Modal Component', () => {
   test('Should show modal if isShowing true', () => {
-    render(
-      <Modal isShowing handleModal={() => null } title='test'>
-      </Modal>
-    )
+    makeSut(true)
     expect(screen.queryByTestId('modal')).toBeInTheDocument()
   })
 })
