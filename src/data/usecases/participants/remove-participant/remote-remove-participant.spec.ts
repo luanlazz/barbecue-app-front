@@ -47,4 +47,13 @@ describe('RemoteRemoveParticipant', () => {
     const promise = sut.remove()
     await expect(promise).rejects.toThrow(new AccessDeniedError())
   })
+
+  test('Should throw UnexpectedError if HttpClient return 404', async () => {
+    const { sut, httpClientSpy } = makeSut()
+    httpClientSpy.response = {
+      statusCode: HttpStatusCode.notFound
+    }
+    const promise = sut.remove()
+    await expect(promise).rejects.toThrow(new UnexpectedError())
+  })
 })
