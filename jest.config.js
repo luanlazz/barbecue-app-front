@@ -4,7 +4,8 @@ module.exports = {
     '<rootDir>/src/**/*.{ts,tsx}',
     '!<rootDir>/src/main/**/*',
     '!<rootDir>/src/domain/**/*',
-    '!**/*.d.ts'
+    '!**/*.d.ts',
+    '!**/*index*'
   ],
   coverageDirectory: 'coverage',
   setupFilesAfterEnv: ['<rootDir>/src/main/config/jest-setup.ts'],

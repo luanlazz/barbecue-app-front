@@ -22,9 +22,9 @@ const ParticipantItem: React.FC<Prop> = ({ participant }: Prop) => {
         <span className={Styles.dot} />
       </td>
 
-      <td className={Styles.name}>{participant.name}</td>
+      <td data-testid='name' className={Styles.name}>{participant.name}</td>
 
-      <td className={Styles.value}>
+      <td data-testid='value' className={Styles.value}>
         {new Intl.NumberFormat('pt', {
           style: 'currency',
           currency: 'BRL'
@@ -34,7 +34,6 @@ const ParticipantItem: React.FC<Prop> = ({ participant }: Prop) => {
       <td
         className={Styles.editAction}
         onClick={() => handleMaintenance(MaintenanceParticipants.setParticipant, participant)}
-
       >
         <FontAwesomeIcon icon={faPen} />
       </td>
