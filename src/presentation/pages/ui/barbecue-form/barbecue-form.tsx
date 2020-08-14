@@ -100,9 +100,9 @@ const BarbecueInput: React.FC<Props> = ({ saveBarbecue, validation, callBack, ba
 
         <div className={Styles.suggest}>
           <FontAwesomeIcon icon={faHamburger} size='2x' />
-          <InputNoStatus type="number" min={0} name='suggestValueFood' placeholder="comida" />
+          <InputNoStatus type="number" step='0.01' min={0} name='suggestValueFood' placeholder="comida" />
           <FontAwesomeIcon icon={faBeer} size='2x'/>
-          <InputNoStatus type="number" min={0} name='suggestValueDrink' placeholder="bebida" />
+          <InputNoStatus type="number" step='0.01' min={0} name='suggestValueDrink' placeholder="bebida" />
         </div>
 
         <div className={Styles.buttonsWrap}>

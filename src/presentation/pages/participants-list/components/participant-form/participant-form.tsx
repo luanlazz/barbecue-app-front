@@ -89,7 +89,7 @@ const ParticipantForm: React.FC<Props> = ({ saveParticipant, validation, callBac
         <span>Contribuição</span>
 
         <div className={Styles.value}>
-          <InputNoStatus type="number" min={0} name='value' placeholder="valor" />
+          <InputNoStatus type="number" step='0.01' min={0} name='value' placeholder="valor" />
 
           <div className={Styles.suggest}>
             {!!barbecue.valueSuggestFood &&
