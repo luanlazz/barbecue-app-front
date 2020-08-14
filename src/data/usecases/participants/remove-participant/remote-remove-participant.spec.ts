@@ -1,7 +1,7 @@
 import { RemoteRemoveParticipant } from './remote-remove-participant'
 import { HttpClientSpy } from '@/data/test'
 import { HttpStatusCode } from '@/data/protocols/http'
-import { UnexpectedError } from '@/domain/errors'
+import { UnexpectedError, AccessDeniedError } from '@/domain/errors'
 import faker from 'faker'
 
 type SutTypes = {
@@ -37,5 +37,14 @@ describe('RemoteRemoveParticipant', () => {
     }
     const promise = sut.remove()
     await expect(promise).rejects.toThrow(new UnexpectedError())
+  })
+
+  test('Should throw AccessDeniedError if HttpClient return 403', async () => {
+    const { sut, httpClientSpy } = makeSut()
+    httpClientSpy.response = {
+      statusCode: HttpStatusCode.forbidden
+    }
+    const promise = sut.remove()
+    await expect(promise).rejects.toThrow(new AccessDeniedError())
   })
 })
