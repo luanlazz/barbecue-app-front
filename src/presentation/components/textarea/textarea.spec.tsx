@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, RenderResult } from '@testing-library/react'
+import { render, RenderResult, fireEvent } from '@testing-library/react'
 import TextArea from './textarea'
 import Context from '@/presentation/contexts/form/form-context'
 import faker from 'faker'
@@ -17,5 +17,13 @@ describe('TextArea Component', () => {
     const sut = makeSut(field)
     const input = sut.getByTestId(`${field}-input`) as HTMLInputElement
     expect(input.readOnly).toBeTruthy()
+  })
+
+  test('Should remove readOnly on focus', () => {
+    const field = faker.database.column()
+    const sut = makeSut(field)
+    const input = sut.getByTestId(`${field}-input`) as HTMLInputElement
+    fireEvent.focus(input)
+    expect(input.readOnly).toBeFalsy()
   })
 })
