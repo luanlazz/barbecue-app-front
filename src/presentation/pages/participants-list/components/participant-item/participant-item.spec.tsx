@@ -17,7 +17,11 @@ const makeSut = (participant: LoadParticipantsList.Model): SutTypes => {
   render(
     <ParticipantsContext.Provider value={{ handleMaintenanceMock }}>
       <Router history={history}>
-        <ParticipantItem participant={participant} />
+        <table>
+          <tbody>
+            <ParticipantItem participant={participant} />
+          </tbody>
+        </table>
       </Router>
     </ParticipantsContext.Provider>
   )
