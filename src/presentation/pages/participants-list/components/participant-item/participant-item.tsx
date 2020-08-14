@@ -15,7 +15,10 @@ const ParticipantItem: React.FC<Prop> = ({ participant }: Prop) => {
 
   return (
     <tr className={participant.pay ? Styles.paid : ''}>
-      <td className={Styles.f}>
+      <td
+        className={Styles.statusPayment}
+        onClick={() => handleMaintenance(MaintenanceParticipants.setPaymentParticipant, participant)}
+      >
         <span className={Styles.dot} />
       </td>
 

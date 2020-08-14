@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import Styles from './participants-styles.scss'
+import { Error, ParticipantsContext, ParticipantsListItems, BarbecueInfo, BarbecueInfoEmpty, ParticipantForm, ConfirmationAction } from './components'
 import { Header, MainContainer, ContentContainer, Modal } from '@/presentation/components'
-import { Error, ParticipantsContext, ParticipantsListItems, BarbecueInfo, BarbecueInfoEmpty, ParticipantForm } from './components'
 import { useErrorHandler, useModal } from '@/presentation/hooks'
 import { LoadParticipantsList, LoadBarbecueById, SaveBarbecue, SaveParticipant } from '@/domain/usecases'
 import { Validation } from '@/presentation/protocols/validation'
@@ -23,7 +23,8 @@ export enum MaintenanceParticipants {
   nothing = 0,
   setBarbecue = 1,
   addParticipant = 2,
-  setParticipant = 3
+  setParticipant = 3,
+  setPaymentParticipant = 4
 }
 
 const ParticipantsList: React.FC<Props> = ({ loadParticipantsList, loadBarbecueById, saveBarbecue, validationBarbecue, validationParticipant,saveParticipant }: Props) => {
@@ -94,6 +95,9 @@ const ParticipantsList: React.FC<Props> = ({ loadParticipantsList, loadBarbecueB
         history.replace(`/barbecue/${state.barbecue.id}/participants/`)
         break
       case MaintenanceParticipants.setParticipant:
+        history.replace(`/barbecue/${state.barbecue.id}/participants/${participantMaintenance.id}`)
+        break
+      case MaintenanceParticipants.setPaymentParticipant:
         history.replace(`/barbecue/${state.barbecue.id}/participants/${participantMaintenance.id}`)
         break
     }
@@ -206,6 +210,15 @@ const ParticipantsList: React.FC<Props> = ({ loadParticipantsList, loadBarbecueB
                 handleModal={handleModal}
                 participant={state.participantMaintenance}
                 barbecue={state.barbecue}
+              />
+            }
+
+            {state.maintenance === MaintenanceParticipants.setPaymentParticipant &&
+              <ConfirmationAction
+                saveParticipant={saveParticipant}
+                callBack={handleUpdateParticipant}
+                handleModal={handleModal}
+                participant={state.participantMaintenance}
               />
             }
           </Modal>

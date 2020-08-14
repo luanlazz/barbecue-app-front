@@ -11,9 +11,10 @@ td, th {
   vertical-align: inherit;
 }
 
-.f {
-  table-layout: fixed;
+.statusPayment {
+  cursor: pointer;
   justify-content: center;
+  table-layout: fixed;
   width: 25px;
 }
 
