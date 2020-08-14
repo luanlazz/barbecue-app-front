@@ -1,5 +1,6 @@
-import { HttpClient } from '@/data/protocols/http'
+import { HttpClient, HttpStatusCode } from '@/data/protocols/http'
 import { RemoveParticipant } from '@/domain/usecases'
+import { UnexpectedError } from '@/domain/errors'
 
 export class RemoteRemoveParticipant implements RemoveParticipant {
   constructor (
@@ -8,11 +9,14 @@ export class RemoteRemoveParticipant implements RemoveParticipant {
   ) {}
 
   async remove (): Promise<void> {
-    await this.httpClient.request({
+    const httpResponse = await this.httpClient.request({
       url: this.url,
       method: 'put'
     })
 
-    return null
+    switch (httpResponse.statusCode) {
+      case HttpStatusCode.noContent: return null
+      default: throw new UnexpectedError()
+    }
   }
 }
