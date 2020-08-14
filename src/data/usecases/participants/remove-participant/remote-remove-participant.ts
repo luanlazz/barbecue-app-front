@@ -1,6 +1,6 @@
 import { HttpClient, HttpStatusCode } from '@/data/protocols/http'
 import { RemoveParticipant } from '@/domain/usecases'
-import { UnexpectedError } from '@/domain/errors'
+import { UnexpectedError, AccessDeniedError } from '@/domain/errors'
 
 export class RemoteRemoveParticipant implements RemoveParticipant {
   constructor (
@@ -16,6 +16,7 @@ export class RemoteRemoveParticipant implements RemoveParticipant {
 
     switch (httpResponse.statusCode) {
       case HttpStatusCode.noContent: return null
+      case HttpStatusCode.forbidden: throw new AccessDeniedError()
       default: throw new UnexpectedError()
     }
   }
