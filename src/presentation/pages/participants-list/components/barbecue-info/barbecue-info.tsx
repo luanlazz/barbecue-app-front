@@ -16,13 +16,13 @@ const BarbecueInfo: React.FC<Props> = ({ barbecue }: Props) => {
   return (
     <div data-testid='barbecue-info' className={Styles.barbecue}>
       <div className={Styles.info}>
-        <span className={Styles.date}>
+        <span data-testid='date' className={Styles.date}>
           {Intl.DateTimeFormat('pt-BR', {
             day: 'numeric',
             month: 'numeric'
           }).format(barbecue.date)}
         </span>
-        <span className={Styles.description}>
+        <span data-testid='description' className={Styles.description}>
           {barbecue.description}
         </span>
       </div>
@@ -30,20 +30,20 @@ const BarbecueInfo: React.FC<Props> = ({ barbecue }: Props) => {
       <div className={Styles.totals}>
         <div className={Styles.peoples}>
           <FontAwesomeIcon icon={faUserFriends} className={Styles.icon} size='lg' />
-          <span className={Styles.count}>{barbecue.numParticipants}</span>
+          <span data-testid='numParticipants' className={Styles.count}>{barbecue.numParticipants}</span>
         </div>
 
         <div className={Styles.money}>
           <FontAwesomeIcon icon={faDollarSign} className={Styles.icon} size='lg' />
           <span className={Styles.wrapMoney}>
-            <span className={Styles.valueTotal}>
+            <span data-testid='valueTotal' className={Styles.valueTotal}>
               {new Intl.NumberFormat('pt', {
                 style: 'currency',
                 currency: 'BRL'
               }).format(barbecue.valueTotal).toString()}
             </span>
             <span className={Styles.separate}>/</span>
-            <span className={Styles.valueCollected}>
+            <span data-testid='valueCollected' className={Styles.valueCollected}>
               {new Intl.NumberFormat('pt', {
                 currency: 'BRL'
               }).format(barbecue.valueCollected).toString()}
