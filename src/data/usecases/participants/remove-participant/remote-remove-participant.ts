@@ -11,7 +11,7 @@ export class RemoteRemoveParticipant implements RemoveParticipant {
   async remove (): Promise<void> {
     const httpResponse = await this.httpClient.request({
       url: this.url,
-      method: 'put'
+      method: 'delete'
     })
 
     switch (httpResponse.statusCode) {

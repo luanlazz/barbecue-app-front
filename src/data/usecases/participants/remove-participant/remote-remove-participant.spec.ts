@@ -27,7 +27,7 @@ describe('RemoteRemoveParticipant', () => {
     const { sut, httpClientSpy } = makeSut(url)
     await sut.remove()
     expect(httpClientSpy.url).toBe(url)
-    expect(httpClientSpy.method).toBe('put')
+    expect(httpClientSpy.method).toBe('delete')
   })
 
   test('Should throw UnexpectedError if HttpClient return 400', async () => {
