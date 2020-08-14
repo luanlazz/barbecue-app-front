@@ -14,4 +14,9 @@ describe('Modal Component', () => {
     makeSut(true)
     expect(screen.queryByTestId('modal')).toBeInTheDocument()
   })
+
+  test('Should not show modal if isShowing false', () => {
+    makeSut(false)
+    expect(screen.queryByTestId('modal')).not.toBeInTheDocument()
+  })
 })
