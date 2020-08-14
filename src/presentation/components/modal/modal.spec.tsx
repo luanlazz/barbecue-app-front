@@ -1,12 +1,21 @@
 import React from 'react'
-import { render, screen } from '@testing-library/react'
+import { render, screen, fireEvent } from '@testing-library/react'
 import Modal from './modal'
 
-const makeSut = (isShowing: boolean): void => {
+type SuytTypes = {
+  handleSubmitSpy: Function
+}
+
+const makeSut = (isShowing: boolean): SuytTypes => {
+  const handleSubmitSpy = jest.fn()
+
   render(
-    <Modal isShowing={isShowing} handleModal={() => null } title='test'>
+    <Modal isShowing={isShowing} handleModal={handleSubmitSpy} title='test'>
     </Modal>
   )
+  return {
+    handleSubmitSpy
+  }
 }
 
 describe('Modal Component', () => {
@@ -18,5 +27,11 @@ describe('Modal Component', () => {
   test('Should not show modal if isShowing false', () => {
     makeSut(false)
     expect(screen.queryByTestId('modal')).not.toBeInTheDocument()
+  })
+
+  test('Should not show modal if isShowing false', () => {
+    const { handleSubmitSpy } = makeSut(true)
+    fireEvent.click(screen.getByTestId('handle-modal'))
+    expect(handleSubmitSpy).toHaveBeenCalled()
   })
 })
