@@ -19,7 +19,6 @@ export class RemoteLoadBarbecueById implements LoadBarbecueById {
         ...httpResponse.body,
         date: new Date(httpResponse.body.date)
       }
-      case HttpStatusCode.noContent: return null
       case HttpStatusCode.forbidden: throw new AccessDeniedError()
       default: throw new UnexpectedError()
     }
