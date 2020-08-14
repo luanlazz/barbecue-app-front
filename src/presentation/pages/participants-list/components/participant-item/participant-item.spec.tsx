@@ -3,7 +3,6 @@ import { Router } from 'react-router-dom'
 import { createMemoryHistory } from 'history'
 import { render, screen } from '@testing-library/react'
 import { ParticipantItem, ParticipantsContext } from '@/presentation/pages/participants-list/components'
-import { LoadParticipantsList } from '@/domain/usecases'
 import { mockParticipantModel } from '@/domain/test'
 
 type SutTypes = {
@@ -12,7 +11,7 @@ type SutTypes = {
 
 const history = createMemoryHistory({ initialEntries: ['/'] })
 
-const makeSut = (participant: LoadParticipantsList.Model): SutTypes => {
+const makeSut = (participant = mockParticipantModel()): SutTypes => {
   const handleMaintenanceMock = jest.fn()
   render(
     <ParticipantsContext.Provider value={{ handleMaintenanceMock }}>

@@ -1,4 +1,4 @@
-import { LoadParticipantsList, SaveParticipant } from '@/domain/usecases'
+import { LoadParticipantsList, SaveParticipant, RemoveParticipant } from '@/domain/usecases'
 import { mockParticipantsModel, mockParticipantModel } from '@/domain/test'
 
 export class LoadParticipantsListSpy implements LoadParticipantsList {
@@ -20,5 +20,14 @@ export class SaveParticipantSpy implements SaveParticipant {
     this.callsCount++
     this.params = participant
     return this.result
+  }
+}
+
+export class RemoveParticipantSpy implements RemoveParticipant {
+  callsCount: number = 0
+
+  async remove (): Promise<void> {
+    this.callsCount++
+    return null
   }
 }

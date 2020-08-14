@@ -3,7 +3,7 @@ import { Router } from 'react-router-dom'
 import { createMemoryHistory } from 'history'
 import { render, screen, waitFor, fireEvent } from '@testing-library/react'
 import { ParticipantsList } from '@/presentation/pages'
-import { LoadParticipantsListSpy, LoadBarbecueByIdSpy, ValidationStub, SaveBarbecueSpy, SaveParticipantSpy, Helper } from '@/presentation/test'
+import { LoadParticipantsListSpy, LoadBarbecueByIdSpy, ValidationStub, SaveBarbecueSpy, SaveParticipantSpy, Helper, RemoveParticipantSpy } from '@/presentation/test'
 import { UnexpectedError } from '@/domain/errors'
 import { ApiContext } from '@/presentation/contexts'
 import faker from 'faker'
@@ -28,6 +28,7 @@ const makeSut = (loadParticipantsListSpy = new LoadParticipantsListSpy(),
   validationStub.errorMessage = params?.validationError
   const saveBarbecueSpy = new SaveBarbecueSpy()
   const saveParticipantSpy = new SaveParticipantSpy()
+  const removeParticipantSpy = new RemoveParticipantSpy()
 
   render(
     <ApiContext.Provider value={{ }}>
@@ -39,6 +40,7 @@ const makeSut = (loadParticipantsListSpy = new LoadParticipantsListSpy(),
           validationBarbecue={validationStub}
           saveParticipant={saveParticipantSpy}
           validationParticipant={validationStub}
+          removeParticipant={removeParticipantSpy}
         />
       </Router>
     </ApiContext.Provider>

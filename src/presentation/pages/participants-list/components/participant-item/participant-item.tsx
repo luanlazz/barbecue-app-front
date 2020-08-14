@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import Styles from './participant-item-styles.scss'
 import { LoadParticipantsList } from '@/domain/usecases'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPen } from '@fortawesome/free-solid-svg-icons'
+import { faPen, faMinus } from '@fortawesome/free-solid-svg-icons'
 import { ParticipantsContext } from '@/presentation/pages/participants-list/components'
 import { MaintenanceParticipants } from '../../participants'
 
@@ -13,11 +13,24 @@ type Prop = {
 const ParticipantItem: React.FC<Prop> = ({ participant }: Prop) => {
   const { handleMaintenance } = useContext(ParticipantsContext)
 
+  const setMaintenanceEdit = (): void => {
+    handleMaintenance(MaintenanceParticipants.setParticipant, participant)
+  }
+
+  const setMaintenanceRemove = (): void => {
+    handleMaintenance(MaintenanceParticipants.removeParticipant, participant)
+  }
+
+  const setMaintenancePayment = (): void => {
+    handleMaintenance(MaintenanceParticipants.setPaymentParticipant, participant)
+  }
+
   return (
     <tr className={participant.pay ? Styles.paid : ''}>
       <td
+        data-testid='payment'
         className={Styles.statusPayment}
-        onClick={() => handleMaintenance(MaintenanceParticipants.setPaymentParticipant, participant)}
+        onClick={setMaintenancePayment}
       >
         <span className={Styles.dot} />
       </td>
@@ -33,9 +46,16 @@ const ParticipantItem: React.FC<Prop> = ({ participant }: Prop) => {
 
       <td
         className={Styles.editAction}
-        onClick={() => handleMaintenance(MaintenanceParticipants.setParticipant, participant)}
+        onClick={setMaintenanceEdit}
       >
         <FontAwesomeIcon icon={faPen} />
+      </td>
+
+      <td
+        className={Styles.removeAction}
+        onClick={setMaintenanceRemove}
+      >
+        <FontAwesomeIcon icon={faMinus} />
       </td>
     </tr>
   )

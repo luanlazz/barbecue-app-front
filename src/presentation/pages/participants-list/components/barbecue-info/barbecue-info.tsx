@@ -13,6 +13,10 @@ type Props = {
 const BarbecueInfo: React.FC<Props> = ({ barbecue }: Props) => {
   const { handleMaintenance } = useContext(ParticipantsContext)
 
+  const setMaintenance = (): void => {
+    handleMaintenance(MaintenanceParticipants.setBarbecue)
+  }
+
   return (
     <div data-testid='barbecue-info' className={Styles.barbecue}>
       <div className={Styles.info}>
@@ -22,6 +26,7 @@ const BarbecueInfo: React.FC<Props> = ({ barbecue }: Props) => {
             month: 'numeric'
           }).format(barbecue.date)}
         </span>
+
         <span data-testid='description' className={Styles.description}>
           {barbecue.description}
         </span>
@@ -42,7 +47,9 @@ const BarbecueInfo: React.FC<Props> = ({ barbecue }: Props) => {
                 currency: 'BRL'
               }).format(barbecue.valueTotal).toString()}
             </span>
+
             <span className={Styles.separate}>/</span>
+
             <span data-testid='valueCollected' className={Styles.valueCollected}>
               {new Intl.NumberFormat('pt', {
                 currency: 'BRL'
@@ -55,7 +62,7 @@ const BarbecueInfo: React.FC<Props> = ({ barbecue }: Props) => {
       <div
         data-testid='editItem'
         className={Styles.editButton}
-        onClick={() => handleMaintenance(MaintenanceParticipants.setBarbecue)}
+        onClick={setMaintenance}
       >
         <FontAwesomeIcon icon={faPen} className={Styles.icon} size='lg' />
       </div>

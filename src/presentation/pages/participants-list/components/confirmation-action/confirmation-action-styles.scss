@@ -26,8 +26,8 @@
     }
     
     .confirmation {
-      background-color: $primaryLight;
-      color: $black;
+      background-color: red;
+      color: $white;
     }
 
     .cancel {
@@ -36,8 +36,8 @@
       border: 1px solid $greyLight;
 
       &:hover {
-        border: 1px solid red;
-        color: red;
+        border: 1px solid $black;
+        color: $black;
       }
     }
   }

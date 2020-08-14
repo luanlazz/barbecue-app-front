@@ -4,7 +4,7 @@ import Styles from './participants-styles.scss'
 import { Error, ParticipantsContext, ParticipantsListItems, BarbecueInfo, BarbecueInfoEmpty, ParticipantForm, ConfirmationAction } from './components'
 import { Header, MainContainer, ContentContainer, Modal } from '@/presentation/components'
 import { useErrorHandler, useModal } from '@/presentation/hooks'
-import { LoadParticipantsList, LoadBarbecueById, SaveBarbecue, SaveParticipant } from '@/domain/usecases'
+import { LoadParticipantsList, LoadBarbecueById, SaveBarbecue, SaveParticipant, RemoveParticipant } from '@/domain/usecases'
 import { Validation } from '@/presentation/protocols/validation'
 import BarbecueForm from '@/presentation/pages/ui/barbecue-form/barbecue-form'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -16,6 +16,7 @@ type Props = {
   saveBarbecue: SaveBarbecue
   validationBarbecue: Validation
   saveParticipant: SaveParticipant
+  removeParticipant: RemoveParticipant
   validationParticipant: Validation
 }
 
@@ -24,10 +25,11 @@ export enum MaintenanceParticipants {
   setBarbecue = 1,
   addParticipant = 2,
   setParticipant = 3,
-  setPaymentParticipant = 4
+  setPaymentParticipant = 4,
+  removeParticipant = 5
 }
 
-const ParticipantsList: React.FC<Props> = ({ loadParticipantsList, loadBarbecueById, saveBarbecue, validationBarbecue, validationParticipant,saveParticipant }: Props) => {
+const ParticipantsList: React.FC<Props> = ({ loadParticipantsList, loadBarbecueById, saveBarbecue, validationBarbecue, validationParticipant, saveParticipant, removeParticipant }: Props) => {
   const handleError = useErrorHandler((error: Error) => {
     setState(old => ({
       ...old,
@@ -97,7 +99,7 @@ const ParticipantsList: React.FC<Props> = ({ loadParticipantsList, loadBarbecueB
       case MaintenanceParticipants.setParticipant:
         history.replace(`/barbecue/${state.barbecue.id}/participants/${participantMaintenance.id}`)
         break
-      case MaintenanceParticipants.setPaymentParticipant:
+      case MaintenanceParticipants.removeParticipant:
         history.replace(`/barbecue/${state.barbecue.id}/participants/${participantMaintenance.id}`)
         break
     }
@@ -109,7 +111,8 @@ const ParticipantsList: React.FC<Props> = ({ loadParticipantsList, loadBarbecueB
     switch (state.maintenance) {
       case MaintenanceParticipants.setBarbecue: return 'Alteração'
       case MaintenanceParticipants.addParticipant: return 'Novo participante'
-      case MaintenanceParticipants.setParticipant: return 'Alteração participante'
+      case MaintenanceParticipants.setParticipant: return 'Alterar participante'
+      case MaintenanceParticipants.removeParticipant: return 'Remover participante'
     }
   }
 
@@ -152,6 +155,18 @@ const ParticipantsList: React.FC<Props> = ({ loadParticipantsList, loadBarbecueB
         }
       })
     }))
+  }
+
+  const handleRemoveParticipant = async (): Promise<void> => {
+    return removeParticipant.remove()
+      .then(() => {
+        setState(old => ({
+          ...old,
+          updateBarbecue: true,
+          participants: old.participants.filter(participant => participant.id !== state.participantMaintenance.id)
+        }))
+        handleModal()
+      })
   }
 
   return (
@@ -213,12 +228,10 @@ const ParticipantsList: React.FC<Props> = ({ loadParticipantsList, loadBarbecueB
               />
             }
 
-            {state.maintenance === MaintenanceParticipants.setPaymentParticipant &&
+            {state.maintenance === MaintenanceParticipants.removeParticipant &&
               <ConfirmationAction
-                saveParticipant={saveParticipant}
-                callBack={handleUpdateParticipant}
+                callBack={handleRemoveParticipant}
                 handleModal={handleModal}
-                participant={state.participantMaintenance}
               />
             }
           </Modal>
