@@ -115,7 +115,7 @@ const ParticipantForm: React.FC<Props> = ({ saveParticipant, validation, callBac
         </div>
 
         <div className={Styles.buttonsWrap}>
-          <button type='reset' onClick={() => handleModal()}>Cancelar</button>
+          <button type='reset' data-testid='reset' onClick={() => handleModal()}>Cancelar</button>
           <button type='submit' data-testid='submit' disabled={state.isFormInvalid}>Confirmar</button>
         </div>
 
