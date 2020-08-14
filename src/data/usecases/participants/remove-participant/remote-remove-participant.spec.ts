@@ -65,4 +65,10 @@ describe('RemoteRemoveParticipant', () => {
     const promise = sut.remove()
     await expect(promise).rejects.toThrow(new UnexpectedError())
   })
+
+  test('Should return null on success', async () => {
+    const { sut } = makeSut()
+    const result = await sut.remove()
+    expect(result).toBeNull()
+  })
 })
