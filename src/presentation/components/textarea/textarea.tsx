@@ -4,7 +4,7 @@ import Context from '@/presentation/contexts/form/form-context'
 
 type Props = React.DetailedHTMLProps<React.TextareaHTMLAttributes<HTMLTextAreaElement>, HTMLTextAreaElement>
 
-const Input: React.FC<Props> = (props: Props) => {
+const TextArea: React.FC<Props> = (props: Props) => {
   const { state, setState } = useContext(Context)
 
   const enableInput = (event: React.FocusEvent<HTMLTextAreaElement>): void => {
@@ -33,4 +33,4 @@ const Input: React.FC<Props> = (props: Props) => {
   )
 }
 
-export default Input
+export default TextArea
