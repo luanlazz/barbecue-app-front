@@ -1,6 +1,6 @@
 import React, { lazy } from 'react'
 import { useParams } from 'react-router-dom'
-import { makeRemoteLoadParticipantsList, makeRemoteLoadBarbecueById, makeRemoteSaveBarbecue, makeRemoteSaveParticipant } from '@/main/factories/usecases'
+import { makeRemoteLoadParticipantsList, makeRemoteLoadBarbecueById, makeRemoteSaveBarbecue, makeRemoteSaveParticipant, makeRemoteRemoveParticipant } from '@/main/factories/usecases'
 import { makeSaveBarbecueValidation } from './barbecue-validation/barbecue-validation-factory'
 import { makeSaveParticipantValidation } from './participant-validation/participant-validation-factory'
 
@@ -18,6 +18,7 @@ export const makeParticipantsList: React.FC = () => {
       validationBarbecue={makeSaveBarbecueValidation()}
       saveParticipant={makeRemoteSaveParticipant(barbecueId, participantId)}
       validationParticipant={makeSaveParticipantValidation()}
+      removeParticipant={makeRemoteRemoveParticipant(barbecueId, participantId)}
     />
   )
 }
