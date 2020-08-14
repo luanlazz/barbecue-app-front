@@ -4,8 +4,8 @@ import { createMemoryHistory, MemoryHistory } from 'history'
 import { render, screen, waitFor, fireEvent } from '@testing-library/react'
 import { BarbecueList } from '@/presentation/pages'
 import { ApiContext } from '@/presentation/contexts'
-import { ValidationStub, Helper, LoadBarbecueListSpy, SaveBarbecueSpy } from '@/presentation/test'
-import { UnexpectedError, InvalidCredentialsError, AccessDeniedError } from '@/domain/errors'
+import { ValidationStub, LoadBarbecueListSpy, SaveBarbecueSpy, Helper } from '@/presentation/test'
+import { UnexpectedError, AccessDeniedError } from '@/domain/errors'
 import { AccountModel } from '@/domain/models'
 import faker from 'faker'
 
@@ -123,65 +123,6 @@ describe('BarbecueList Component', () => {
     makeSut()
     await openModal()
     expect(screen.queryByTestId('modal')).toBeInTheDocument()
-  })
-
-  test('Should show date error if Validation fails', async () => {
-    const validationError = faker.random.words()
-    makeSut(undefined,{ validationError })
-    await openModal()
-    Helper.populateField('date')
-    Helper.testStatusForField('date-status', validationError, '🟡')
-  })
-
-  test('Should show description error if Validation fails', async () => {
-    const validationError = faker.random.words()
-    makeSut(undefined,{ validationError })
-    await openModal()
-    Helper.populateField('description')
-    Helper.testStatusForField('description-status', validationError, '🟡')
-  })
-
-  test('Should enable submit button if form is valid', async () => {
-    makeSut()
-    await openModal()
-    Helper.populateField('date')
-    Helper.populateField('description')
-    expect(screen.getByTestId('submit')).toBeEnabled()
-  })
-
-  test('Should call SaveBarbecue with correct values', async () => {
-    const { saveBarbecueSpy } = makeSut()
-    const date = new Date(faker.date.recent()).toISOString().split('T')[0]
-    const description = faker.random.words()
-    const observation = faker.random.words()
-    const valueSuggestFood = faker.random.number()
-    const valueSuggestDrink = faker.random.number()
-    await openModal()
-    await simulateValidSubmit(date, description, observation, valueSuggestFood, valueSuggestDrink)
-    expect(saveBarbecueSpy.params.date).toEqual(new Date(`${date}T00:00:00`))
-    expect(saveBarbecueSpy.params.description).toEqual(description)
-    expect(saveBarbecueSpy.params.observation).toEqual(observation)
-    expect(saveBarbecueSpy.params.valueSuggestFood).toEqual(valueSuggestFood)
-    expect(saveBarbecueSpy.params.valueSuggestDrink).toEqual(valueSuggestDrink)
-  })
-
-  test('Should not call SaveBarbecue if form is invalid', async () => {
-    const validationError = faker.random.words()
-    const { saveBarbecueSpy } = makeSut(undefined, { validationError })
-    await openModal()
-    await simulateValidSubmit()
-    expect(saveBarbecueSpy.callsCount).toBe(0)
-  })
-
-  test('Should present error if SaveBarbecue fails', async () => {
-    const { saveBarbecueSpy } = makeSut()
-    const error = new InvalidCredentialsError()
-    jest.spyOn(saveBarbecueSpy, 'save').mockRejectedValueOnce(error)
-    await openModal()
-    await simulateValidSubmit()
-    expect(screen.queryByTestId('modal')).toBeInTheDocument()
-    expect(screen.getByTestId('main-error')).toHaveTextContent(error.message)
-    expect(screen.getByTestId('error-wrap').children).toHaveLength(1)
   })
 
   test('Should close modal after SaveBarbecue success', async () => {
