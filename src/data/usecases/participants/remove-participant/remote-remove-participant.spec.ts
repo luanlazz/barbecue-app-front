@@ -56,4 +56,13 @@ describe('RemoteRemoveParticipant', () => {
     const promise = sut.remove()
     await expect(promise).rejects.toThrow(new UnexpectedError())
   })
+
+  test('Should throw UnexpectedError if HttpClient return 500', async () => {
+    const { sut, httpClientSpy } = makeSut()
+    httpClientSpy.response = {
+      statusCode: HttpStatusCode.serverError
+    }
+    const promise = sut.remove()
+    await expect(promise).rejects.toThrow(new UnexpectedError())
+  })
 })
