@@ -7,8 +7,7 @@ import { makeSaveParticipantValidation } from './participant-validation/particip
 const ParticipantsList = lazy(async () => import('@/presentation/pages/participants-list/participants'))
 
 export const makeParticipantsList: React.FC = () => {
-  const { barbecueId } = useParams()
-  const { participantId } = useParams()
+  const { barbecueId, participantId } = useParams()
 
   return (
     <ParticipantsList
