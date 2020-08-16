@@ -3,9 +3,8 @@ import Styles from './barbecue-info-styles.scss'
 import { LoadBarbecueById } from '@/domain/usecases'
 import { ParticipantsContext } from '@/presentation/pages/participants-list/components'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faUserFriends, faDollarSign, faPen, faChevronLeft } from '@fortawesome/free-solid-svg-icons'
+import { faUserFriends, faDollarSign, faPen } from '@fortawesome/free-solid-svg-icons'
 import { MaintenanceParticipants } from '../../participants'
-import { useHistory } from 'react-router-dom'
 
 type Props = {
   barbecue: LoadBarbecueById.Model
@@ -13,7 +12,6 @@ type Props = {
 
 const BarbecueInfo: React.FC<Props> = ({ barbecue }: Props) => {
   const { handleMaintenance } = useContext(ParticipantsContext)
-  const { goBack } = useHistory()
 
   const setMaintenance = (): void => {
     handleMaintenance(MaintenanceParticipants.setBarbecue)
@@ -21,9 +19,6 @@ const BarbecueInfo: React.FC<Props> = ({ barbecue }: Props) => {
 
   return (
     <div data-testid='barbecue-info' className={Styles.barbecue}>
-      <div className={Styles.goBack} onClick={goBack}>
-        <FontAwesomeIcon icon={faChevronLeft} size='2x' />
-      </div>
 
       <div className={Styles.info}>
         <span data-testid='date' className={Styles.date}>

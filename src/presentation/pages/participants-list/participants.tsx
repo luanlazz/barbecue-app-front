@@ -8,7 +8,7 @@ import { LoadParticipantsList, LoadBarbecueById, SaveBarbecue, SaveParticipant, 
 import { Validation } from '@/presentation/protocols/validation'
 import BarbecueForm from '@/presentation/pages/ui/barbecue-form/barbecue-form'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlus } from '@fortawesome/free-solid-svg-icons'
+import { faPlus, faChevronLeft } from '@fortawesome/free-solid-svg-icons'
 
 type Props = {
   loadParticipantsList: LoadParticipantsList
@@ -204,10 +204,15 @@ const ParticipantsList: React.FC<Props> = ({ loadParticipantsList, loadBarbecueB
 
       <ParticipantsContext.Provider value={{ state, setState, handleMaintenance }}>
         <ContentContainer>
+
           {state.error
             ? <Error />
             : <>
               <div className={Styles.wrapParticipants}>
+                <button className={Styles.goBack} onClick={history.goBack}>
+                  <FontAwesomeIcon icon={faChevronLeft} size='2x' />
+                </button>
+
                 {state.isLoadingBarbecue
                   ? <BarbecueInfoEmpty />
                   : <BarbecueInfo barbecue={state.barbecue} />
