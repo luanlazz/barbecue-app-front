@@ -13,26 +13,12 @@ type Prop = {
 const ParticipantItem: React.FC<Prop> = ({ participant }: Prop) => {
   const { handleMaintenance } = useContext(ParticipantsContext)
 
-  const setMaintenanceEdit = (): void => {
-    handleMaintenance(MaintenanceParticipants.setParticipant, participant)
-  }
-
-  const setMaintenanceRemove = (): void => {
-    handleMaintenance(MaintenanceParticipants.removeParticipant, participant)
-  }
-
-  const setMaintenancePayment = (): void => {
-    handleMaintenance(MaintenanceParticipants.setPaymentParticipant, participant)
-  }
-
   return (
     <tr className={participant.pay ? Styles.paid : ''}>
-      <td
-        data-testid='payment'
-        className={Styles.statusPayment}
-        onClick={setMaintenancePayment}
-      >
-        <span className={Styles.dot} />
+      <td className={Styles.statusPayment} >
+        <button data-testid='payment' onClick={() => handleMaintenance(MaintenanceParticipants.setPaymentParticipant, participant)}>
+          <span className={Styles.dot} />
+        </button>
       </td>
 
       <td data-testid='name' className={Styles.name}>{participant.name}</td>
@@ -44,18 +30,16 @@ const ParticipantItem: React.FC<Prop> = ({ participant }: Prop) => {
         }).format(participant.value).toString()}
       </td>
 
-      <td
-        className={Styles.editAction}
-        onClick={setMaintenanceEdit}
-      >
-        <FontAwesomeIcon icon={faPen} />
+      <td data-testid='edit-participant' className={Styles.editAction} >
+        <button data-testid='payment' onClick={() => handleMaintenance(MaintenanceParticipants.setParticipant, participant)}>
+          <FontAwesomeIcon icon={faPen} color='black' />
+        </button>
       </td>
 
-      <td
-        className={Styles.removeAction}
-        onClick={setMaintenanceRemove}
-      >
-        <FontAwesomeIcon icon={faMinus} />
+      <td data-testid='remove-participant' className={Styles.removeAction} >
+        <button data-testid='payment' onClick={() => handleMaintenance(MaintenanceParticipants.removeParticipant, participant)}>
+          <FontAwesomeIcon icon={faMinus} color='black' />
+        </button>
       </td>
     </tr>
   )

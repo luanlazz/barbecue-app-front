@@ -8,7 +8,8 @@ tr {
 td, th {
   border-bottom: 1px solid $primary;
   display: table-cell;
-  vertical-align: inherit;
+  vertical-align: middle;
+  text-align: center;
 }
 
 .statusPayment {
@@ -16,6 +17,10 @@ td, th {
   justify-content: center;
   table-layout: fixed;
   width: 25px;
+
+  button {
+    padding: 0;
+  }
 }
 
 .dot {
@@ -23,8 +28,8 @@ td, th {
   border: 3px solid $primaryDark;
   display: block;
   height: 15px;
-  margin: 0px 10px;
-  width: 15px;
+  width: 15px;  
+  margin: auto;
 }
 
 .paid {
@@ -49,10 +54,14 @@ td, th {
   text-align: center;
 }
 
+
 .editAction,
 .removeAction {
   cursor: pointer;
   text-align: center;
-  width: auto;
+
+  button {
+    padding: 0;
+  }
 }
   

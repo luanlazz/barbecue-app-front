@@ -59,9 +59,9 @@ const openModalBarbecue = async (): Promise<void> => {
   fireEvent.click(editItem)
 }
 
-const openModalParticipant = async (): Promise<void> => {
-  await waitFor(() => screen.getByTestId('header'))
-  const newParticipant = screen.getByTestId('newParticipant')
+const openModalParticipant = async (item: string): Promise<void> => {
+  await waitFor(() => screen.getByTestId('participants-list'))
+  const newParticipant = screen.getByTestId(item)
   fireEvent.click(newParticipant)
 }
 
@@ -95,77 +95,93 @@ const simulateValidSubmitParticipant = async (
 }
 
 describe('ParticipantsList Component', () => {
-  test('Should call LoadParticipantsList', async () => {
-    const { loadParticipantsListSpy } = makeSut()
-    expect(loadParticipantsListSpy.callsCount).toBe(1)
-    await waitFor(() => screen.getByTestId('participants-list'))
+  describe('Barbecue', () => {
+    test('Should call LoadBarbecueById', async () => {
+      const { loadBarbecueByIdSpy } = makeSut()
+      expect(loadBarbecueByIdSpy.callsCount).toBe(1)
+      await waitFor(() => screen.getByTestId('header'))
+    })
+
+    test('Should render BarbecueItem on success', async () => {
+      makeSut()
+      await waitFor(() => screen.getByTestId('header'))
+      const barbecueInfo = screen.getByTestId('barbecue-info')
+      expect(barbecueInfo).toBeInTheDocument()
+      expect(screen.queryByTestId('error')).not.toBeInTheDocument()
+    })
+
+    test('Should render error on failure', async () => {
+      const loadBarbecueById = new LoadBarbecueByIdSpy()
+      const error = new UnexpectedError()
+      jest.spyOn(loadBarbecueById, 'loadById').mockRejectedValueOnce(error)
+      makeSut(undefined, loadBarbecueById)
+      await waitFor(() => screen.getByTestId('header'))
+      expect(screen.queryByTestId('barbecue-info')).not.toBeInTheDocument()
+      expect(screen.queryByTestId('error')).toHaveTextContent(error.message)
+    })
+
+    test('Should open modal if click in edit barbecue', async () => {
+      makeSut()
+      await openModalBarbecue()
+      expect(screen.queryByTestId('modal')).toBeInTheDocument()
+    })
+
+    test('Should close modal after SaveBarbecue success', async () => {
+      makeSut()
+      await openModalBarbecue()
+      await simulateValidSubmitBarbecue()
+      expect(screen.queryByTestId('modal')).not.toBeInTheDocument()
+    })
   })
 
-  test('Should render ParticipantsItems on success', async () => {
-    makeSut()
-    await waitFor(() => screen.getByTestId('header'))
-    const participantsList = screen.getByTestId('participants-list')
-    expect(participantsList.querySelectorAll('tr')).toHaveLength(2)
-    expect(screen.queryByTestId('error')).not.toBeInTheDocument()
-  })
+  describe('Participants', () => {
+    test('Should call LoadParticipantsList', async () => {
+      const { loadParticipantsListSpy } = makeSut()
+      expect(loadParticipantsListSpy.callsCount).toBe(1)
+      await waitFor(() => screen.getByTestId('participants-list'))
+    })
 
-  test('Should render error on failure', async () => {
-    const loadParticipantsListSpy = new LoadParticipantsListSpy()
-    const error = new UnexpectedError()
-    jest.spyOn(loadParticipantsListSpy, 'loadAll').mockRejectedValueOnce(error)
-    makeSut(loadParticipantsListSpy)
-    await waitFor(() => screen.getByTestId('header'))
-    expect(screen.queryByTestId('participants-list')).not.toBeInTheDocument()
-    expect(screen.queryByTestId('error')).toHaveTextContent(error.message)
-  })
+    test('Should render ParticipantsItems on success', async () => {
+      makeSut()
+      await waitFor(() => screen.getByTestId('header'))
+      const participantsList = screen.getByTestId('participants-list')
+      expect(participantsList.querySelectorAll('tr')).toHaveLength(2)
+      expect(screen.queryByTestId('error')).not.toBeInTheDocument()
+    })
 
-  test('Should call LoadBarbecueById', async () => {
-    const { loadBarbecueByIdSpy } = makeSut()
-    expect(loadBarbecueByIdSpy.callsCount).toBe(1)
-    await waitFor(() => screen.getByTestId('header'))
-  })
+    test('Should render error on failure', async () => {
+      const loadParticipantsListSpy = new LoadParticipantsListSpy()
+      const error = new UnexpectedError()
+      jest.spyOn(loadParticipantsListSpy, 'loadAll').mockRejectedValueOnce(error)
+      makeSut(loadParticipantsListSpy)
+      await waitFor(() => screen.getByTestId('header'))
+      expect(screen.queryByTestId('participants-list')).not.toBeInTheDocument()
+      expect(screen.queryByTestId('error')).toHaveTextContent(error.message)
+    })
 
-  test('Should render BarbecueItem on success', async () => {
-    makeSut()
-    await waitFor(() => screen.getByTestId('header'))
-    const barbecueInfo = screen.getByTestId('barbecue-info')
-    expect(barbecueInfo).toBeInTheDocument()
-    expect(screen.queryByTestId('error')).not.toBeInTheDocument()
-  })
+    test('Should open modal if click in new participant', async () => {
+      makeSut()
+      await openModalParticipant('newParticipant')
+      expect(screen.queryByTestId('modal')).toBeInTheDocument()
+    })
 
-  test('Should render error on failure', async () => {
-    const loadBarbecueById = new LoadBarbecueByIdSpy()
-    const error = new UnexpectedError()
-    jest.spyOn(loadBarbecueById, 'loadById').mockRejectedValueOnce(error)
-    makeSut(undefined, loadBarbecueById)
-    await waitFor(() => screen.getByTestId('header'))
-    expect(screen.queryByTestId('barbecue-info')).not.toBeInTheDocument()
-    expect(screen.queryByTestId('error')).toHaveTextContent(error.message)
-  })
+    test('Should open modal if click in edit participant', async () => {
+      makeSut()
+      await waitFor(() => screen.getByTestId('participants-list'))
+      fireEvent.click(screen.queryAllByTestId('edit-participant')[0])
+    })
 
-  test('Should open modal if click in edit barbecue', async () => {
-    makeSut()
-    await openModalBarbecue()
-    expect(screen.queryByTestId('modal')).toBeInTheDocument()
-  })
+    test('Should open modal if click in remove participant', async () => {
+      makeSut()
+      await waitFor(() => screen.getByTestId('participants-list'))
+      fireEvent.click(screen.queryAllByTestId('remove-participant')[0])
+    })
 
-  test('Should close modal after SaveBarbecue success', async () => {
-    makeSut()
-    await openModalBarbecue()
-    await simulateValidSubmitBarbecue()
-    expect(screen.queryByTestId('modal')).not.toBeInTheDocument()
-  })
-
-  test('Should open modal if click in new participant', async () => {
-    makeSut()
-    await openModalParticipant()
-    expect(screen.queryByTestId('modal')).toBeInTheDocument()
-  })
-
-  test('Should close modal after SaveParticipant on success', async () => {
-    makeSut()
-    await openModalParticipant()
-    await simulateValidSubmitParticipant()
-    expect(screen.queryByTestId('modal')).not.toBeInTheDocument()
+    test('Should close modal after SaveParticipant on success', async () => {
+      makeSut()
+      await openModalParticipant('newParticipant')
+      await simulateValidSubmitParticipant()
+      expect(screen.queryByTestId('modal')).not.toBeInTheDocument()
+    })
   })
 })
