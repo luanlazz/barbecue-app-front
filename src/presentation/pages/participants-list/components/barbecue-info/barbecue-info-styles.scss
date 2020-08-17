@@ -3,6 +3,7 @@
 .barbecue {
   align-items: center;
   display: flex;
+  height: 100px;
   justify-content: space-between;
   margin-top: 30px;
   width: 100%;
@@ -12,8 +13,6 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    flex-wrap: wrap;
-    overflow: hidden;
     margin-top: 10px;
     margin-left: 10px;
     padding: 10px;
@@ -22,13 +21,19 @@
       color: #000;
       font-size: 28px;
       font-weight: 800;
-      width: 100%;
     }
   
     .description {
+      display: block;
+
       font-size: 36px;
       font-weight: bold;
       margin-top: 8px;
+      width: 400px;
+
+      overflow-x: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
   }
 
@@ -100,17 +105,53 @@
   }
 }
 
+@media only screen and (max-width: 900px) {
+  .barbecue {
+    .info {
+      .description {
+        width: 380px;
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .barbecue {
+    .info {
+      .description {
+        width: 350px;
+      }
+    }
+  }
+}
+
 @media only screen and (max-width: 600px) {
   .barbecue {
     align-items: flex-start;
     flex-direction: column;
+    height: 180px;
     position: relative;
     width: 100%;
 
+    .info {
+      .description {
+        width: 400px;
+      }
+    }
+
     .totals {
       flex-direction: row;
-      justify-content: space-between;
-      width: 100%;      
+      justify-content: space-between;     
+    }
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  .barbecue {
+    .info {
+      .description {
+        width: 200px;
+      }
     }
   }
 }

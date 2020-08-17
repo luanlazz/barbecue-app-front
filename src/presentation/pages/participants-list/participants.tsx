@@ -45,7 +45,7 @@ const ParticipantsList: React.FC<Props> = ({ loadParticipantsList, loadBarbecueB
     participants: [] as LoadParticipantsList.Model[],
     participantMaintenance: {} as LoadParticipantsList.Model,
     barbecue: {} as LoadBarbecueById.Model,
-    isLoadingBarbecue: false,
+    isLoadingBarbecue: true,
     isLoadingParticipants: false,
     isLoading: false,
     error: '',
@@ -164,6 +164,11 @@ const ParticipantsList: React.FC<Props> = ({ loadParticipantsList, loadBarbecueB
   }
 
   const handlePaymentParticipant = async (participantParam: SaveParticipant.Model): Promise<void> => {
+    setState(old => ({
+      ...old,
+      isLoading: true
+    }))
+
     saveParticipant.save({
       ...participantParam,
       pay: !participantParam.pay
@@ -171,6 +176,7 @@ const ParticipantsList: React.FC<Props> = ({ loadParticipantsList, loadBarbecueB
       .then(participantSave => {
         setState(old => ({
           ...old,
+          isLoading: false,
           updateBarbecue: true,
           participants: old.participants.map(participant =>
             participant.id === participantSave.id
