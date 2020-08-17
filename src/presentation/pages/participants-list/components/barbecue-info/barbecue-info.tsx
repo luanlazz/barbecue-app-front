@@ -10,7 +10,7 @@ type Props = {
   barbecue: LoadBarbecueById.Model
 }
 
-const BarbecueInfo: React.FC<Props> = ({ barbecue }: Props) => {
+const Barbecue: React.FC<Props> = ({ barbecue }: Props) => {
   const { handleMaintenance } = useContext(ParticipantsContext)
 
   const setMaintenance = (): void => {
@@ -21,12 +21,14 @@ const BarbecueInfo: React.FC<Props> = ({ barbecue }: Props) => {
     <div data-testid='barbecue-info' className={Styles.barbecue}>
 
       <div className={Styles.info}>
-        <span data-testid='date' className={Styles.date}>
-          {Intl.DateTimeFormat('pt-BR', {
-            day: 'numeric',
-            month: 'numeric'
-          }).format(barbecue.date)}
-        </span>
+        <time>
+          <span data-testid='date' className={Styles.date}>
+            {Intl.DateTimeFormat('pt-BR', {
+              day: 'numeric',
+              month: 'numeric'
+            }).format(barbecue.date)}
+          </span>
+        </time>
 
         <span data-testid='description' className={Styles.description}>
           {barbecue.description}
@@ -75,4 +77,4 @@ const BarbecueInfo: React.FC<Props> = ({ barbecue }: Props) => {
   )
 }
 
-export default BarbecueInfo
+export default Barbecue

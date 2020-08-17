@@ -1,4 +1,5 @@
 export { default as BarbecueItem } from './barbecue-item/barbecue-item'
+export { default as BarbecueInfo } from './barbecue-info/barbecue-info'
 export { default as BarbecueNewItem } from './barbecue-new-item/barbecue-new-item'
 export { default as BarbecueItemEmpty } from './barbecue-item-empty/barbecue-item-empty'
 export { default as BarbecueListItems } from './barbecue-list/barbecue-list-items'

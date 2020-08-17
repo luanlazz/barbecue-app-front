@@ -1,0 +1,58 @@
+@import "@/presentation/styles/colors.scss";
+
+.barbecueContent {
+  color: $black; 
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 100%;
+  padding: 16px;
+
+  .details {
+    display: flex;
+    flex-direction: column;
+
+    .date {
+      color: #000;
+      font-size: 25px;
+      font-weight: 800;
+      width: 100%;
+    }
+  
+    .description {
+      font-size: 18px;
+      font-weight: bold;
+    }
+  }
+
+  .totals {
+    display: inline-flex;
+    justify-content: space-between;
+
+    .people {
+      align-items: center;
+      display: flex;
+
+      .icon {
+        color: $primary;
+      }
+    }
+
+    .money {
+      align-items: center;
+      display: flex;
+
+      .icon {
+        color: $primary;
+      }
+    }
+    
+    span {
+      font-size: 16px;
+      text-align: center;
+      padding: 4px;
+      vertical-align: super;
+    }
+  }
+}
