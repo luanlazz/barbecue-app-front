@@ -4,6 +4,7 @@ import ConfirmAction from './confirm-action'
 
 type SutTypes = {
   callbackMock: Function
+  handleModalMock: Function
 }
 
 const makeSut = (): SutTypes => {
@@ -18,7 +19,8 @@ const makeSut = (): SutTypes => {
     />
   )
   return {
-    callbackMock
+    callbackMock,
+    handleModalMock
   }
 }
 
@@ -39,5 +41,12 @@ describe('ConfirmAction Component', () => {
     makeSut()
     await simulateSubmit()
     expect(screen.queryByTestId('spinner')).toBeInTheDocument()
+  })
+
+  test('Should call handleModal on cancel', async () => {
+    const { handleModalMock } = makeSut()
+    const cancel = screen.getByTestId('reset')
+    fireEvent.click(cancel)
+    expect(handleModalMock).toHaveBeenCalled()
   })
 })
