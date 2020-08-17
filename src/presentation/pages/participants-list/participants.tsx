@@ -91,7 +91,6 @@ const ParticipantsList: React.FC<Props> = ({ loadParticipantsList, loadBarbecueB
   const handleMaintenance = (maintenance: MaintenanceParticipants, participantMaintenance?: LoadParticipantsList.Model): void => {
     setState(old => ({
       ...old,
-      isLoading: true,
       maintenance,
       participantMaintenance
     }))
