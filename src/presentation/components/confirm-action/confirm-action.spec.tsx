@@ -49,4 +49,11 @@ describe('ConfirmAction Component', () => {
     fireEvent.click(cancel)
     expect(handleModalMock).toHaveBeenCalled()
   })
+
+  test('Should not call callback if in loading', async () => {
+    const { callbackMock } = makeSut()
+    await simulateSubmit()
+    await simulateSubmit()
+    expect(callbackMock).toBeCalledTimes(1)
+  })
 })
