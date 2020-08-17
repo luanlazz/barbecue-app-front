@@ -18,7 +18,7 @@ const ConfirmAction: React.FC<Props> = ({ isShowing, handleModal, callBack, titl
     mainError: ''
   })
 
-  const handleSubmit = async (): Promise<void> => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault()
     if (state.isLoading) return
 
@@ -28,10 +28,6 @@ const ConfirmAction: React.FC<Props> = ({ isShowing, handleModal, callBack, titl
     }))
 
     callBack()
-      .catch(() => setState(old => ({
-        ...old,
-        isLoading: false
-      })))
   }
 
   return (

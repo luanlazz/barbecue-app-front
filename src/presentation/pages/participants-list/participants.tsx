@@ -197,6 +197,11 @@ const ParticipantsList: React.FC<Props> = ({ loadParticipantsList, loadBarbecueB
         }))
         handleModal()
       })
+      .catch(error => setState(old => ({
+        ...old,
+        isLoading: false,
+        error
+      })))
   }
 
   return (
