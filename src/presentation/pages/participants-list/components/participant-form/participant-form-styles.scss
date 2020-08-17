@@ -50,6 +50,7 @@ input[type="number"] {
 
     .suggest {
       align-items: center;
+      color: $greyDark;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -57,6 +58,7 @@ input[type="number"] {
 
     .sumSuggest {
       align-items: center;
+      color: $greyDark;
       display: flex;
 
       span {

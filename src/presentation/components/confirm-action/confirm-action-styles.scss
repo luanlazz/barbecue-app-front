@@ -1,8 +1,7 @@
 @import "@/presentation/styles/colors.scss";
 
-.wrap {
-  display: inherit;
-  flex-direction: inherit;
+.wrap {  
+  min-width: 100%;
   text-align: center;
 
   span {
@@ -12,6 +11,7 @@
 
   .buttonsWrap {
     display: inline-flex;
+    flex:1;
     justify-content: space-evenly;
     border: none;
     border-radius: 8px;

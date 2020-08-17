@@ -9,7 +9,6 @@ type Prop = {
 }
 
 const BarbecueInfo: React.FC<Prop> = ({ barbecue }: Prop) => {
-  console.log('barbecue', barbecue)
   return (
     <div className={Styles.barbecueContent}>
       <div className={Styles.details}>

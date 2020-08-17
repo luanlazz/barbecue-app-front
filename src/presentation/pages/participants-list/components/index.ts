@@ -1,4 +1,3 @@
-export { default as ConfirmationAction } from './confirmation-action/confirmation-action'
 export { default as BarbecueInfo } from './barbecue-info/barbecue-info'
 export { default as BarbecueInfoEmpty } from './barbecue-info-empty/barbecue-info-empty'
 export { default as ParticipantsContext } from './context/context'

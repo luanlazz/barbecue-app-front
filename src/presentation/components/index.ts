@@ -1,5 +1,6 @@
 export { default as BackgroundLoading } from './background-loading/background-loading'
 export { default as ContentContainer } from './content-container/content-container'
+export { default as ConfirmAction } from './confirm-action/confirm-action'
 export { default as Input } from './input/input'
 export { default as InputNoStatus } from './input-no-status/input-no-status'
 export { default as Header } from './header/header'

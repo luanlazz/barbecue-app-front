@@ -11,12 +11,20 @@ type Prop = {
 }
 
 const ParticipantItem: React.FC<Prop> = ({ participant }: Prop) => {
-  const { handleMaintenance } = useContext(ParticipantsContext)
+  const { handleMaintenance, handlePaymentParticipant } = useContext(ParticipantsContext)
+
+  const handleSet = (): void => {
+    handleMaintenance(MaintenanceParticipants.setParticipant, participant)
+  }
+
+  const handleRemove = (): void => {
+    handleMaintenance(MaintenanceParticipants.removeParticipant, participant)
+  }
 
   return (
     <tr className={participant.pay ? Styles.paid : ''}>
       <td className={Styles.statusPayment} >
-        <button data-testid='payment' onClick={() => handleMaintenance(MaintenanceParticipants.setPaymentParticipant, participant)}>
+        <button data-testid='payment' onClick={() => handlePaymentParticipant(participant)}>
           <span className={Styles.dot} />
         </button>
       </td>
@@ -31,13 +39,13 @@ const ParticipantItem: React.FC<Prop> = ({ participant }: Prop) => {
       </td>
 
       <td data-testid='edit-participant' className={Styles.editAction} >
-        <button data-testid='payment' onClick={() => handleMaintenance(MaintenanceParticipants.setParticipant, participant)}>
+        <button data-testid='payment' onClick={handleSet}>
           <FontAwesomeIcon icon={faPen} color='black' />
         </button>
       </td>
 
       <td data-testid='remove-participant' className={Styles.removeAction} >
-        <button data-testid='payment' onClick={() => handleMaintenance(MaintenanceParticipants.removeParticipant, participant)}>
+        <button data-testid='payment' onClick={handleRemove}>
           <FontAwesomeIcon icon={faMinus} color='black' />
         </button>
       </td>
