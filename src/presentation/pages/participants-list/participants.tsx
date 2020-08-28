@@ -197,6 +197,7 @@ const ParticipantsList: React.FC<Props> = ({ loadParticipantsList, loadBarbecueB
       .then(() => {
         setState(old => ({
           ...old,
+          isLoading: false,
           updateBarbecue: true,
           participants: old.participants.filter(participant => participant.id !== state.participantMaintenance.id)
         }))

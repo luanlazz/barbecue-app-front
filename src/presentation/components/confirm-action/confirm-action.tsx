@@ -28,6 +28,8 @@ const ConfirmAction: React.FC<Props> = ({ isShowing, handleModal, callBack, titl
     }))
 
     callBack()
+      .then(() => setState(old => ({ ...old, isLoading: false })))
+      .catch(error => setState(old => ({ ...old, isLoading: false, mainError: error.message })))
   }
 
   return (

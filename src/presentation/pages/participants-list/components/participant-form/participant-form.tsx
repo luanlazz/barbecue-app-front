@@ -70,6 +70,7 @@ const ParticipantForm: React.FC<Props> = ({ saveParticipant, validation, callBac
       value: parseFloat(state.value)
     })
       .then(participant => {
+        setState(old => ({ ...old, isLoading: false }))
         callBack(participant)
         handleModal()
       })

@@ -8,7 +8,7 @@ type SutTypes = {
 }
 
 const makeSut = (): SutTypes => {
-  const callbackMock = jest.fn()
+  const callbackMock = jest.fn().mockImplementationOnce(async () => Promise.resolve({ data: {} }))
   const handleModalMock = jest.fn()
   render(
     <ConfirmAction
@@ -37,23 +37,10 @@ describe('ConfirmAction Component', () => {
     expect(callbackMock).toHaveBeenCalled()
   })
 
-  test('Should show spinner on submit', async () => {
-    makeSut()
-    await simulateSubmit()
-    expect(screen.queryByTestId('spinner')).toBeInTheDocument()
-  })
-
   test('Should call handleModal on cancel', async () => {
     const { handleModalMock } = makeSut()
     const cancel = screen.getByTestId('reset')
     fireEvent.click(cancel)
     expect(handleModalMock).toHaveBeenCalled()
-  })
-
-  test('Should not call callback if in loading', async () => {
-    const { callbackMock } = makeSut()
-    await simulateSubmit()
-    await simulateSubmit()
-    expect(callbackMock).toBeCalledTimes(1)
   })
 })
