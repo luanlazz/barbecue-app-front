@@ -28,7 +28,7 @@
 
     .title {
       font-size: 30px;
-      margin-bottom: 10px;
+      margin: 20px 0 10px 0;
     }
 
     .close {
@@ -36,8 +36,8 @@
       cursor: pointer;
       height: 20px;
       width: 20px;
-      right: 2px;
-      top: 2px;
+      right: 10px;
+      top: 10px;
       position: absolute;
 
       &:hover {

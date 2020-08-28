@@ -19,7 +19,7 @@ td, th {
   width: 25px;
 
   button {
-    padding: 0;
+    margin: auto;
   }
 }
 
@@ -29,7 +29,6 @@ td, th {
   display: block;
   height: 15px;
   width: 15px;  
-  margin: auto;
 }
 
 .paid {
@@ -48,18 +47,19 @@ td, th {
   text-align: left;
   min-width: 100px;
   word-wrap: break-word;
+  padding-left: 10px;
 }
 
 .value {
-  width: auto;
-  text-align: right;
+  width: 100px;
+  text-align: center;
 }
-
 
 .editAction,
 .removeAction {
   cursor: pointer;
   text-align: center;
+  width: 30px;
 
   button {
     padding: 0;
