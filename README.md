@@ -29,6 +29,3 @@ App to manager your barbecues, where you can:
 * YAGNI
 * KISS
 * Small Commits
-
-
-Suggest to use chrome or firefox.
